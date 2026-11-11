@@ -1,4 +1,5 @@
-"""Frozen tiny-model test baseline, before optimizer training; local files only."""
+"""Frozen tiny-model before/after test evaluation; local files only."""
+import argparse
 import gc
 import hashlib
 import importlib.metadata
@@ -12,12 +13,16 @@ from baseline import ROOT, INPUT, REFERENCE, SYSTEM, check_memory, compare, memo
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--after', action='store_true', help='Evaluate the verified saved case 2 adapter')
+    args = parser.parse_args()
+    phase = 'after' if args.after else 'before'
     os.environ['HF_HUB_OFFLINE'] = '1'
     os.environ['HF_HOME'] = str(ROOT / 'models/.hf-cache')
-    output = ROOT / 'results/case2-before.jsonl'
-    metadata = ROOT / 'results/case2-before.metadata.json'
+    output = ROOT / f'results/case2-{phase}.jsonl'
+    metadata = ROOT / f'results/case2-{phase}.metadata.json'
     with metadata.open('x') as dest, output.open('x') as rows:
-        result = {'phase': 'untrained', 'seed': 42, 'temperature': 0,
+        result = {'phase': 'trained_adapter' if args.after else 'untrained', 'seed': 42, 'temperature': 0,
                   'max_tokens': 128, 'context_limit': 2048, 'system_prompt': SYSTEM,
                   'completed_indexes': [], 'memory_samples': []}
         start = time.perf_counter()
@@ -68,9 +73,22 @@ def main():
             result['split_sha256'] = split['split_sha256']
             result['dataset_sha256'] = split['dataset_sha256']
             data = json.loads((ROOT / 'data/dataset.json').read_text())
+            adapter_path = None
+            if args.after:
+                training = json.loads((ROOT / 'results/case2-train.json').read_text())
+                assert training['status'] == 'completed'
+                assert training['split_sha256'] == split['split_sha256']
+                assert training['model_revision'] == provenance['revision']
+                for item in training['adapter_files']:
+                    artifact = ROOT / item['path']
+                    assert artifact.stat().st_size == item['bytes']
+                    with artifact.open('rb') as source:
+                        assert hashlib.file_digest(source, 'sha256').hexdigest() == item['sha256']
+                result['adapter_files'] = training['adapter_files']
+                adapter_path = str(ROOT / 'models/case2-lora')
             guard('before_load')
             begin = time.perf_counter()
-            model, tokenizer = load(str(model_path))
+            model, tokenizer = load(str(model_path), adapter_path=adapter_path)
             mx.eval(model.parameters())
             model.eval()
             result['load_seconds'] = time.perf_counter() - begin

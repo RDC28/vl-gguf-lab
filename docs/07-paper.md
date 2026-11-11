@@ -4,7 +4,7 @@ Draft paper skeleton, 2026-11-11. Observed setup facts are distinguished from pl
 
 ## Abstract
 
-We investigate whether a compact, locally executed vision-language model can generate useful shot breakdowns from short text scene descriptions on an 8 GB Apple Silicon MacBook Air. The supplied dataset contains 150 text input/output pairs. The initial candidate is an Unsloth Qwen2.5-VL-7B-Instruct Q3_K_M GGUF language file under 4 GB. The planned sequence covers untrained inference, adapter fine-tuning, weight modification, block addition, block removal, and reconstruction/training with our own implementation. The current implementation covers baseline inference and resumable evidence collection. The first GPU output completed in 143.8 seconds at 6.46 evaluation tokens/s; all ten fixed CPU sample outputs have completed, six capped, with transient warning pressure in recent attempts; case 2 has a tiny text-model baseline and 20 LoRA updates, with after-evaluation pending; cases 3-6 remain plans. The text-only dataset cannot support conclusions about vision performance.
+We investigate whether a compact, locally executed vision-language model can generate useful shot breakdowns from short text scene descriptions on an 8 GB Apple Silicon MacBook Air. The supplied dataset contains 150 text input/output pairs. The initial candidate is an Unsloth Qwen2.5-VL-7B-Instruct Q3_K_M GGUF language file under 4 GB. The planned sequence covers untrained inference, adapter fine-tuning, weight modification, block addition, block removal, and reconstruction/training with our own implementation. The current implementation covers baseline inference and resumable evidence collection. The first GPU output completed in 143.8 seconds at 6.46 evaluation tokens/s; all ten fixed CPU sample outputs have completed, six capped, with transient warning pressure in recent attempts; case 2 has a tiny text-model baseline and 20 LoRA updates, with a completed held-out re-test; cases 3-6 remain plans. The text-only dataset cannot support conclusions about vision performance.
 
 ## Research questions
 
@@ -23,7 +23,7 @@ Hardware: Apple M1 MacBook Air, 8 cores, 8 GiB unified memory; other application
 
 Model: `unsloth/Qwen2.5-VL-7B-Instruct-GGUF`, revision `68bb8bc4b7df5289c143aaec0ab477a7d4051aab`; language file `Qwen2.5-VL-7B-Instruct-Q3_K_M.gguf` (3,808,390,016 bytes). The separately downloaded F16 vision projector stays unloaded for text-only inference. See [case 1](01-baseline.md) for all artifact hashes, quant alternatives, and runtime provenance. The 4 GB cap refers to the language file, not total disk usage or RAM.
 
-Python 3.12.13, llama-cpp-python 0.3.36, gguf 0.19.0, JupyterLab 4.6.6, and ipykernel 7.4.0 are installed. Metal support and project-kernel startup have been checked. Full package pins live in the root requirements file. Case 2 now uses MLX-LM 0.32.2 and MLX/MLX-Metal 0.32.4 for a tiny-model gradient preflight and 20 LoRA updates; held-out after-evaluation remains pending.
+Python 3.12.13, llama-cpp-python 0.3.36, gguf 0.19.0, JupyterLab 4.6.6, and ipykernel 7.4.0 are installed. Metal support and project-kernel startup have been checked. Full package pins live in the root requirements file. Case 2 now uses MLX-LM 0.32.2 and MLX/MLX-Metal 0.32.4 for a tiny-model gradient preflight, 20 LoRA updates and identical-settings held-out re-test.
 
 ## Methods
 
@@ -56,7 +56,7 @@ Decode tensor/configuration facts, implement operations, compare intermediate va
 | Case | Current status | Result location |
 | --- | --- | --- |
 | 1 | One GPU output completed; resumed GPU probe stopped safely before generation; CPU-only fixed sample has 10 of 10 scenes completed, six capped; latest attempt had transient warning pressure | results/baseline.jsonl; case 1 findings |
-| 2 | Split frozen (120/15/15); pinned 135M text model loaded; 128-token LoRA gradient preflight and 15-scene untrained test completed; optimizer training pending | results/case2-split.json; case 2 findings |
+| 2 | Split frozen (120/15/15); pinned 135M text model loaded; 20 LoRA updates and paired 15-scene before/after test completed; all after-outputs capped | results/case2-split.json; case 2 findings |
 | 3 | Not run | Future findings in case 3 |
 | 4 | Not run | Future findings in case 4 |
 | 5 | Not run | Future findings in case 5 |
@@ -88,6 +88,9 @@ Case 2 now has its own untrained held-out baseline on all 15 frozen test scenes,
 
 Case 2 completed 20 LoRA optimizer updates on the first 20 sorted frozen training scenes, with no held-out training use. The unchanged rank-4 query/value adapters in the last two SmolLM2-135M blocks contain 15,360 trainable elements; the BF16 base stayed frozen. Batch size was one, input length 128, prompt targets masked, and Adam learning rate 0.0001 (betas 0.9/0.999, epsilon 1e-8, bias correction disabled). Only 966 answer-prefix targets were supervised across all steps. Mean partial-answer loss was 4.78359; different scenes make this unsuitable as a before/after improvement measure. Training took 1.338 seconds (2.646 seconds total), with peak MLX allocation 387,368,366 bytes and process RSS 430,473,216 bytes. Sampled pressure stayed normal and free memory at least 62%. The final 62,287-byte adapter changed from initialization (L2 1.04976), was saved locally with configuration/hashes and independently reloaded for shape/finiteness verification. Original files and earlier evidence remain unchanged. Case 2 records the full protocol, raw per-step measurements and memory caveats. The process exited; identical-settings held-out after-evaluation is still pending, so no quality improvement is claimed. Cases 3-6 remain unattempted.
 
+
+Case 2's fixed saved adapter completed the identical-settings 15-scene held-out re-test, with matching prompt token IDs, model/split provenance, greedy decoding and framework versions. Fourteen outputs changed. Mean unigram F1 rose from 0.12496 to 0.14008 (delta +0.01512; eight increases, six decreases, one unchanged), while mean words rose from 86.80 to 95.13 and capped outputs from 14 to 15. Only two SHOT headings were detected across all after-outputs. Manual checks still found invented cafe details, generic street prose and unchanged rooftop repetition. This is a completed tiny text-model workflow demonstration, not evidence of reliable semantic improvement or 7B VL adaptation. Re-test load/total time was 0.160/14.589 seconds, mean input time 0.871 seconds, MLX peak allocation 327,976,204 bytes and process RSS 427,540,480 bytes. Normal pressure persisted with at least 59% sampled free (68% before, 62% after release); these memory measures omit some unified-memory use. Raw outputs, paired deltas, adapter provenance and guard readings are in `results/case2-after*` and case 2. The model process exited; cases 3-6 remain unattempted.
+
 ## Discussion
 
 The resource limit is unified memory shared with the operating system and other applications. A sub-4-GB file is not proof of a safe runtime fit. Quantization, sampling settings, output caps, prompt design, and software versions are confounders and must remain explicit. Unigram overlap and headings are weak indicators; fluent output may still invent details or violate continuity.
@@ -96,7 +99,7 @@ The small dataset supports a narrow exploratory task and invites overfitting in 
 
 ## Conclusion placeholder
 
-One coherent output establishes that text-only GPU generation can run after other applications are closed. The sample is too small to establish dataset quality or stable full-run resource use. The completed ten-scene CPU sample exposes frequent truncation, repetition, and scene-fidelity failures. Full-set measurements remain pending. Later-case conclusions remain empty until their experiments are performed.
+One coherent output establishes that text-only GPU generation can run after other applications are closed. The sample is too small to establish dataset quality or stable full-run resource use. The completed ten-scene CPU sample exposes frequent truncation, repetition, and scene-fidelity failures. Full-set measurements remain pending. The tiny case 2 LoRA workflow completed safely but did not establish useful shot structure or semantic improvement. Cases 3-6 remain unattempted.
 
 ## Sources and reproducibility
 

@@ -147,3 +147,27 @@ Losses are on different scenes, so the first/last values are not a learning curv
 The unchanged memory guard runs before import/load and every update; a 0.5-second watcher and after-update snapshots catch critical pressure or below 8% free. One graph cannot stop between internal kernels. RSS and MLX allocation omit some unified-memory use; short peaks can evade sampling. Model, gradient, optimizer and adapter array references/cache were released and the process exited. Independent verification reloaded the saved adapter, checked all eight names/shapes, 15,360 finite elements, exact source/adapter hashes, train-only membership and regenerated training token IDs/mask counts. Prior evidence, frozen split, Python/notebook syntax, dependency consistency and diff whitespace checks passed. No inference or server was left running.
 
 Next: load this exact saved adapter for the same 15 test scenes, with identical baseline prompts/token IDs and greedy generation settings. Do not retrain or select checkpoints using test outcomes. After-results and any quality change remain unmeasured; this is a tiny text-only training workflow, not adaptation of the 7B VL model.
+
+
+### 2026-11-11 18:07 UTC: identical-settings held-out re-test
+
+Case 2's bounded before/train/after workflow is complete. `.venv/bin/python src/case2_evaluate.py --after` verifies the saved adapter's sizes/hashes and training split/model provenance, then loads it through the installed MLX-LM adapter loader. Original source files remain immutable. The same evaluator retains its exclusive-create untrained mode; after-results are separate under `results/case2-after*`. No retraining or checkpoint selection followed test inspection.
+
+All 15 test scene inputs, references and prompt token IDs match the untrained baseline exactly. Seed, greedy sampler, 128-new-token cap, 2,048-token context limit, prefill size and framework versions are unchanged. Raw outputs/token IDs, per-row timings and metrics are durably recorded in `results/case2-after.jsonl`; metadata includes exact adapter hashes and memory readings. `results/case2-after-summary.json` records paired output changes and F1 deltas.
+
+| Measurement | Before | After |
+| --- | ---: | ---: |
+| Completed test scenes | 15 | 15 |
+| Capped outputs | 14 | 15 |
+| Mean words | 86.80 | 95.13 |
+| Mean unigram F1 | 0.12496 | 0.14008 |
+| Total detected SHOT headings | 0 | 2 |
+| Mean input wall time, seconds | 0.842 | 0.871 |
+| Load / total work, seconds | 0.142 / 14.141 | 0.160 / 14.589 |
+| MLX peak allocation, bytes | 327,914,752 | 327,976,204 |
+| Process peak RSS, bytes | 425,213,952 | 427,540,480 |
+| Minimum sampled free / highest pressure | 59% / normal | 59% / normal |
+
+Fourteen outputs changed; index 48 remained token-identical and repetitively listed the rooftop party. Eight paired F1 scores increased, six decreased and one stayed unchanged; mean delta was +0.01512. Higher lexical overlap is not proof of semantic improvement, and output lengths changed. Index 23 now invents a cafe sign and interior detail instead of stopping after a single sentence. Index 34 replaces repetitive apology dialogue with generic street prose, still repeating glasses and adding unrelated detail. Two headings across all 15 outputs do not demonstrate successful shot structure. All after-outputs were capped. No formal human rubric or statistical generalization is claimed.
+
+After-run pressure stayed normal, with 68% reported free before import, minimum 59%, and 62% after release. Guards and sampling are unchanged; RSS/MLX allocation do not capture all unified memory and brief peaks may escape sampling. The process exited normally with model/cache released. Validation checked exact held-out coverage and prompt/settings identity, recomputed every metric, checked source/adapter hashes and prior evidence preservation, and ran Python/notebook syntax/schema, dependency and whitespace checks. This tiny text-only experiment demonstrates safe adapter training/reloading/evaluation, not 7B VL adaptation or a reliable quality gain. Cases 3-6 remain unattempted; the next bounded step is a small GGUF rewrite control for case 3.

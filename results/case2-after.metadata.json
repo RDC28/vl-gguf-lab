@@ -1,0 +1,421 @@
+{
+  "phase": "trained_adapter",
+  "seed": 42,
+  "temperature": 0,
+  "max_tokens": 128,
+  "context_limit": 2048,
+  "system_prompt": "You are a film storyboard assistant. Turn the scene description into a detailed shot breakdown. Use numbered SHOT headings and describe the framing, camera movement, action, and sound for each shot.",
+  "completed_indexes": [
+    23,
+    34,
+    48,
+    55,
+    60,
+    81,
+    106,
+    107,
+    121,
+    123,
+    124,
+    125,
+    132,
+    141,
+    142
+  ],
+  "memory_samples": [
+    {
+      "elapsed_seconds": 0.006401624999853084,
+      "phase": "before_import",
+      "pressure_level": 1,
+      "free_percent": 68
+    },
+    {
+      "elapsed_seconds": 0.5244920410004852,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 68
+    },
+    {
+      "elapsed_seconds": 1.0539008750001813,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 68
+    },
+    {
+      "elapsed_seconds": 1.0556149580006604,
+      "phase": "before_load",
+      "pressure_level": 1,
+      "free_percent": 68
+    },
+    {
+      "elapsed_seconds": 1.223839083000712,
+      "phase": "before_input_23",
+      "pressure_level": 1,
+      "free_percent": 68
+    },
+    {
+      "elapsed_seconds": 1.5756790830000682,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 2.096863750000921,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 2.218173041001137,
+      "phase": "after_input_23",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 2.2264822500001173,
+      "phase": "before_input_34",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 2.615620583001146,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 3.093852625001091,
+      "phase": "after_input_34",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 3.1015217500007566,
+      "phase": "before_input_48",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 3.136789707999924,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 3.6492355830014276,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 3.967200250001042,
+      "phase": "after_input_48",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 3.9758059160012635,
+      "phase": "before_input_55",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 4.170320916000492,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 4.691364166001222,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 4.8247046249998675,
+      "phase": "after_input_55",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 4.832122083000286,
+      "phase": "before_input_60",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 5.212556624999706,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 5.703952208001283,
+      "phase": "after_input_60",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 5.712316916000418,
+      "phase": "before_input_81",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 5.725569333000749,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 59
+    },
+    {
+      "elapsed_seconds": 6.246741083001325,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 6.650434832999963,
+      "phase": "after_input_81",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 6.659273500001291,
+      "phase": "before_input_106",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 6.764563624999937,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 7.278724458001307,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 7.5784663330014155,
+      "phase": "after_input_106",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 7.587093457999799,
+      "phase": "before_input_107",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 7.800787207999747,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 8.322412833000271,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 8.451604290999967,
+      "phase": "after_input_107",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 8.459533166000256,
+      "phase": "before_input_121",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 8.84403383300014,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 9.324834666000243,
+      "phase": "after_input_121",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 9.33204970800034,
+      "phase": "before_input_123",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 9.36549924999963,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 9.886892250000528,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 10.199240791000193,
+      "phase": "after_input_123",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 10.20812879100049,
+      "phase": "before_input_124",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 10.406934208000166,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 10.926173750000089,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 11.072713916000794,
+      "phase": "after_input_124",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 11.080569958001433,
+      "phase": "before_input_125",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 11.447734125000352,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 11.931013749999693,
+      "phase": "after_input_125",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 11.938883041000736,
+      "phase": "before_input_132",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 11.96752591600125,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 59
+    },
+    {
+      "elapsed_seconds": 12.48898758300129,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 12.798539916000664,
+      "phase": "after_input_132",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 12.806304625000848,
+      "phase": "before_input_141",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 13.010588291001113,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 13.530823500001134,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 13.669829791000666,
+      "phase": "after_input_141",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 13.677591416000723,
+      "phase": "before_input_142",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 14.052831916000287,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 14.559212916001343,
+      "phase": "after_input_142",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 14.581958415999907,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 61
+    },
+    {
+      "elapsed_seconds": 14.589303000000655,
+      "phase": "after_release",
+      "pressure_level": 1,
+      "free_percent": 62
+    }
+  ],
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.22.2",
+    "tokenizers": "0.23.3"
+  },
+  "model_revision": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
+  "model_weight_sha256": "5af571cbf074e6d21a03528d2330792e532ca608f24ac70a143f6b369968ab8c",
+  "split_sha256": "3d4a1eff32d197aaab0c49a92171c31cdf0c7f557d1191afcce3752cf8f3ece0",
+  "dataset_sha256": "073bd194bdb79e3ecfcfad51e09f23510ca697431475221b785c369619d7b8cf",
+  "adapter_files": [
+    {
+      "path": "models/case2-lora/adapters.safetensors",
+      "bytes": 62287,
+      "sha256": "81a792a5eb4ff1726169ca797554e1d5242e9ee690d89e4281f5493e7ca9faa2"
+    },
+    {
+      "path": "models/case2-lora/adapter_config.json",
+      "bytes": 202,
+      "sha256": "962d3a1b448174cd3e8a6e8386a9fbc2073073b46f75645206e5e6eda93fe3bd"
+    }
+  ],
+  "load_seconds": 0.15964345800057345,
+  "mlx_peak_memory_bytes": 327976204,
+  "status": "completed",
+  "total_seconds": 14.589310000001205,
+  "peak_process_rss_bytes": 427540480
+}
