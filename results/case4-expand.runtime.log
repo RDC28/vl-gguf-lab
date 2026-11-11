@@ -1,0 +1,148 @@
+{
+  "source_sha256": "f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57",
+  "output_path": "models/SmolLM2-135M-Instruct-plus1.gguf",
+  "operation": "append exact copy of block 29 as block 30; no training",
+  "gguf_version": "0.19.0",
+  "original_blocks": 30,
+  "expanded_blocks": 31,
+  "new_to_source_block_map": {
+    "0": 0,
+    "1": 1,
+    "2": 2,
+    "3": 3,
+    "4": 4,
+    "5": 5,
+    "6": 6,
+    "7": 7,
+    "8": 8,
+    "9": 9,
+    "10": 10,
+    "11": 11,
+    "12": 12,
+    "13": 13,
+    "14": 14,
+    "15": 15,
+    "16": 16,
+    "17": 17,
+    "18": 18,
+    "19": 19,
+    "20": 20,
+    "21": 21,
+    "22": 22,
+    "23": 23,
+    "24": 24,
+    "25": 25,
+    "26": 26,
+    "27": 27,
+    "28": 28,
+    "29": 29,
+    "30": 29
+  },
+  "added_tensor_map": {
+    "blk.30.attn_norm.weight": "blk.29.attn_norm.weight",
+    "blk.30.ffn_down.weight": "blk.29.ffn_down.weight",
+    "blk.30.ffn_gate.weight": "blk.29.ffn_gate.weight",
+    "blk.30.ffn_up.weight": "blk.29.ffn_up.weight",
+    "blk.30.ffn_norm.weight": "blk.29.ffn_norm.weight",
+    "blk.30.attn_k.weight": "blk.29.attn_k.weight",
+    "blk.30.attn_output.weight": "blk.29.attn_output.weight",
+    "blk.30.attn_q.weight": "blk.29.attn_q.weight",
+    "blk.30.attn_v.weight": "blk.29.attn_v.weight"
+  },
+  "added_elements": 3540096,
+  "added_tensor_bytes": 7082496,
+  "write_seconds": 0.19750520799971127,
+  "added_tensor_inventory": [
+    {
+      "name": "blk.30.attn_norm.weight",
+      "shape": [
+        576
+      ],
+      "type": "F32",
+      "sha256": "d69a95bf8d18f609f39019c30ec1d1a0eb8d900b5eb0d6022e5605925d39e0dd"
+    },
+    {
+      "name": "blk.30.ffn_down.weight",
+      "shape": [
+        1536,
+        576
+      ],
+      "type": "F16",
+      "sha256": "591b94d2ea4d141fa952a3e200aec8a2a2b365df5b1bacd77e7a199e1974ac59"
+    },
+    {
+      "name": "blk.30.ffn_gate.weight",
+      "shape": [
+        576,
+        1536
+      ],
+      "type": "F16",
+      "sha256": "e5c1ce15a9c050a773aa1d11455dc9f87fe8952408e18117b930d8c547a9980e"
+    },
+    {
+      "name": "blk.30.ffn_up.weight",
+      "shape": [
+        576,
+        1536
+      ],
+      "type": "F16",
+      "sha256": "ea6686a1ee2a5884f536731bde7151e854d475b8105a07041ff2f893ea36567d"
+    },
+    {
+      "name": "blk.30.ffn_norm.weight",
+      "shape": [
+        576
+      ],
+      "type": "F32",
+      "sha256": "fe2935ae9e74dde28ef6a2cfd4d93c9e4d1c4c27e006dcffddf89dd5730ee5c5"
+    },
+    {
+      "name": "blk.30.attn_k.weight",
+      "shape": [
+        576,
+        192
+      ],
+      "type": "F16",
+      "sha256": "3c3430fceee30dc49bf0e74d9f30a928bf1f0f253e5f0d8671316c01b7a96136"
+    },
+    {
+      "name": "blk.30.attn_output.weight",
+      "shape": [
+        576,
+        576
+      ],
+      "type": "F16",
+      "sha256": "673b547c381c32efee462278c20156d7c58033e16add107b15e7a5fccc14a40e"
+    },
+    {
+      "name": "blk.30.attn_q.weight",
+      "shape": [
+        576,
+        576
+      ],
+      "type": "F16",
+      "sha256": "12ee2290ede42e6da2e662a8f2172289f073fd834922ba208cae4140ee652a3a"
+    },
+    {
+      "name": "blk.30.attn_v.weight",
+      "shape": [
+        576,
+        192
+      ],
+      "type": "F16",
+      "sha256": "70b0f45755413f02f3bc5e54bbeb488781d45d3f59d14f925a356a00c0f076a7"
+    }
+  ],
+  "status": "completed",
+  "unchanged_original_tensors": 272,
+  "changed_metadata_fields": [
+    "GGUF.tensor_count",
+    "llama.block_count"
+  ],
+  "unchanged_metadata_fields": 34,
+  "output_sha256": "bb7594b5fbcddc3dda1b958d762a3df77624fd2ca7cf048c4d27ccf1561cc664",
+  "output_size_bytes": 277968992,
+  "elapsed_seconds": 5.054041166000388,
+  "peak_process_rss_bytes": 917307392,
+  "limitations": "Artifact verification only; expanded model not loaded or evaluated. Duplicated residual block is not identity initialized; no behavior preservation or quality gain assumed. Phase/tensor snapshots are not continuous monitoring. RSS excludes some unified-memory allocations."
+}
