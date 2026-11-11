@@ -36,3 +36,5 @@ Case 3 preparation acquired one pinned small F16 GGUF with a read-only tensor in
 Case 4 has a verified 31-block tiny GGUF created by copying the original final block; `results/case4-expand.json` preserves its map and hashes. The guarded CPU comparison in `results/case4-expanded.json` confirms loading and changed repetitive text, without useful shot structure or established quality gain. See docs/04-add-layers.md.
 
 Case 5 has a verified 29-block tiny F16 artifact with predetermined interior block 15 removed and later blocks renumbered; `results/case5-remove.json` preserves maps, hashes and rewrite measurements. The guarded comparison in `results/case5-pruned.json` confirms loading and changed repetitive text with no SHOT headings; one capped scene establishes no quality or speed advantage. See docs/05-remove-layers.md.
+
+Case 6 saved five-position reference logits from the unchanged tiny F16 GGUF in `results/case6-reference*`, with a predeclared numerical criterion. The reference model closed; custom forward parity and training remain pending. See docs/06-transformer-plan.md.

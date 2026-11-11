@@ -1,0 +1,127 @@
+{
+  "source_sha256": "f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57",
+  "source_model": "SmolLM2-135M-Instruct-f16.gguf",
+  "inventory_sha256": "a85bd9c2b3637ceec38f666b03524e9e19b5bc381ca4b38b5e9f8af5ea4e7354",
+  "architecture": {
+    "general.architecture": "llama",
+    "llama.block_count": 30,
+    "llama.context_length": 8192,
+    "llama.embedding_length": 576,
+    "llama.feed_forward_length": 1536,
+    "llama.attention.head_count": 9,
+    "llama.attention.head_count_kv": 3,
+    "llama.rope.freq_base": 100000.0,
+    "llama.attention.layer_norm_rms_epsilon": 9.999999747378752e-06,
+    "llama.vocab_size": 49152,
+    "llama.rope.dimension_count": 64
+  },
+  "text": "The camera moves slowly.",
+  "add_bos": false,
+  "special": false,
+  "memory_samples": [
+    {
+      "phase": "before_load",
+      "elapsed_seconds": 0.13372220799828938,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_input",
+      "elapsed_seconds": 0.28503045799880056,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "after_token",
+      "elapsed_seconds": 0.3034512909998739,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "after_token",
+      "elapsed_seconds": 0.31727070799934154,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "after_token",
+      "elapsed_seconds": 0.33104699999967124,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "after_token",
+      "elapsed_seconds": 0.3454117499986751,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "after_token",
+      "elapsed_seconds": 0.3592694159997336,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "after_close",
+      "elapsed_seconds": 0.46164766599940776,
+      "pressure_level": 1,
+      "free_percent": 70
+    }
+  ],
+  "acceptance": {
+    "atol": 0.001,
+    "rtol": 0.001,
+    "rule": "Every saved logit must satisfy abs(custom-reference) <= atol + rtol*abs(reference); report max/RMS errors and argmax agreement separately."
+  },
+  "llama_cpp_python": "0.3.36",
+  "system_info": "MTL : EMBED_LIBRARY = 1 | CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | ACCELERATE = 1 | REPACK = 1 | ",
+  "settings": {
+    "n_ctx": 64,
+    "n_batch": 16,
+    "n_ubatch": 16,
+    "n_gpu_layers": 0,
+    "offload_kqv": false,
+    "op_offload": false,
+    "flash_attn": false,
+    "n_threads": 4,
+    "n_threads_batch": 4,
+    "seed": 42,
+    "use_mmap": true,
+    "logits_all": true,
+    "type_k": 0,
+    "type_v": 0
+  },
+  "load_seconds": 0.07525900000109687,
+  "token_ids": [
+    504,
+    6715,
+    7488,
+    6351,
+    30
+  ],
+  "token_pieces_hex": [
+    "546865",
+    "2063616d657261",
+    "206d6f766573",
+    "20736c6f776c79",
+    "2e"
+  ],
+  "eval_seconds": 0.07423233299959975,
+  "logits_shape": [
+    5,
+    49152
+  ],
+  "logits_dtype": "float32",
+  "logits_sha256": "627ac8a032c8b98645fb4b904d9ba5cb5d73f11efe6f8ee8d411732eb1248040",
+  "argmax_ids": [
+    198,
+    314,
+    281,
+    28,
+    378
+  ],
+  "status": "reference_saved",
+  "total_seconds": 0.46165770799962047,
+  "peak_process_rss_bytes": 422625280,
+  "limitations": "Reference capture only, no custom forward/parity or training. No chat template, dataset or references used. Float32 KV cache selected to simplify later parity. RSS excludes some unified-memory allocations; samples can miss transients."
+}

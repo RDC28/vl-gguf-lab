@@ -2,7 +2,7 @@
 
 ## Goal
 
-Understand the downloaded model well enough to implement its forward architecture ourselves, check the implementation against a trusted runtime, and later train a model with our own code. Architecture reproduction and training from scratch are different milestones. Planning only in this task.
+Understand the downloaded model well enough to implement its forward architecture ourselves, check the implementation against a trusted runtime, and later train a model with our own code. Architecture reproduction and training from scratch are different milestones. The bounded local target is the unchanged case 3 SmolLM2-135M F16 GGUF; the 7B VL model remains outside the reconstruction memory budget.
 
 ## Method
 
@@ -14,7 +14,7 @@ Reproduce text tokenization, embeddings, RMSNorm, grouped-query attention, posit
 
 ## Tools and versions
 
-Python 3.12.13, gguf 0.19.0, and the case 1 llama-cpp-python 0.3.36/runtime commit are the installed inspection/reference stack. Choose either PyTorch or MLX for the new implementation after testing required operations; neither training framework is installed or version-selected. Before implementation, pin the framework and the exact trusted model/config/source revisions. The source configuration consulted here is on upstream main as of 2026-11-11 and must be pinned for a parity experiment.
+Python 3.12.13, gguf 0.19.0, and the case 1 llama-cpp-python 0.3.36/runtime commit are the installed inspection/reference stack. Choose either PyTorch or MLX for the new implementation after testing required operations; MLX 0.32.4 is already installed and pinned from case 2. Before implementation, pin the framework and the exact trusted model/config/source revisions. The source configuration consulted here is on upstream main as of 2026-11-11 and must be pinned for a parity experiment.
 
 ## Feasibility on the 8 GB Air
 
@@ -35,7 +35,28 @@ Quantization error can be confused with implementation error. Missing tokenizer 
 
 ## Findings
 
-Not run. Reserved: decoded inventory, confirmed architecture facts, operation tests, numerical tolerances/logit errors, framework versions, training configuration, and held-out results. No custom transformer has been implemented or trained.
+### 2026-11-11: fixed-token reference capture
+
+`src/case6_reference.py` saved the unchanged tiny F16 source's logits to `results/case6-reference-logits.npz`, with settings, token pieces, hashes and measurements in `results/case6-reference.json` and the raw runtime log. Source SHA256 remains `f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57`; this is the case 3 GGUF, not the case 2 BF16 checkpoint or the 7B VL model.
+
+Decoded metadata establishes 30 Llama blocks, width 576, feed-forward width 1,536, nine query heads, three KV heads, 64 dimensions per head, RoPE base 100,000, RMSNorm epsilon approximately 1e-5 and vocabulary 49,152. The existing inventory records F16 matrix weights, F32 norms and no separate output matrix; later implementation must resolve tied embeddings and GGUF RoPE weight layout against the runtime, rather than assume Hugging Face layout.
+
+The fixed plain text `The camera moves slowly.` tokenizes without BOS or special handling to [504, 6715, 7488, 6351, 30]. No dataset or chat template is involved. Each saved row is the raw next-token logit vector after consuming that position (positions 0-4), before sampling or softmax. Sequential one-token evaluation uses CPU-only execution, float32 K/V cache, context 64, four threads, no operation/KQV offload and no flash attention. Float32 cache deliberately simplifies later comparison and differs from earlier text smoke settings.
+
+| Measurement | Observed |
+| --- | ---: |
+| Logit array | 5 x 49,152 float32, all finite |
+| Constructor / evaluation seconds | 0.07526 / 0.07423 |
+| Total capture/check seconds | 0.46166 |
+| Peak process RSS bytes | 422,625,280 |
+| Before / minimum / after free | 70% / 70% / 70% |
+| Pressure across eight readings | Normal throughout |
+
+The compressed logits have SHA256 `627ac8a032c8b98645fb4b904d9ba5cb5d73f11efe6f8ee8d411732eb1248040`. The model explicitly closed and watcher joined before exit. RSS excludes some unified-memory allocations and snapshots can miss transients.
+
+Before implementing the custom forward pass, acceptance is fixed as every logit satisfying `abs(custom-reference) <= 0.001 + 0.001*abs(reference)`. Also report maximum/RMS absolute error and per-position argmax agreement. This is a proposed numerical criterion, not a measured pass. Do not relax it silently if the implementation fails. No custom transformer, parity comparison, or training has run; case 6 is incomplete. Next implement the full tiny decoded architecture with the same weights, then compare to this saved reference with the reference runtime closed.
+
+The pinned [llama-cpp-python evaluation implementation](https://github.com/abetlen/llama-cpp-python/blob/v0.3.36/llama_cpp/llama.py) was checked before capture: `logits_all=True` retains each evaluated position's scores. The installed implementation was also inspected directly. The pinned llama.cpp model-source fetch failed in this iteration; resolve that computation source before implementing unfamiliar RoPE/weight handling.
 
 ## Sources consulted
 
