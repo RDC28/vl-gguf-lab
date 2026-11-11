@@ -53,3 +53,25 @@ Validation: reproducible split reconstruction, exact coverage/disjointness, grou
 ## Sources consulted
 
 The PEFT 0.21.0 LoRA reference and MLX-VLM project linked above were consulted on 2026-11-11. The original [Qwen2.5-VL model card](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct) supplies the base model identity. Compatibility and feasibility must be measured when versions are selected.
+
+### 2026-11-11 17:56 UTC: tiny model acquired and inspected
+
+Downloaded `HuggingFaceTB/SmolLM2-135M-Instruct` once at revision `12fd25f77366fa6b3b4b768ec3050bf629380bac` into `models/SmolLM2-135M-Instruct`, using direct HTTPS file reads without a shared model cache. The nine selected files total 272,444,345 bytes: weights, configuration, tokenizer assets, and the upstream model card. No upstream training-state or evaluation artifacts were downloaded. Original 7B files and their manifest remain unchanged, so baseline resume provenance stays valid. `results/case2-model-provenance.json` records every file size/SHA256 and the complete safetensors header.
+
+| Observed item | Value |
+| --- | --- |
+| Weight file | `model.safetensors`, 269,060,552 bytes |
+| Weight SHA256, also matched against upstream LFS | `5af571cbf074e6d21a03528d2330792e532ca608f24ac70a143f6b369968ab8c` |
+| Stored tensors / elements / dtype | 272 / 134,515,008 / BF16 |
+| Architecture | Llama causal LM, 30 blocks, hidden 576, feed-forward 1,536 |
+| Attention / KV heads | 9 / 3, head dimension 64 |
+| Vocabulary / tied embeddings | 49,152 / true |
+| RMSNorm epsilon / RoPE theta / declared context | 0.00001 / 100,000 / 8,192 |
+| Download plus hash/header inspection | 17.611 seconds |
+| Acquisition process peak RSS | 57,802,752 bytes |
+
+Stored BF16 weights occupy 269,030,016 tensor bytes; an FP32 copy alone would occupy 538,060,032 bytes. These estimates exclude adapters, gradients, optimizer states, activations, caches, and framework allocations. They justify trying a guarded tiny-model preflight, not a claim that training fits. Acquisition RSS measures only the downloader/header reader, not inference or training, and does not cover all unified-memory allocations. No model tensors were instantiated and no held-out outputs or references were inspected this iteration.
+
+The pinned [upstream configuration](https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct/blob/12fd25f77366fa6b3b4b768ec3050bf629380bac/config.json) and [model card](https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct/blob/12fd25f77366fa6b3b4b768ec3050bf629380bac/README.md) identify a tiny text-only model, not a VL replacement. MLX-LM's [LoRA instructions](https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/LORA.md) list Llama support, but compatibility of these exact files remains untested. Next: select/pin local MLX-LM dependencies, load this local directory without another download, measure a short preflight with the existing memory policy, and collect its own untrained baseline before adaptation. Training, loss, adapters, and quality changes remain pending.
+
+Validation: all nine local file hashes and sizes rechecked, weight hash matched the upstream LFS digest, tensor byte spans/shapes and architecture inventory checked, frozen split reproduced unchanged, existing evidence verified against Git, notebook/Python syntax and dependency consistency checked. No inference, training, or server process was started.
