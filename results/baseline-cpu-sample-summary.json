@@ -1,0 +1,91 @@
+{
+  "completed_indexes": [
+    6,
+    22,
+    26
+  ],
+  "fixed_sample_indexes": [
+    6,
+    22,
+    26,
+    28,
+    35,
+    57,
+    62,
+    70,
+    108,
+    139
+  ],
+  "remaining_indexes": [
+    28,
+    35,
+    57,
+    62,
+    70,
+    108,
+    139
+  ],
+  "rows": [
+    {
+      "dataset_index": 6,
+      "wall_seconds": 114.32008320900059,
+      "completion_eval_tokens": 1023,
+      "generation_tokens_per_second": 9.53389593570855,
+      "finish_reason": "length",
+      "output_words": 704,
+      "reference_words": 448,
+      "output_shot_headings": 8,
+      "reference_shot_headings": 4,
+      "unigram_precision": 0.18323863636363635,
+      "unigram_recall": 0.28794642857142855,
+      "unigram_f1": 0.22395833333333331
+    },
+    {
+      "dataset_index": 22,
+      "wall_seconds": 125.46834870800012,
+      "completion_eval_tokens": 1023,
+      "generation_tokens_per_second": 8.637899068403852,
+      "finish_reason": "length",
+      "output_words": 661,
+      "reference_words": 440,
+      "output_shot_headings": 10,
+      "reference_shot_headings": 4,
+      "unigram_precision": 0.17397881996974282,
+      "unigram_recall": 0.26136363636363635,
+      "unigram_f1": 0.20890099909173476
+    },
+    {
+      "dataset_index": 26,
+      "wall_seconds": 134.75522733300022,
+      "completion_eval_tokens": 1023,
+      "generation_tokens_per_second": 7.816846592696934,
+      "finish_reason": "length",
+      "output_words": 673,
+      "reference_words": 437,
+      "output_shot_headings": 10,
+      "reference_shot_headings": 4,
+      "unigram_precision": 0.1589895988112927,
+      "unigram_recall": 0.2448512585812357,
+      "unigram_f1": 0.1927927927927928
+    }
+  ],
+  "continuation_attempt": "20261111T171956487079Z",
+  "load_seconds": 5.668868125001609,
+  "total_seconds": 265.7605462500014,
+  "peak_process_rss_bytes": 4089675776,
+  "memory_before": {
+    "pressure_level": 1,
+    "free_percent": 69
+  },
+  "memory_after_close": {
+    "pressure_level": 1,
+    "free_percent": 67
+  },
+  "minimum_sampled_free_percent": 42,
+  "maximum_sampled_pressure_level": 1,
+  "memory_sample_count": 135,
+  "mean_input_wall_seconds": 124.84788641666698,
+  "estimated_150_input_hours": 5.201995267361124,
+  "mean_unigram_f1": 0.20855070840595363,
+  "validation": "Saved source strings, recomputed metrics, unique indexes, attempt completion and dataset hash verified; no reference included in prompt."
+}

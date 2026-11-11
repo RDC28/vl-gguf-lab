@@ -142,3 +142,20 @@ Raw output, runtime log, and timestamped metadata use the `results/baseline-cpu-
 The next bounded step is to resume this separate CPU sample for its nine missing indexes using `--resume --n-gpu-layers 0` and the same output path, with a bounded row count. This successful safe probe provides no reason to download the 3B fallback yet. Cases 2-6 remain unattempted.
 
 A follow-up resume validation mistakenly used `--limit 1`, which draws a new seed-42 sample (index 28), rather than selecting the first member of the ten-row sample. It started inference and was deliberately SIGINT-stopped without completing a row; its separate attempt metadata preserves `KeyboardInterrupt` and memory readings. This was a validation-command mistake, not a memory failure. Keep `--limit 10` (the default) and use `--max-new-rows` to bound continuation. No runtime log was redirected for this interrupted validation attempt.
+
+### 2026-11-11 17:19 UTC: two-row CPU continuation
+
+Resumed the unchanged CPU configuration with `.venv/bin/python src/baseline.py --output results/baseline-cpu-probe.jsonl --resume --n-gpu-layers 0 --max-new-rows 2`. The fixed ten-row selection remained [6, 22, 26, 28, 35, 57, 62, 70, 108, 139]; row 6 was reused byte for byte and only indexes 22 and 26 were appended. Seven sample rows remain. No fallback download was needed.
+
+| Index | Wall seconds | Generation tokens/s | Output/reference words | Output/reference headings | Unigram F1 | Finish |
+| ---: | ---: | ---: | --- | --- | ---: | --- |
+| 22 | 125.468 | 8.638 | 661 / 440 | 10 / 4 | 0.20890 | length |
+| 26 | 134.755 | 7.817 | 673 / 437 | 10 / 4 | 0.19279 | length |
+
+Each evaluated 1,023 generation tokens against the 1,024-token cap. The attempt loaded in 5.669 seconds including backend initialization and lasted 265.761 seconds. Across 135 memory samples, pressure stayed normal and the minimum reported free memory was 42%; before load and after close were 69% and 67%. Peak process RSS was 4,089,675,776 bytes; RSS does not account for all Metal allocations. The process exited normally and closed its model. Raw runtime log: `results/baseline-cpu-continuation-01.runtime.log`; timestamped attempt: `results/baseline-cpu-probe.attempt-20261111T171956487079Z.metadata.json`.
+
+Manual inspection: row 22 asks for exact costume/location continuity with a previous photo that is absent from this text-only input. The model explicitly assumes traditional clothing and a Diwali market, then invents shopping actions. It cannot establish the requested exact match. Row 26 retains Naisha, Zain, an empty morning bridge, and reluctance to pose, but repeats photographing/reaction shots and ends mid-section. These are two limited observations, not systematic human scores.
+
+All three CPU outputs are capped. Mean input wall time is 124.848 seconds, mean unigram F1 is 0.20855, and an extrapolation is 20.81 minutes for ten inputs or 5.20 hours for 150, excluding loading. This replaces the one-row CPU estimate; the full dataset duration remains unmeasured. Generation throughput declined across these observations, but no thermal measurements were collected and no cause is established.
+
+`results/baseline-cpu-sample-summary.json` records the cumulative metrics and remaining indexes. Validation checked unique indexes, dataset hash/source strings, recomputed metrics, and successful attempt completion. Existing GPU output/metadata and the earlier CPU row/attempts remain unchanged. Next: resume the same output/configuration for the remaining seven fixed-sample indexes before deciding how much full-set inference fits alongside cases 2-6.
