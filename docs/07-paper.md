@@ -1,0 +1,79 @@
+# Local VL model experiments for scene-to-shot generation
+
+Draft paper skeleton, 2026-11-11. Observed setup facts are distinguished from planned experiments. This is not a completed research paper.
+
+## Abstract
+
+We investigate whether a compact, locally executed vision-language model can generate useful shot breakdowns from short text scene descriptions on an 8 GB Apple Silicon MacBook Air. The supplied dataset contains 150 text input/output pairs. The initial candidate is an Unsloth Qwen2.5-VL-7B-Instruct Q3_K_M GGUF language file under 4 GB. The planned sequence covers untrained inference, adapter fine-tuning, weight modification, block addition, block removal, and reconstruction/training with our own implementation. This setup task implements only the baseline. Baseline measurements are pending; later stages remain plans. The text-only dataset cannot support conclusions about vision performance.
+
+## Research questions
+
+| Case | Question | Evidence required |
+| --- | --- | --- |
+| 1 | Does the untrained model produce usable shot breakdowns within local resource limits? | Raw outputs, timing, memory, structure/overlap metrics, human review |
+| 2 | Does supervised adaptation improve held-out quality? | Frozen splits, training settings, before/after results |
+| 3 | What changes when existing weights are perturbed? | No-change rewrite control, exact edit manifest, output comparison |
+| 4 | Can added blocks preserve initial behavior and learn useful capacity? | Architecture consistency, initial parity, trained held-out comparison |
+| 5 | Can blocks be removed with a useful efficiency/quality trade-off? | Removal rule/index map, size/speed/memory, held-out damage |
+| 6 | Can we reconstruct computation and train with our own code? | Tensor inventory, operation/logit parity, documented training experiment |
+
+## Setup
+
+Hardware: Apple M1 MacBook Air, 8 cores, 8 GiB unified memory; other applications remain active. Dataset: 454,187-byte JSON list with 150 unique input strings and 150 unique references. Inputs average 17.87 word tokens; references average 434.57, with four numbered SHOT headings each. Exact-string uniqueness does not prove scene independence. Dataset SHA256 is recorded in `../results/dataset-summary.json`.
+
+Model: `unsloth/Qwen2.5-VL-7B-Instruct-GGUF`, revision `68bb8bc4b7df5289c143aaec0ab477a7d4051aab`; language file `Qwen2.5-VL-7B-Instruct-Q3_K_M.gguf` (3,808,390,016 bytes). The separately downloaded F16 vision projector stays unloaded for text-only inference. See [case 1](01-baseline.md) for all artifact hashes, quant alternatives, and runtime provenance. The 4 GB cap refers to the language file, not total disk usage or RAM.
+
+Python 3.12.13, llama-cpp-python 0.3.36, gguf 0.19.0, JupyterLab 4.6.6, and ipykernel 7.4.0 are installed. Metal support and project-kernel startup have been checked. Full package pins live in the root requirements file. Future training tools remain unselected and uninstalled.
+
+## Methods
+
+### Case 1: baseline inference
+
+Use a seed-42 random sample of 10 rows, a fixed storyboard prompt, greedy decoding, 2,048 context tokens, and a 1,024-token generation cap. Run one process with the language model only. Save every raw output, timing, finish reason, and memory measurements. Measure word counts, numbered headings, and multiset unigram F1 against references. Flag truncation and inspect scene fidelity manually. Estimate full-set duration from observed sample wall time. [Protocol](01-baseline.md)
+
+### Case 2: fine-tune and re-test
+
+Freeze scene-group splits, select compatible adapter training on adequate hardware, then compare with the same held-out protocol and quantization. Record training and export effects separately. No training is part of this setup. [Plan](02-training-plan.md)
+
+### Case 3: modify existing layers
+
+Preserve original artifacts; validate a no-change rewrite before perturbing one existing tensor. Record exact edits, hashes, and unchanged-tensor evidence. Avoid full-model dequantization locally. [Plan](03-modify-layers.md)
+
+### Case 4: add layers
+
+Establish architecture/parity checks, insert one compatible initialized block, train on adequate hardware, then export and compare. Treat successful loading and improved quality as separate outcomes. [Plan](04-add-layers.md)
+
+### Case 5: remove layers
+
+Predeclare a removal rule or calibration method, remove/renumber blocks consistently, and measure quality loss with resource savings. Keep calibration separate from evaluation. [Plan](05-remove-layers.md)
+
+### Case 6: reconstruct and train
+
+Decode tensor/configuration facts, implement operations, compare intermediate values and logits against a quantized reference, then investigate our own tiny-model training loop. Full 7B training is outside the local resource budget. [Plan](06-transformer-plan.md)
+
+## Results
+
+| Case | Current status | Result location |
+| --- | --- | --- |
+| 1 | Setup verified; model download and inference pending | Raw outputs and measured findings will be linked here |
+| 2 | Not run | Future findings in case 2 |
+| 3 | Not run | Future findings in case 3 |
+| 4 | Not run | Future findings in case 4 |
+| 5 | Not run | Future findings in case 5 |
+| 6 | Not run | Future findings in case 6 |
+
+Reserved baseline table: load seconds; sample duration; tokens/s; peak RSS and pressure; context/sampling; output/reference length; SHOT headings; unigram F1; capped outputs; estimated full-set duration. No values are invented while the run is pending.
+
+## Discussion
+
+The resource limit is unified memory shared with the operating system and other applications. A sub-4-GB file is not proof of a safe runtime fit. Quantization, sampling settings, output caps, prompt design, and software versions are confounders and must remain explicit. Unigram overlap and headings are weak indicators; fluent output may still invent details or violate continuity.
+
+The small dataset supports a narrow exploratory task and invites overfitting in later adaptation. Text-only evaluation cannot establish multimodal capability. Cases 2-6 require separate experiment authorization, appropriate resources, and an unbiased evaluation protocol. Future conclusions should include failed loads, memory stops, quality regressions, and incomplete outputs.
+
+## Conclusion placeholder
+
+Pending baseline measurements and manual review. Later-case conclusions remain empty until their experiments are performed.
+
+## Sources and reproducibility
+
+Primary sources consulted on 2026-11-11 are cited in each case: Unsloth artifact listings; Qwen configuration/model card; llama-cpp-python/llama.cpp/GGUF documentation; PEFT and MLX-VLM; LLaMA Pro v2; ShortGPT v3. Case 1 records exact downloaded artifact revisions/hashes; later experiments must do the same. Raw technical outputs belong in results, with concise interpretation in the matching Findings section.
