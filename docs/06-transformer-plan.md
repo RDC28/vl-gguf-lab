@@ -61,3 +61,22 @@ The pinned [llama-cpp-python evaluation implementation](https://github.com/abetl
 ## Sources consulted
 
 The official Qwen configuration, [model card](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct), Qwen2-VL runtime implementation, and [GGUF specification](https://github.com/ggml-org/ggml/blob/master/docs/gguf.md) were consulted on 2026-11-11. Proposed milestones and memory estimates are project reasoning rather than completed results.
+
+### 2026-11-11: independent full tiny-model forward comparison
+
+`src/case6_forward.py` implements all 30 decoded blocks directly in NumPy 2.5.4, using the unchanged F16 GGUF matrices converted exactly to float32 and its F32 norms. It implements RMSNorm, nine-query/three-KV grouped attention, adjacent-pair RoPE with base 100,000, causal softmax, residual connections, SiLU-gated feed-forward layers and tied embedding output projection. GGUFReader arrays already reverse GGML dimension order; matrix multiplication uses their transpose. This is the full tiny source architecture, not a shape-reduced substitute or the 7B VL model. The code consumes the five saved token IDs, without reimplementing tokenization. Full-sequence attention is compared with the saved sequential reference; no reference model was loaded concurrently.
+
+Before implementation, the pinned [Llama graph](https://github.com/ggml-org/llama.cpp/blob/0c1e57098bba43ac29e6e3b677cdceebdd22334f/src/models/llama.cpp) and [CPU rotary operations](https://github.com/ggml-org/llama.cpp/blob/0c1e57098bba43ac29e6e3b677cdceebdd22334f/ggml/src/ggml-cpu/ops.cpp) were fetched directly after browser fetch failure. Exact source copies are preserved as `results/case6-llama-source.cpp` and `results/case6-ops-source.cpp`. They establish tied output embeddings, pre-norm residual ordering, gated SiLU and adjacent-pair normal RoPE.
+
+| Measurement | Observed |
+| --- | ---: |
+| Compared logits | 245,760 (5 x 49,152) |
+| Maximum / RMS absolute error | 0.14151001 / 0.02623361 |
+| Outside predeclared tolerance | 170,368 |
+| Per-position argmax agreement | 5/5 |
+| Custom forward / total seconds | 0.30590 / 1.70015 |
+| Peak process RSS bytes | 603,013,120 |
+
+**The declared numerical criterion failed.** Matching argmax IDs does not establish parity. The criterion remains unchanged; the underlying cause is unresolved. The custom path performs float32 matrix arithmetic on decoded weights, while reference kernel precision and accumulation behavior have not yet been matched. Position zero also differs (maximum error 0.14151), so positional rotation alone cannot explain all error. Investigate runtime matrix arithmetic and intermediate activations before claiming parity; do not attribute this to quantization without measurements. No repair or tolerance adjustment was attempted after observing the result in this iteration.
+
+Raw custom logits, their hash, reference metadata hash, per-position errors, timing and memory evidence are in `results/case6-forward*`. All 37 readings showed normal pressure and at least 70% reported free memory. Arrays/readers were released and the watcher joined; RSS omits some unified-memory use and sampling can miss transients. The original source and reference evidence remain unchanged. Training, generation and tokenizer reconstruction remain pending. Case 6 is a measured partial attempt, not completed parity or training.

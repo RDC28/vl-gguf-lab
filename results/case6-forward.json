@@ -1,0 +1,274 @@
+{
+  "source_sha256": "f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57",
+  "reference_sha256": "8629b6903d04169c5016f411f0ed9499004faa896057c63a9d2d398ac41f7bd9",
+  "numpy_version": "2.5.4",
+  "implementation": "NumPy float32, full 30-block decoded F16 source; causal full-sequence attention; no KV cache",
+  "memory_samples": [
+    {
+      "phase": "before_load",
+      "elapsed_seconds": 0.007743166999716777,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "periodic",
+      "elapsed_seconds": 0.6062243750002381,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "periodic",
+      "elapsed_seconds": 1.1719667090001167,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_input",
+      "elapsed_seconds": 1.1775639169991337,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:0",
+      "elapsed_seconds": 1.2014500419991236,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:1",
+      "elapsed_seconds": 1.2120652089997748,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:2",
+      "elapsed_seconds": 1.2214206249991548,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:3",
+      "elapsed_seconds": 1.2304793339990283,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:4",
+      "elapsed_seconds": 1.2394446670004982,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:5",
+      "elapsed_seconds": 1.2484428339994338,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:6",
+      "elapsed_seconds": 1.2575179590003245,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:7",
+      "elapsed_seconds": 1.2665316250004253,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:8",
+      "elapsed_seconds": 1.2755476669990458,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:9",
+      "elapsed_seconds": 1.2845544589999918,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:10",
+      "elapsed_seconds": 1.2934920000006969,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:11",
+      "elapsed_seconds": 1.3024436249997962,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:12",
+      "elapsed_seconds": 1.3113904589990852,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:13",
+      "elapsed_seconds": 1.3205270420003217,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:14",
+      "elapsed_seconds": 1.3294678340007522,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:15",
+      "elapsed_seconds": 1.3387943750003615,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:16",
+      "elapsed_seconds": 1.3488500419989577,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:17",
+      "elapsed_seconds": 1.3579907919993275,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:18",
+      "elapsed_seconds": 1.366997958999491,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:19",
+      "elapsed_seconds": 1.37652849999904,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:20",
+      "elapsed_seconds": 1.3855904169995483,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:21",
+      "elapsed_seconds": 1.3945327500005078,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:22",
+      "elapsed_seconds": 1.40370966699993,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:23",
+      "elapsed_seconds": 1.414397167000061,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:24",
+      "elapsed_seconds": 1.4233013749999373,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:25",
+      "elapsed_seconds": 1.433067874999324,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:26",
+      "elapsed_seconds": 1.4428250000000844,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:27",
+      "elapsed_seconds": 1.4525268340003095,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:28",
+      "elapsed_seconds": 1.4617560419992515,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:29",
+      "elapsed_seconds": 1.4709707500005607,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "after_forward",
+      "elapsed_seconds": 1.4901294999999664,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "periodic",
+      "elapsed_seconds": 1.6941959169998881,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "after_release",
+      "elapsed_seconds": 1.700140167000427,
+      "pressure_level": 1,
+      "free_percent": 70
+    }
+  ],
+  "acceptance": {
+    "atol": 0.001,
+    "rtol": 0.001,
+    "rule": "Every saved logit must satisfy abs(custom-reference) <= atol + rtol*abs(reference); report max/RMS errors and argmax agreement separately."
+  },
+  "token_ids": [
+    504,
+    6715,
+    7488,
+    6351,
+    30
+  ],
+  "forward_seconds": 0.3058994579987484,
+  "max_absolute_error": 0.141510009765625,
+  "rms_error": 0.026233613627288054,
+  "violating_logits": 170368,
+  "total_logits": 245760,
+  "criterion_passed": false,
+  "per_position_max_error": [
+    0.141510009765625,
+    0.0693674087524414,
+    0.07426261901855469,
+    0.08207321166992188,
+    0.07545644044876099
+  ],
+  "argmax_ids": [
+    198,
+    314,
+    281,
+    28,
+    378
+  ],
+  "argmax_agreement": [
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "logits_sha256": "288282b2f70adbdde712ab009f282623ff0758760fdcdb3f9701b13ec04f15de",
+  "status": "comparison_completed",
+  "total_seconds": 1.7001478340007452,
+  "peak_process_rss_bytes": 603013120,
+  "limitations": "Five fixed positions only. No tokenizer reimplementation, generation, training or vision. F16 weights decoded exactly to F32; no packed quantization. Full-sequence attention differs from sequential reference evaluation. RSS excludes some unified-memory use; sampling can miss transients."
+}
