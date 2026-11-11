@@ -2,7 +2,7 @@
 
 ## Goal
 
-Find out whether supervised adaptation improves scene fidelity and the reference shot-breakdown style over case 1. This is a research plan; no training is authorized in this setup task.
+Find out whether supervised adaptation improves scene fidelity and the reference shot-breakdown style over case 1. The overnight task authorizes a tiny local LoRA workflow demonstration. No training has run yet; it will use its own model baseline rather than claim adaptation of the 7B VL model.
 
 ## Method
 
@@ -38,7 +38,17 @@ Only 150 pairs invites overfitting and style memorization. Random row splits can
 
 ## Findings
 
-Not run. Reserved: split hashes, adapter settings, memory/time measurements, training curves, held-out table, human review, and conversion checks. No trained model or training claims exist yet.
+### 2026-11-11: frozen split before training
+
+`src/freeze_split.py` reads the verified dataset and writes `results/case2-split.json` exclusively, refusing to overwrite it. The frozen split is 120 training, 15 validation, and 15 test rows. The SHA256 of the canonical index mapping is `3d4a1eff32d197aaab0c49a92171c31cdf0c7f557d1191afcce3752cf8f3ece0`; the artifact defines the exact hash encoding and includes dataset SHA256, indexes, group assignments, and selection seed 42. No framework or model was loaded.
+
+All 150 input descriptions were reviewed for shared scene beats. Conservative manual groups keep related ferry, bridge, school, costume, radio, cosmic-separation, wedding, and other scenes together. Connected groups, not individual rows, are assigned. An additional all-pairs normalized word-set Jaccard screen at 0.45 found zero qualifying pairs; normalized exact duplicates were also zero. Lexical uniqueness alone would therefore miss the manually identified relationships. References are never inspected by the grouping implementation. Shared characters and story worlds still cross splits; this is a within-domain adaptation check, not an independence guarantee.
+
+The ten scenes whose baseline outputs have already been inspected, and their connected groups, are forced into training. Test and validation each contain 15 other rows; no group crosses partitions. The explicit test indexes are [23, 34, 48, 55, 60, 81, 106, 107, 121, 123, 124, 125, 132, 141, 142]. Do not select hyperparameters or training examples based on these test results. Validation is for tuning only. Freeze this artifact before the model's own untrained held-out baseline and retain it unchanged through training/re-test.
+
+Candidate for the next bounded experiment: `HuggingFaceTB/SmolLM2-135M-Instruct`, a tiny text-only Llama-family model with an Apache-2.0 model card, using MLX-LM LoRA. The [official model card](https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct) and [MLX-LM LoRA documentation](https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/LORA.md) were checked before selection. This candidate is deliberately much smaller than 3B to leave training headroom; compatibility and memory remain unmeasured. No download or dependency installation occurred this iteration. Next: pin a revision and training versions, download once with hashes, then perform a guarded one-batch preflight and its own before/after held-out evaluation. Training, loss, trainable parameters, and memory/time findings remain pending.
+
+Validation: reproducible split reconstruction, exact coverage/disjointness, group containment, exploratory-row exclusion, hash consistency, exclusive-create refusal, Python/notebook syntax/schema, dependency consistency, and diff whitespace checks passed.
 
 ## Sources consulted
 

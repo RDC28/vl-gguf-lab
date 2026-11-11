@@ -33,7 +33,7 @@ Use a seed-42 random sample of 10 rows, a fixed storyboard prompt, greedy decodi
 
 ### Case 2: fine-tune and re-test
 
-Freeze scene-group splits, select compatible adapter training on adequate hardware, then compare with the same held-out protocol and quantization. Record training and export effects separately. No training is part of this setup. [Plan](02-training-plan.md)
+Freeze scene-group splits, select compatible adapter training on adequate hardware, then compare with the same held-out protocol and quantization. Record training and export effects separately. The split is now frozen for a tiny local text-model demonstration; no training has run. [Plan](02-training-plan.md)
 
 ### Case 3: modify existing layers
 
@@ -56,7 +56,7 @@ Decode tensor/configuration facts, implement operations, compare intermediate va
 | Case | Current status | Result location |
 | --- | --- | --- |
 | 1 | One GPU output completed; resumed GPU probe stopped safely before generation; CPU-only fixed sample has 10 of 10 scenes completed, six capped; latest attempt had transient warning pressure | results/baseline.jsonl; case 1 findings |
-| 2 | Not run | Future findings in case 2 |
+| 2 | Split frozen (120/15/15); training and model baseline pending | results/case2-split.json; case 2 findings |
 | 3 | Not run | Future findings in case 3 |
 | 4 | Not run | Future findings in case 4 |
 | 5 | Not run | Future findings in case 5 |
@@ -75,6 +75,8 @@ A second bounded CPU continuation completed indexes 28 and 35 in 83.654/118.406 
 A third bounded CPU continuation completed indexes 57 and 62 in 132.444/81.823 seconds, evaluating 1,023/563 generation tokens at 8.177/7.186 tokens/s. Index 57 was capped; index 62 stopped naturally. Outputs had 769/383 words and six/five headings against 426/423 words and four reference headings; unigram F1 was 0.20418/0.23573. Load took 7.759 seconds and total attempt time was 221.885 seconds. Peak process RSS was 3,957,096,448 bytes, excluding some Metal allocations. Minimum free memory was 40% across 113 samples; three samples showed warning pressure during generation, while both inputs started under normal pressure. No critical pressure occurred and the model closed normally. Index 57 preserves the four named cats but cannot establish visual identity consistency; index 62 omits Ulluman's name and repeats movement despite maintaining a grounded atmosphere. Seven CPU scenes are complete, four capped; mean wall time is 112.981 seconds, mean unigram F1 is 0.22293, and the full-set extrapolation is 4.71 hours excluding load. Three sample scenes remain; cases 2-6 remain unattempted. Case 1 links raw outputs, memory evidence, and validation.
 
 A final three-row continuation completed indexes 70, 108, and 139 in 126.178/147.191/159.017 seconds at 7.727/7.168/6.625 generation tokens/s. The latter two were capped. Load took 8.047 seconds, total attempt time was 440.320 seconds, and peak process RSS was 3,991,896,064 bytes, excluding some Metal allocations. Across 223 samples, minimum reported free memory was 39%, with three warning-pressure samples and no critical readings. All inputs started at normal pressure; after closing, pressure was normal with 63% free. Row 70 invents investigative equipment and a discovery; row 108 repeats lake/light views; row 139 proposes showing fire consuming Sati despite the non-graphic request. All ten fixed CPU sample scenes are now complete, six capped, with mean wall time 122.326 seconds and mean unigram F1 0.21726. Completed-input wall time totals 20.39 minutes excluding loading and incomplete attempts. The updated full-set extrapolation is 5.10 hours, not a measured duration. Case 1 and the cumulative summary preserve the raw evidence and validation. Cases 2-6 remain unattempted; the next step is a small case 2 experiment after checkpointing the sample.
+
+Case 2 preparation froze 120/15/15 train/validation/test rows before training. Input-only manual scene groups keep related beats in one partition; the ten already inspected baseline rows and their groups are training-only. An all-pairs word-set Jaccard screen at 0.45 found no pairs, despite manually identified related scenes, illustrating the limits of lexical deduplication. Exact normalized duplicates were zero. The canonical index hash is `3d4a1eff32d197aaab0c49a92171c31cdf0c7f557d1191afcce3752cf8f3ece0`. Shared story worlds remain across partitions. SmolLM2-135M-Instruct with MLX-LM is a candidate for the next bounded experiment, not an installed or measured training system. No training or improvement is claimed. See case 2 and `results/case2-split.json` for selection rules and frozen indexes.
 
 ## Discussion
 
