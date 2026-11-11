@@ -4,7 +4,7 @@ Draft paper skeleton, 2026-11-11. Observed setup facts are distinguished from pl
 
 ## Abstract
 
-We investigate whether a compact, locally executed vision-language model can generate useful shot breakdowns from short text scene descriptions on an 8 GB Apple Silicon MacBook Air. The supplied dataset contains 150 text input/output pairs. The initial candidate is an Unsloth Qwen2.5-VL-7B-Instruct Q3_K_M GGUF language file under 4 GB. The planned sequence covers untrained inference, adapter fine-tuning, weight modification, block addition, block removal, and reconstruction/training with our own implementation. This setup task implements only the baseline. The first GPU output completed in 143.8 seconds at 6.46 evaluation tokens/s; a larger run is pending; later stages remain plans. The text-only dataset cannot support conclusions about vision performance.
+We investigate whether a compact, locally executed vision-language model can generate useful shot breakdowns from short text scene descriptions on an 8 GB Apple Silicon MacBook Air. The supplied dataset contains 150 text input/output pairs. The initial candidate is an Unsloth Qwen2.5-VL-7B-Instruct Q3_K_M GGUF language file under 4 GB. The planned sequence covers untrained inference, adapter fine-tuning, weight modification, block addition, block removal, and reconstruction/training with our own implementation. The current implementation covers baseline inference and resumable evidence collection. The first GPU output completed in 143.8 seconds at 6.46 evaluation tokens/s; a larger run is pending; later stages remain plans. The text-only dataset cannot support conclusions about vision performance.
 
 ## Research questions
 
@@ -55,7 +55,7 @@ Decode tensor/configuration facts, implement operations, compare intermediate va
 
 | Case | Current status | Result location |
 | --- | --- | --- |
-| 1 | One GPU output completed after two safe memory stops; overnight continuation pending | results/baseline.jsonl; case 1 findings |
+| 1 | One GPU output completed; resumed GPU probe stopped safely before generation; CPU probe pending | results/baseline.jsonl; case 1 findings |
 | 2 | Not run | Future findings in case 2 |
 | 3 | Not run | Future findings in case 3 |
 | 4 | Not run | Future findings in case 4 |
@@ -64,11 +64,13 @@ Decode tensor/configuration facts, implement operations, compare intermediate va
 
 Initial observed GPU result: load 4.882 seconds; one completed input in 143.792 seconds; 6.4555 generation evaluation tokens/s; peak process RSS 3,546,480,640 bytes; minimum sampled free percentage 16%, normal pressure throughout. The output has 621 words and six SHOT headings against 448 words and four headings in the reference; unigram F1 is 0.2320. It stopped naturally rather than reaching the output cap. A one-input extrapolation is roughly 6 hours for all 150; that duration has not been measured. The next input was deliberately interrupted for overnight handoff. See case 1 for raw evidence, corrected heading-count provenance, failed loads, and limits.
 
+A bounded resume probe at 17:13 UTC reused row 6 and selected missing index 22. The verified original 7B file loaded on Metal in 4.283 seconds including backend initialization, starting at normal pressure and 70% reported free. Before generation, warning pressure level 2 with 15% free triggered the unchanged guard. No additional row completed; peak process RSS was 3,386,982,400 bytes, which does not include all Metal allocations. The model closed. Timestamped attempt metadata and the runtime log preserve the failure without overwriting the earlier evidence. A CPU-only probe of the same file is the next step; its performance is unmeasured. Resume validation now protects dataset/model/settings provenance, skips completed indexes, and syncs each row to disk. See case 1 for exact artifacts and checks.
+
 ## Discussion
 
 The resource limit is unified memory shared with the operating system and other applications. A sub-4-GB file is not proof of a safe runtime fit. Quantization, sampling settings, output caps, prompt design, and software versions are confounders and must remain explicit. Unigram overlap and headings are weak indicators; fluent output may still invent details or violate continuity.
 
-The small dataset supports a narrow exploratory task and invites overfitting in later adaptation. Text-only evaluation cannot establish multimodal capability. Cases 2-6 require separate experiment authorization, appropriate resources, and an unbiased evaluation protocol. Future conclusions should include failed loads, memory stops, quality regressions, and incomplete outputs.
+The small dataset supports a narrow exploratory task and invites overfitting in later adaptation. Text-only evaluation cannot establish multimodal capability. Cases 2-6 are authorized for modest local experiments; they still require appropriate resources and an unbiased evaluation protocol. Future conclusions should include failed loads, memory stops, quality regressions, and incomplete outputs.
 
 ## Conclusion placeholder
 

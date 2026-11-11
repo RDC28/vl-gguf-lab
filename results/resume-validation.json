@@ -1,0 +1,14 @@
+{
+  "checks_passed": [
+    "completed selection exits without model load or writes",
+    "settings mismatch rejected unchanged",
+    "duplicate index rejected unchanged",
+    "partial trailing row rejected unchanged",
+    "original row and legacy metadata byte-identical to HEAD",
+    "dataset SHA256 matches",
+    "notebook schema and all code cells validate",
+    "source compileall passes",
+    "uv pip check passes (106 packages)"
+  ],
+  "fixtures": "Temporary synthetic validation rows removed; no model loaded for fixture checks."
+}
