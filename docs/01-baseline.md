@@ -176,3 +176,20 @@ Manual inspection: index 28 depicts shyness followed by confidence, but never ex
 Across five CPU scenes, three are capped, mean input wall time is 115.321 seconds, and mean unigram F1 is 0.22411. The updated extrapolation is 19.22 minutes for ten inputs or 4.81 hours for 150, excluding load; full-set duration remains unmeasured. Row 35's lower throughput has no established cause because thermals and competing system activity were not measured.
 
 Raw evidence: `results/baseline-cpu-continuation-02.runtime.log`, `results/baseline-cpu-probe.attempt-20261111T172633499026Z.metadata.json`, and appended `results/baseline-cpu-probe.jsonl` rows. The cumulative summary was refreshed after verifying source strings, dataset hash, unique indexes, recomputed metrics, matching attempt IDs, successful attempt completion, and preservation of earlier CPU bytes and original GPU output/metadata. The inference process exited normally and closed its model. No code or dependency changed. Next: continue the five missing fixed-sample scenes in bounded slices, then checkpoint case 1 before cases 2-6.
+
+### 2026-11-11 17:36 UTC: third two-row CPU continuation
+
+The unchanged CPU resume command with `--max-new-rows 2` appended indexes 57 and 62. Seven of the fixed ten sample scenes are now complete; 70, 108, and 139 remain. All prior CPU rows and original GPU output/metadata remain byte-identical.
+
+| Index | Wall seconds | Evaluated generation tokens | Generation tokens/s | Output/reference words | Output/reference headings | Unigram F1 | Finish |
+| ---: | ---: | ---: | ---: | --- | --- | ---: | --- |
+| 57 | 132.444 | 1023 | 8.177 | 769 / 426 | 6 / 4 | 0.20418 | length |
+| 62 | 81.823 | 563 | 7.186 | 383 / 423 | 5 / 4 | 0.23573 | stop |
+
+Load including backend initialization took 7.759 seconds; total attempt time was 221.885 seconds. Peak process RSS was 3,957,096,448 bytes, excluding some Metal allocations. Before-load and after-close pressure were normal with 66% and 62% reported free memory, respectively. Across 113 samples, minimum free memory was 40%; three samples showed warning pressure level 2 during generation. Both before-input checks observed normal pressure. No critical pressure or below-8% reading occurred; guards were unchanged and the model closed normally.
+
+Manual inspection: index 57 retains all four named cats on one rooftop and assigns separate activities, but ends mid-summary at the cap. Text generation cannot demonstrate visual identity preservation or absence of morphing. Index 62 uses a human silhouette and ordinary underpass sounds without explicit supernatural events, but omits the name Ulluman and repeats slow mechanical movement across shots. These observations do not establish systematic quality scores.
+
+Across seven CPU scenes, four are capped, mean input time is 112.981 seconds, and mean unigram F1 is 0.22293. Estimated time is 18.83 minutes for ten or 4.71 hours for 150, excluding loading; these remain extrapolations rather than measured full-run durations. Cases 2-6 remain unattempted.
+
+Raw evidence: `results/baseline-cpu-continuation-03.runtime.log`, `results/baseline-cpu-probe.attempt-20261111T173657628480Z.metadata.json`, and the appended JSONL rows. The cumulative summary was refreshed after checking the dataset hash, all seven source strings and recomputed metrics, unique indexes, successful attempt completion, and byte preservation of previous evidence. No code or dependencies changed. Next: complete the three remaining fixed-sample scenes in a bounded continuation before moving to case 2.
