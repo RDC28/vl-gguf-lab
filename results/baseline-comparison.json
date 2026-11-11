@@ -1,0 +1,12 @@
+[
+  {
+    "dataset_index": 6,
+    "output_words": 621,
+    "reference_words": 448,
+    "output_shot_headings": 6,
+    "reference_shot_headings": 4,
+    "unigram_precision": 0.1996779388083736,
+    "unigram_recall": 0.2767857142857143,
+    "unigram_f1": 0.23199251637043966
+  }
+]

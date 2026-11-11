@@ -4,7 +4,7 @@ Draft paper skeleton, 2026-11-11. Observed setup facts are distinguished from pl
 
 ## Abstract
 
-We investigate whether a compact, locally executed vision-language model can generate useful shot breakdowns from short text scene descriptions on an 8 GB Apple Silicon MacBook Air. The supplied dataset contains 150 text input/output pairs. The initial candidate is an Unsloth Qwen2.5-VL-7B-Instruct Q3_K_M GGUF language file under 4 GB. The planned sequence covers untrained inference, adapter fine-tuning, weight modification, block addition, block removal, and reconstruction/training with our own implementation. This setup task implements only the baseline. Baseline measurements are pending; later stages remain plans. The text-only dataset cannot support conclusions about vision performance.
+We investigate whether a compact, locally executed vision-language model can generate useful shot breakdowns from short text scene descriptions on an 8 GB Apple Silicon MacBook Air. The supplied dataset contains 150 text input/output pairs. The initial candidate is an Unsloth Qwen2.5-VL-7B-Instruct Q3_K_M GGUF language file under 4 GB. The planned sequence covers untrained inference, adapter fine-tuning, weight modification, block addition, block removal, and reconstruction/training with our own implementation. This setup task implements only the baseline. The first GPU output completed in 143.8 seconds at 6.46 evaluation tokens/s; a larger run is pending; later stages remain plans. The text-only dataset cannot support conclusions about vision performance.
 
 ## Research questions
 
@@ -55,14 +55,14 @@ Decode tensor/configuration facts, implement operations, compare intermediate va
 
 | Case | Current status | Result location |
 | --- | --- | --- |
-| 1 | Setup verified; model download and inference pending | Raw outputs and measured findings will be linked here |
+| 1 | One GPU output completed after two safe memory stops; overnight continuation pending | results/baseline.jsonl; case 1 findings |
 | 2 | Not run | Future findings in case 2 |
 | 3 | Not run | Future findings in case 3 |
 | 4 | Not run | Future findings in case 4 |
 | 5 | Not run | Future findings in case 5 |
 | 6 | Not run | Future findings in case 6 |
 
-Reserved baseline table: load seconds; sample duration; tokens/s; peak RSS and pressure; context/sampling; output/reference length; SHOT headings; unigram F1; capped outputs; estimated full-set duration. No values are invented while the run is pending.
+Initial observed GPU result: load 4.882 seconds; one completed input in 143.792 seconds; 6.4555 generation evaluation tokens/s; peak process RSS 3,546,480,640 bytes; minimum sampled free percentage 16%, normal pressure throughout. The output has 621 words and six SHOT headings against 448 words and four headings in the reference; unigram F1 is 0.2320. It stopped naturally rather than reaching the output cap. A one-input extrapolation is roughly 6 hours for all 150; that duration has not been measured. The next input was deliberately interrupted for overnight handoff. See case 1 for raw evidence, corrected heading-count provenance, failed loads, and limits.
 
 ## Discussion
 
@@ -72,7 +72,7 @@ The small dataset supports a narrow exploratory task and invites overfitting in 
 
 ## Conclusion placeholder
 
-Pending baseline measurements and manual review. Later-case conclusions remain empty until their experiments are performed.
+One coherent output establishes that text-only GPU generation can run after other applications are closed. The sample is too small to establish dataset quality or stable full-run resource use. Further baseline measurements and manual review remain pending. Later-case conclusions remain empty until their experiments are performed.
 
 ## Sources and reproducibility
 

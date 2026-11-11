@@ -14,7 +14,7 @@ Test whether a local Qwen vision-language model can turn scene descriptions into
 Python 3.12 and an Apple Silicon Mac with Metal are used. The local environment is `.venv`.
 
 ```sh
-uv venv --python 3.12 .venv
+uv venv --python 3.12.13 .venv
 CMAKE_ARGS='-DGGML_METAL=ON' uv pip install --python .venv/bin/python -r requirements.txt
 .venv/bin/python -m ipykernel install --prefix .venv --name vl-gguf-lab --display-name 'VL GGUF Lab'
 cp /Users/rohit/Downloads/dataset.json data/dataset.json

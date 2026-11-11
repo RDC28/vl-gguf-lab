@@ -1,0 +1,16 @@
+{
+  "repo": "unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+  "revision": "68bb8bc4b7df5289c143aaec0ab477a7d4051aab",
+  "files": [
+    {
+      "name": "Qwen2.5-VL-7B-Instruct-Q3_K_M.gguf",
+      "size_bytes": 3808390016,
+      "sha256": "accacb52744cadbe58b49f37ebb44e094f8de7ee2b52eb0b51ed9289329ef0c1"
+    },
+    {
+      "name": "mmproj-F16.gguf",
+      "size_bytes": 1354163040,
+      "sha256": "987dd0733033fb5dd9b124d1ca926ae865572e432384eee7618b2eec3e735e17"
+    }
+  ]
+}

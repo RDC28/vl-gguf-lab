@@ -18,7 +18,7 @@ Python 3.12.13, gguf 0.19.0, and the case 1 llama-cpp-python 0.3.36/runtime comm
 
 ## Feasibility on the 8 GB Air
 
-Read-only GGUF metadata/tensor inspection and a tiny educational transformer are realistic candidates. A full 7B floating-point reconstruction needs roughly 14 GB of weights before execution buffers and exceeds available RAM. Training that architecture from scratch is far beyond this hardware and a 150-example dataset. Layer-by-layer checks might reduce resident weights, but require measurement and do not make full training feasible. Quantized decoded weights also differ from the original floating-point checkpoint.
+Read-only GGUF metadata/tensor inspection and a tiny educational transformer are realistic candidates. A full 7B floating-point reconstruction needs about 15.23 GB of language weights before execution buffers and exceeds available RAM. Training that architecture from scratch is far beyond this hardware and a 150-example dataset. Layer-by-layer checks might reduce resident weights, but require measurement and do not make full training feasible. Quantized decoded weights also differ from the original floating-point checkpoint.
 
 ## Concrete plan
 

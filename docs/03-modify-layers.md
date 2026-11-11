@@ -16,7 +16,7 @@ Python 3.12.13 and gguf 0.19.0 are installed. GGUFReader/GGUFWriter and llama.cp
 
 ## Feasibility on the 8 GB Air
 
-Memory-mapped metadata inspection and one small tensor copy should fit more readily than loading the whole model as floats. This remains a budget to measure. A complete BF16 language weight copy is about 14 GB; full-model dequantization is outside the local budget. Keep one inference process and enough disk for the unchanged original plus a complete edited artifact. Rewriting a 3.81 GB file still requires substantial disk I/O.
+Memory-mapped metadata inspection and one small tensor copy should fit more readily than loading the whole model as floats. This remains a budget to measure. A complete BF16 language weight copy is about 15.23 GB; full-model dequantization is outside the local budget. Keep one inference process and enough disk for the unchanged original plus a complete edited artifact. Rewriting a 3.81 GB file still requires substantial disk I/O.
 
 ## Concrete plan
 

@@ -1,0 +1,25 @@
+{
+  "rows": 150,
+  "bytes": 454187,
+  "sha256": "073bd194bdb79e3ecfcfad51e09f23510ca697431475221b785c369619d7b8cf",
+  "unique_inputs": 150,
+  "unique_references": 150,
+  "input_words": {
+    "min": 13,
+    "max": 34,
+    "mean": 17.873333333333335,
+    "median": 17.5
+  },
+  "reference_words": {
+    "min": 413,
+    "max": 497,
+    "mean": 434.56666666666666,
+    "median": 434.0
+  },
+  "reference_shot_headings": {
+    "min": 4,
+    "max": 4,
+    "mean": 4,
+    "median": 4.0
+  }
+}

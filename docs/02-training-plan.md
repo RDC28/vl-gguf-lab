@@ -22,7 +22,7 @@ MLX-VLM advertises VL inference and fine-tuning on Apple Silicon, but that does 
 
 ## Feasibility on the 8 GB Air
 
-Full 7B fine-tuning is not feasible here: roughly 14 GB of BF16 language weights alone exceeds physical RAM, before gradients, optimizer states, activations, and the vision stack. A 7B adapter run is not assumed to fit safely while other work is running. Suitable cloud hardware is the practical 7B route; an explicitly smaller model could support a separate local feasibility study. These are resource estimates, not measured training results.
+Full 7B fine-tuning is not feasible here: 15.23 GB of BF16 language weights alone (from the baseline tensor inventory) exceeds physical RAM, before gradients, optimizer states, activations, and the vision stack. A 7B adapter run is not assumed to fit safely while other work is running. Suitable cloud hardware is the practical 7B route; an explicitly smaller model could support a separate local feasibility study. These are resource estimates, not measured training results.
 
 ## Concrete plan
 
