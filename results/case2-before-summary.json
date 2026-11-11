@@ -1,0 +1,13 @@
+{
+  "phase": "untrained",
+  "rows": 15,
+  "capped_outputs": 14,
+  "mean_elapsed_seconds": 0.8417581971333372,
+  "total_input_seconds": 12.626372957000058,
+  "mean_output_words": 86.8,
+  "mean_unigram_f1": 0.12495933984066884,
+  "total_output_shot_headings": 0,
+  "minimum_free_percent": 59,
+  "maximum_pressure_level": 1,
+  "limitations": "Fixed 128-token cap; lexical overlap is not semantic quality. No tuning based on test scores. Use identical prompts/token IDs and generation settings for after-training comparison."
+}

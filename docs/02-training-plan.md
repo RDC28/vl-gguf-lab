@@ -101,3 +101,26 @@ Installed MLX-LM 0.32.2 with its training extra into the existing `.venv`; MLX/M
 Two earlier attempts are preserved. `case2-preflight-64*` loaded safely but refused to compute because its 64-token cap contained no answer after the 96-token prompt. `case2-preflight-128-offset*` computed finite gradients in 2.017 seconds but omitted the first answer target due to a shifted masking boundary (32 supervised targets, loss 3.96875). The final mask includes all 33 answer targets and excludes all prompt targets. Timing differences include uncontrolled first-use kernel/cache overhead and different masks; they are not evidence of a speed improvement. Only the first 33 answer tokens are tested, not a whole shot breakdown. No test or validation references entered this preflight.
 
 Validation: real local forward/backward execution, finite/nonzero gradients, source integrity, frozen split reproduction, Python compilation, notebook schema/syntax, dependency compatibility (131 packages), and whitespace checks passed. Held-out baseline, optimizer-state memory, actual LoRA training, adapters, and identical-settings re-test remain pending. Next: collect this tiny model's own untrained held-out outputs, then a short guarded training run; do not infer that longer sequences or the 7B model fit from this result.
+
+### 2026-11-11 18:02 UTC: untrained held-out baseline
+
+`src/case2_evaluate.py` completed the 15 frozen test indexes before any optimizer update. It verifies the original tiny-model files and reconstructs the frozen split, uses offline local loading, and builds prompts from the system instruction and scene description only. References enter metrics after generation. Raw input/reference/output strings, prompt/output token IDs, token counts, stop reasons and per-row wall/throughput measurements are in `results/case2-before.jsonl`, flushed and synced after every row. Attempt settings, versions, model/split/dataset hashes and memory readings are in `results/case2-before.metadata.json`; the runtime log and summary have the same stem. No source download or checkpoint was changed.
+
+Settings are frozen for the later re-test: original BF16 SmolLM2-135M-Instruct, MLX-LM 0.32.2, seed 42, temperature 0 (greedy), no logits processors, 128 new tokens, prompt prefill chunks of 128, and a 2,048-token prompt-plus-output limit with overflow refusal. Fresh generation calls use independent KV caches for each input. This is deliberately shorter than the 7B baseline, so cross-model quality scores are not controlled comparisons. The [official MLX-LM streaming API](https://github.com/ml-explore/mlx-lm#streaming) and installed generation/sampler code were inspected before implementation.
+
+| Measurement | Untrained tiny-model test |
+| --- | ---: |
+| Completed test scenes | 15 / 15 |
+| Capped outputs | 14 |
+| Mean input wall time | 0.842 seconds |
+| Load / total work | 0.142 / 14.141 seconds |
+| Mean output words | 86.8 |
+| Mean unigram F1 | 0.12496 |
+| MLX peak allocation | 327,914,752 bytes |
+| Peak process RSS | 425,213,952 bytes |
+| Free before / minimum / after release | 68% / 59% / 62% |
+| Highest sampled pressure | 1 (normal) |
+
+The 128-token cap severely limits a detailed breakdown. Index 23 stopped naturally after a single sentence; index 34 repeated apologetic dialogue rather than following the requested shot structure. These are limited descriptive observations, not a rubric score or a basis for choosing training hyperparameters. Do not tune using these test outputs. Unigram overlap is not semantic correctness. The held-out references have not entered training.
+
+The unchanged memory policy guards every input and samples every 0.5 seconds; streaming checks the critical-stop flag after each yielded token. RSS excludes some unified-memory allocations, and periodic readings can miss brief peaks. The model/cache were released and the process exited normally. Validation checked exact test coverage, input/reference identity, token budget, recomputed metrics, split/source hashes, preservation of prior tracked evidence, Python/notebook syntax, dependencies and whitespace. Actual optimizer training, adapter save and held-out after-results remain pending.

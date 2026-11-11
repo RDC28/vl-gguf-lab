@@ -56,7 +56,7 @@ Decode tensor/configuration facts, implement operations, compare intermediate va
 | Case | Current status | Result location |
 | --- | --- | --- |
 | 1 | One GPU output completed; resumed GPU probe stopped safely before generation; CPU-only fixed sample has 10 of 10 scenes completed, six capped; latest attempt had transient warning pressure | results/baseline.jsonl; case 1 findings |
-| 2 | Split frozen (120/15/15); pinned 135M text model loaded; 128-token LoRA gradient preflight completed; training and model baseline pending | results/case2-split.json; case 2 findings |
+| 2 | Split frozen (120/15/15); pinned 135M text model loaded; 128-token LoRA gradient preflight and 15-scene untrained test completed; optimizer training pending | results/case2-split.json; case 2 findings |
 | 3 | Not run | Future findings in case 3 |
 | 4 | Not run | Future findings in case 4 |
 | 5 | Not run | Future findings in case 5 |
@@ -82,6 +82,9 @@ Case 2 acquired the tiny text-only `HuggingFaceTB/SmolLM2-135M-Instruct` at revi
 
 
 Case 2 executed a local BF16 SmolLM2-135M LoRA feasibility check using MLX-LM 0.32.2 and MLX/MLX-Metal 0.32.4. Rank-4 query/value adapters in the last two blocks contain 15,360 trainable elements. On frozen training index 0, a batch of 128 input tokens with 33 masked answer targets produced loss 4.21875 and finite nonzero gradients (L2 0.335437), without an optimizer update. Load took 0.144 seconds and forward/backward 0.062 seconds with warm runtime caches; peak RSS was 426,573,824 bytes and MLX peak allocation 382,325,130 bytes. Sampled pressure stayed normal, minimum reported free memory was 62%, and the process exited. A preserved 64-token attempt refused computation because the prompt alone required 96 tokens. A second preserved attempt omitted the first answer target; the final mask corrects that boundary. These are partial-answer feasibility measurements, not quality, optimizer-memory, full-sequence training, or 7B VL adaptation findings. Held-out baseline and actual before/after training remain pending. Raw attempts, logs, dependency pins, masking details, memory caveats, and primary sources are recorded in case 2.
+
+
+Case 2 now has its own untrained held-out baseline on all 15 frozen test scenes, before any optimizer update. Original BF16 SmolLM2-135M-Instruct used greedy decoding, seed 42, a 128-new-token cap and 2,048-token context limit. Fourteen outputs were capped; mean output length was 86.8 words and mean unigram F1 0.12496. Mean input wall time was 0.842 seconds; load took 0.142 seconds and total work 14.141 seconds. MLX peak allocation was 327,914,752 bytes and peak process RSS 425,213,952 bytes, neither covering all unified-memory use. Sampled pressure stayed normal with 59% minimum free (68% before, 62% after release). Index 23 produced only a sentence and index 34 repeated dialogue. The short cap and different model prevent controlled comparison with case 1. Test outputs must not guide training choices. Raw prompts/token IDs, outputs, timings, provenance, metrics and memory evidence are preserved under `results/case2-before*`. The process exited. Optimizer training and identical-settings after-evaluation remain pending.
 
 ## Discussion
 
