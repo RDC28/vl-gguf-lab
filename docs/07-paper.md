@@ -23,7 +23,7 @@ Hardware: Apple M1 MacBook Air, 8 cores, 8 GiB unified memory; other application
 
 Model: `unsloth/Qwen2.5-VL-7B-Instruct-GGUF`, revision `68bb8bc4b7df5289c143aaec0ab477a7d4051aab`; language file `Qwen2.5-VL-7B-Instruct-Q3_K_M.gguf` (3,808,390,016 bytes). The separately downloaded F16 vision projector stays unloaded for text-only inference. See [case 1](01-baseline.md) for all artifact hashes, quant alternatives, and runtime provenance. The 4 GB cap refers to the language file, not total disk usage or RAM.
 
-Python 3.12.13, llama-cpp-python 0.3.36, gguf 0.19.0, JupyterLab 4.6.6, and ipykernel 7.4.0 are installed. Metal support and project-kernel startup have been checked. Full package pins live in the root requirements file. Future training tools remain unselected and uninstalled.
+Python 3.12.13, llama-cpp-python 0.3.36, gguf 0.19.0, JupyterLab 4.6.6, and ipykernel 7.4.0 are installed. Metal support and project-kernel startup have been checked. Full package pins live in the root requirements file. Case 2 now uses MLX-LM 0.32.2 and MLX/MLX-Metal 0.32.4 for a guarded tiny-model gradient preflight; optimizer training remains pending.
 
 ## Methods
 
@@ -56,7 +56,7 @@ Decode tensor/configuration facts, implement operations, compare intermediate va
 | Case | Current status | Result location |
 | --- | --- | --- |
 | 1 | One GPU output completed; resumed GPU probe stopped safely before generation; CPU-only fixed sample has 10 of 10 scenes completed, six capped; latest attempt had transient warning pressure | results/baseline.jsonl; case 1 findings |
-| 2 | Split frozen (120/15/15); pinned 135M text model downloaded and inspected; training and model baseline pending | results/case2-split.json; case 2 findings |
+| 2 | Split frozen (120/15/15); pinned 135M text model loaded; 128-token LoRA gradient preflight completed; training and model baseline pending | results/case2-split.json; case 2 findings |
 | 3 | Not run | Future findings in case 3 |
 | 4 | Not run | Future findings in case 4 |
 | 5 | Not run | Future findings in case 5 |
@@ -79,6 +79,9 @@ A final three-row continuation completed indexes 70, 108, and 139 in 126.178/147
 Case 2 preparation froze 120/15/15 train/validation/test rows before training. Input-only manual scene groups keep related beats in one partition; the ten already inspected baseline rows and their groups are training-only. An all-pairs word-set Jaccard screen at 0.45 found no pairs, despite manually identified related scenes, illustrating the limits of lexical deduplication. Exact normalized duplicates were zero. The canonical index hash is `3d4a1eff32d197aaab0c49a92171c31cdf0c7f557d1191afcce3752cf8f3ece0`. Shared story worlds remain across partitions. SmolLM2-135M-Instruct with MLX-LM is a candidate for the next bounded experiment, not an installed or measured training system. No training or improvement is claimed. See case 2 and `results/case2-split.json` for selection rules and frozen indexes.
 
 Case 2 acquired the tiny text-only `HuggingFaceTB/SmolLM2-135M-Instruct` at revision `12fd25f77366fa6b3b4b768ec3050bf629380bac`. Nine local files total 272,444,345 bytes; the 269,060,552-byte safetensors file matches upstream SHA256 `5af571cbf074e6d21a03528d2330792e532ca608f24ac70a143f6b369968ab8c`. Read-only inspection found 272 BF16 tensors containing 134,515,008 stored elements, 30 Llama blocks, hidden width 576, and tied embeddings. BF16 tensor bytes total 269,030,016; a full FP32 weight copy would require 538,060,032 bytes before any training overhead. Acquisition and verification took 17.611 seconds with 57,802,752-byte process peak RSS. These are download/header measurements, not execution or training memory evidence. The frozen split, original 7B artifacts, and baseline provenance remain unchanged. Training framework installation, guarded preflight, and before/after evaluation are still pending. Case 2 records primary sources and `results/case2-model-provenance.json` preserves file hashes and the complete tensor header.
+
+
+Case 2 executed a local BF16 SmolLM2-135M LoRA feasibility check using MLX-LM 0.32.2 and MLX/MLX-Metal 0.32.4. Rank-4 query/value adapters in the last two blocks contain 15,360 trainable elements. On frozen training index 0, a batch of 128 input tokens with 33 masked answer targets produced loss 4.21875 and finite nonzero gradients (L2 0.335437), without an optimizer update. Load took 0.144 seconds and forward/backward 0.062 seconds with warm runtime caches; peak RSS was 426,573,824 bytes and MLX peak allocation 382,325,130 bytes. Sampled pressure stayed normal, minimum reported free memory was 62%, and the process exited. A preserved 64-token attempt refused computation because the prompt alone required 96 tokens. A second preserved attempt omitted the first answer target; the final mask corrects that boundary. These are partial-answer feasibility measurements, not quality, optimizer-memory, full-sequence training, or 7B VL adaptation findings. Held-out baseline and actual before/after training remain pending. Raw attempts, logs, dependency pins, masking details, memory caveats, and primary sources are recorded in case 2.
 
 ## Discussion
 

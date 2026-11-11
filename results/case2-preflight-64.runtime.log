@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/Users/rohit/.treehouse/vl-gguf-lab-5389dd/1/vl-gguf-lab/src/case2_preflight.py", line 135, in <module>
+    main()
+  File "/Users/rohit/.treehouse/vl-gguf-lab-5389dd/1/vl-gguf-lab/src/case2_preflight.py", line 90, in main
+    assert len(prompt) < len(tokens) - 1, 'No supervised tokens in short sequence'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: No supervised tokens in short sequence
