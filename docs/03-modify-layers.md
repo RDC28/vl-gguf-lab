@@ -2,7 +2,7 @@
 
 ## Goal
 
-Measure how a controlled change to existing layer weights changes loading, memory, speed, and output quality. Preserve the number of blocks and the original downloads. Planning only in this task.
+Measure how a controlled change to existing layer weights changes loading, memory, speed, and output quality. Preserve the number of blocks and the original downloads. Small-artifact acquisition and inventory are complete; editing and inference remain pending.
 
 ## Method
 
@@ -32,8 +32,20 @@ A model can load successfully while producing damaged text. Quantization scales 
 
 ## Findings
 
-Not run. Reserved: tensor inventory, no-change round-trip evidence, edit manifest, load errors, output differences, and memory/time table. No GGUF tensor has been edited.
+### 2026-11-11: small immutable source acquired
+
+`src/case3_acquire.py` downloaded one small F16 GGUF directly into the local models folder, without a shared cache. The source is `bartowski/SmolLM2-135M-Instruct-GGUF`, revision `09816acd5d99df7be770d85ea30822623dab342c`, file `SmolLM2-135M-Instruct-f16.gguf`. Its 270,885,952 bytes match upstream LFS SHA256 `f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57`. F16 avoids packed quantization for subsequent tensor and numerical experiments and remains modest on disk. This is a separate conversion of the tiny text-model family used in case 2, not the trained adapter or the 7B VL model. Equivalence to the case 2 BF16 checkpoint is not assumed.
+
+Read-only gguf 0.19.0 inspection found 272 tensors, 134,515,008 stored elements, 211 F16 tensors and 61 F32 tensors. Metadata declares Llama architecture, 30 blocks, hidden width 576, feed-forward width 1,536, 9 attention heads, 3 KV heads, 64 RoPE dimensions, theta 100,000, RMSNorm epsilon approximately 1e-5, vocabulary 49,152 and context 8,192. `results/case3-source.json` preserves every tensor name/shape/type/byte count/hash and metadata value hashes, including tokenizer arrays and chat template. These hashes provide a reference for verifying unrelated bytes after rewrites.
+
+Predeclared edit: multiply the existing F32 `blk.0.attn_norm.weight` by 1.01 in float32, after a no-change GGUFWriter control. This tensor has 576 elements, currently ranging from -0.3046875 to 0.314453125. No edit or rewrite has happened yet. Next: preserve all metadata and tensor bytes in a no-change rewrite, verify them, then check original/control loading and fixed-prompt output before the perturbation.
+
+Acquisition plus hash/inventory took 14.788 seconds; peak process RSS was 494,092,288 bytes. Before/after snapshots were normal pressure with 69%/68% reported free. Download chunks and pre-inspection checks required normal pressure and at least 15% free; these are acquisition snapshots, not a continuous inference memory trace. RSS does not cover all unified-memory allocations. No model execution, server or training process started. `results/case3-acquire.runtime.log` preserves the measurement summary. Original downloads and all previous evidence remain unchanged.
+
+Sources: [pinned conversion repository](https://huggingface.co/bartowski/SmolLM2-135M-Instruct-GGUF/tree/09816acd5d99df7be770d85ea30822623dab342c), [GGUF specification](https://github.com/ggml-org/ggml/blob/master/docs/gguf.md). The repository API supplied the pinned revision and LFS digest; local bytes were independently checked. Acquisition is preparation, not a completed case 3 experiment.
 
 ## Sources consulted
 
 The GGUF specification and gguf-py project linked above were consulted on 2026-11-11. The inference architecture reference is [llama.cpp Qwen2-VL](https://github.com/ggml-org/llama.cpp/blob/master/src/models/qwen2vl.cpp). Proposed experimental controls are project plans, not claims of upstream support.
+
+Validation: independent full-file and per-tensor/metadata hash rechecks, preservation of all prior tracked results and the original manifest, Python compilation, notebook schema/code checks, dependency compatibility (131 packages), exactly seven main docs and diff whitespace checks passed. No background processes were started.
