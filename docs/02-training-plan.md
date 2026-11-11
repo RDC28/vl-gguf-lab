@@ -2,7 +2,7 @@
 
 ## Goal
 
-Find out whether supervised adaptation improves scene fidelity and the reference shot-breakdown style over case 1. The overnight task authorizes a tiny local LoRA workflow demonstration. No training has run yet; it will use its own model baseline rather than claim adaptation of the 7B VL model.
+Find out whether supervised adaptation improves scene fidelity and the reference shot-breakdown style over case 1. The overnight task authorizes a tiny local LoRA workflow demonstration. A tiny text-model LoRA run has completed; it uses its own model baseline rather than claim adaptation of the 7B VL model.
 
 ## Method
 
@@ -124,3 +124,26 @@ Settings are frozen for the later re-test: original BF16 SmolLM2-135M-Instruct, 
 The 128-token cap severely limits a detailed breakdown. Index 23 stopped naturally after a single sentence; index 34 repeated apologetic dialogue rather than following the requested shot structure. These are limited descriptive observations, not a rubric score or a basis for choosing training hyperparameters. Do not tune using these test outputs. Unigram overlap is not semantic correctness. The held-out references have not entered training.
 
 The unchanged memory policy guards every input and samples every 0.5 seconds; streaming checks the critical-stop flag after each yielded token. RSS excludes some unified-memory allocations, and periodic readings can miss brief peaks. The model/cache were released and the process exited normally. Validation checked exact test coverage, input/reference identity, token budget, recomputed metrics, split/source hashes, preservation of prior tracked evidence, Python/notebook syntax, dependencies and whitespace. Actual optimizer training, adapter save and held-out after-results remain pending.
+
+### 2026-11-11 18:05 UTC: bounded optimizer training
+
+`src/case2_train.py` completed 20 batch-one optimizer updates on the first 20 sorted frozen training indexes: 0-7, 9, and 11-21. No rows were skipped. No validation/test references or outputs guided this fixed run. It retains the preflight configuration: original local BF16 SmolLM2-135M-Instruct, frozen base, query/value LoRA in blocks 28 and 29, rank 4, scale 8, dropout 0, seed 42, and 15,360 trainable elements. It uses 128 model-input tokens (129 shifted tokens including the last target), prompt-masked cross entropy, and only answer prefixes. Across the 20 examples, 966 answer tokens were supervised. This does not train complete shot breakdowns.
+
+The optimizer is MLX Adam at constant learning rate 0.0001, betas 0.9/0.999, epsilon 1e-8, no weight decay, clipping or accumulation, and the installed default `bias_correction=False`. That last setting matters when reproducing the run with another Adam implementation. The [official trainer source](https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/tuner/trainer.py) and installed MLX 0.32.4 optimizer source were inspected before recording the update/save protocol. Framework versions are unchanged from the preflight. No hyperparameter sweep or selection was performed.
+
+| Measurement | Observed |
+| --- | ---: |
+| Completed updates / finite-gradient checks | 20 / 20 |
+| Mean pre-update partial-answer loss | 4.78359 |
+| First / last loss, different scenes | 4.21875 / 5.0625 |
+| Load / training / total work | 0.140 / 1.338 / 2.646 seconds |
+| Adapter change from initialization, L2 | 1.04976 |
+| Peak MLX allocation / process RSS | 387,368,366 / 430,473,216 bytes |
+| Free before / minimum sampled / after release | 68% / 62% / 65% |
+| Highest sampled pressure | 1 (normal) |
+
+Losses are on different scenes, so the first/last values are not a learning curve showing improvement. `results/case2-train.json` preserves each index, exact training token IDs, supervised-token count, loss and step time, all source/split hashes, adapter shapes, memory samples and final artifact hashes. The runtime log is preserved separately. The final local `models/case2-lora/adapters.safetensors` is 62,287 bytes, SHA256 `81a792a5eb4ff1726169ca797554e1d5242e9ee690d89e4281f5493e7ca9faa2`; its 202-byte configuration and hash are recorded alongside it. These small final artifacts remain locally under the ignored models folder; original downloads are unchanged.
+
+The unchanged memory guard runs before import/load and every update; a 0.5-second watcher and after-update snapshots catch critical pressure or below 8% free. One graph cannot stop between internal kernels. RSS and MLX allocation omit some unified-memory use; short peaks can evade sampling. Model, gradient, optimizer and adapter array references/cache were released and the process exited. Independent verification reloaded the saved adapter, checked all eight names/shapes, 15,360 finite elements, exact source/adapter hashes, train-only membership and regenerated training token IDs/mask counts. Prior evidence, frozen split, Python/notebook syntax, dependency consistency and diff whitespace checks passed. No inference or server was left running.
+
+Next: load this exact saved adapter for the same 15 test scenes, with identical baseline prompts/token IDs and greedy generation settings. Do not retrain or select checkpoints using test outcomes. After-results and any quality change remain unmeasured; this is a tiny text-only training workflow, not adaptation of the 7B VL model.
