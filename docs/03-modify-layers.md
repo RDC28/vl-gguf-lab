@@ -2,7 +2,7 @@
 
 ## Goal
 
-Measure how a controlled change to existing layer weights changes loading, memory, speed, and output quality. Preserve the number of blocks and the original downloads. Small-artifact acquisition, inventory and a byte-identical no-change rewrite are complete; editing and inference remain pending.
+Measure how a controlled change to existing layer weights changes loading, memory, speed, and output quality. Preserve the number of blocks and the original downloads. Small-artifact acquisition, inventory and a byte-identical no-change rewrite are complete; source/control inference is verified; editing remains pending.
 
 ## Method
 
@@ -57,3 +57,24 @@ Validation: independent full-file and per-tensor/metadata hash rechecks, preserv
 Total rewrite/verification time was 5.110 seconds, including 0.199 seconds writing. Peak process RSS was 909,770,752 bytes. All 276 phase/tensor-boundary snapshots showed normal pressure; reported free memory was at least 68%. These are snapshots rather than continuous monitoring, and RSS excludes some unified-memory allocations. No model was loaded or background process started. Raw evidence: `results/case3-rewrite.json` and `results/case3-rewrite.runtime.log`.
 
 This establishes serialization preservation, not an observed inference comparison. Next, run original/control fixed-prompt inference sequentially, then create the predeclared 1.01 norm perturbation and compare outputs. Case 3 remains incomplete. Implementation followed the [upstream GGUFWriter source](https://github.com/ggml-org/llama.cpp/blob/master/gguf-py/gguf/gguf_writer.py), consulted on 2026-11-11, and the installed pinned implementation.
+
+
+### 2026-11-11: sequential inference control verified
+
+`src/case3_control.py` loaded the immutable original and byte-identical rewrite sequentially, explicitly closing each before the next. Both hashes were verified before and after execution. The fixed smoke input is dataset index 6, with the case 1 system prompt and only the scene description in messages. References never enter prompts. Settings: CPU-only mmap, context 2,048, batch 128, four prompt/decode threads, seed 42, greedy decoding, top-p/top-k/repeat penalty 1 and a 128-new-token cap. The embedded chat template was used and preserved in evidence. This short control is separate from the 1,024-token case 1 protocol and the MLX case 2 results.
+
+| Measurement | Original | Rewrite control |
+| --- | ---: | ---: |
+| Constructor seconds | 0.08589 | 0.08109 |
+| Input wall seconds | 0.94285 | 0.96484 |
+| Prompt evaluation tokens | 74 | 74 |
+| Generation evaluation tokens | 127 | 127 |
+| Generation evaluation seconds | 0.83345 | 0.85919 |
+| Process high-water RSS bytes | 460,947,456 | 463,208,448 |
+| Finish reason | length | length |
+
+Both outputs are exactly equal and repeatedly emit the Naisha/Zain tea-stall scene title rather than useful shot structure. This establishes successful loading and text equality on one smoke prompt, not numerical logit parity, quality, or a general speed comparison. The 128-token cap includes the first generated token while llama.cpp generation evaluation counts the subsequent 127 evaluations. Process RSS is cumulative across sequential loads and excludes some unified-memory allocations.
+
+All 12 phase/periodic readings showed normal pressure and 69% reported free, including before load, before input, during generation and after close. A 0.5-second watcher stops streaming on critical pressure or below 8% free (and on unreadable headroom); the existing normal-pressure/15% guard applies before loading and each input. Total execution plus hash checks took 2.870 seconds. Both models closed, the watcher joined, and the process exited. Raw outputs, template, runtime versions, timings and readings are in `results/case3-control.json`; upstream runtime whitespace is preserved in `results/case3-control.runtime.log`.
+
+The [llama-cpp-python API reference](https://llama-cpp-python.readthedocs.io/en/latest/api-reference/) was consulted for sequential loading and streamed chat completion. Next: create the predeclared float32 norm scaling, verify only that tensor changes, then compare using these same settings and prompt. Case 3 remains incomplete until that measured perturbation runs.
