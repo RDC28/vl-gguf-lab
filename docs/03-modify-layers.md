@@ -2,7 +2,7 @@
 
 ## Goal
 
-Measure how a controlled change to existing layer weights changes loading, memory, speed, and output quality. Preserve the number of blocks and the original downloads. Small-artifact acquisition, inventory and a byte-identical no-change rewrite are complete; source/control inference is verified; editing remains pending.
+Measure how a controlled change to existing layer weights changes loading, memory, speed, and output quality. Preserve the number of blocks and the original downloads. Small-artifact acquisition, inventory and a byte-identical no-change rewrite are complete; source/control inference is verified; the norm edit is serialized and verified, with edited-model inference pending.
 
 ## Method
 
@@ -78,3 +78,14 @@ Both outputs are exactly equal and repeatedly emit the Naisha/Zain tea-stall sce
 All 12 phase/periodic readings showed normal pressure and 69% reported free, including before load, before input, during generation and after close. A 0.5-second watcher stops streaming on critical pressure or below 8% free (and on unreadable headroom); the existing normal-pressure/15% guard applies before loading and each input. Total execution plus hash checks took 2.870 seconds. Both models closed, the watcher joined, and the process exited. Raw outputs, template, runtime versions, timings and readings are in `results/case3-control.json`; upstream runtime whitespace is preserved in `results/case3-control.runtime.log`.
 
 The [llama-cpp-python API reference](https://llama-cpp-python.readthedocs.io/en/latest/api-reference/) was consulted for sequential loading and streamed chat completion. Next: create the predeclared float32 norm scaling, verify only that tensor changes, then compare using these same settings and prompt. Case 3 remains incomplete until that measured perturbation runs.
+
+
+### 2026-11-11: predeclared norm perturbation serialized and verified
+
+`src/case3_perturb.py` created `models/SmolLM2-135M-Instruct-norm101.gguf` with the predeclared float32 multiplication by 1.01 on `blk.0.attn_norm.weight` (shape 576, F32). All 576 elements changed; the range changed from [-0.3046875, 0.314453125] to [-0.3077343702, 0.3175976574], with maximum absolute delta 0.0031445324. No packed quantized bytes were edited. The script follows the installed GGUFWriter implementation and previously verified rewrite control, preserving metadata types, tensor order, shapes and types.
+
+Fresh-reader verification found exactly one changed tensor, 271 byte-identical unrelated tensors and all 36 reader fields unchanged, including architecture/tokenizer metadata. The edited tensor exactly equals the prescribed float32 operation. Target SHA256 changed from `2469079d969a361823be8145fa36e15e4c1b933b5261d669357b3deead825cba` to `1f841112c39dddf5fb3943db40d972a9ae1ff3036cedee6973041b19a2e21145`. The edited file remains 270,885,952 bytes; its SHA256 is `336f76366de192df5dc66185ea0caf98b00a1b75ba03d9089aa4dd481358b49e`. Source hash and acquisition inventory were rechecked unchanged. Existing artifact/evidence paths are refused rather than overwritten.
+
+Write time was 0.208 seconds; total rewrite/verification took 4.923 seconds. Process peak RSS was 909,721,600 bytes. All 276 phase/tensor snapshots showed normal pressure and at least 69% reported free memory. Snapshots are not continuous monitoring; RSS excludes some unified-memory allocations. No inference model or background process started. Raw measurements and hashes are in `results/case3-perturb.json` and its runtime log.
+
+Case 3 remains incomplete: the edited file has not loaded or generated output. Next, compare its load and fixed index-6 smoke output with `results/case3-control.json`, using identical CPU/settings/prompt and the same memory guards. No behavior or quality change is established by the artifact edit alone.
