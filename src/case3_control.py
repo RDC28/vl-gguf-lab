@@ -14,11 +14,12 @@ from case3_acquire import NAME, SHA256, digest
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--pruned', action='store_true', help='Evaluate the verified removed block against saved source output')
     mode.add_argument('--expanded', action='store_true', help='Evaluate the verified added block against saved source output')
     mode.add_argument('--edited', action='store_true', help='Evaluate the verified norm edit against saved source output')
     args = parser.parse_args()
-    variant = args.edited or args.expanded
-    path = ROOT / ('results/case4-expanded.json' if args.expanded else 'results/case3-edited.json' if args.edited else 'results/case3-control.json')
+    variant = args.edited or args.expanded or args.pruned
+    path = ROOT / ('results/case5-pruned.json' if args.pruned else 'results/case4-expanded.json' if args.expanded else 'results/case3-edited.json' if args.edited else 'results/case3-control.json')
     start = time.perf_counter()
     raw = (ROOT / 'data/dataset.json').read_bytes()
     dataset_hash = hashlib.sha256(raw).hexdigest()
@@ -36,7 +37,7 @@ def main():
         assert control['status'] == 'completed' and control['outputs_identical']
         for key in ('dataset_sha256', 'dataset_index', 'input', 'system_prompt', 'settings', 'decoding'):
             assert result[key] == control[key], f'Control mismatch: {key}'
-        edit_path = ROOT / ('results/case4-expand.json' if args.expanded else 'results/case3-perturb.json')
+        edit_path = ROOT / ('results/case5-remove.json' if args.pruned else 'results/case4-expand.json' if args.expanded else 'results/case3-perturb.json')
         edit = json.loads(edit_path.read_text())
         assert edit['status'] == 'completed' and edit['source_sha256'] == SHA256
         artifacts = [(str((ROOT / edit['output_path']).relative_to(ROOT / 'models')), edit['output_sha256'])]

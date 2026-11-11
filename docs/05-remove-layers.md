@@ -58,3 +58,22 @@ Run: `.venv/bin/python src/case5_remove.py > results/case5-remove.runtime.log 2>
 ## Sources consulted
 
 ShortGPT v3, gguf-py, and the Qwen2-VL runtime source linked above were consulted on 2026-11-11. The workflow and local feasibility statements are proposals and resource estimates, not completed pruning results.
+
+### 2026-11-11: guarded pruned-model inference
+
+Run: `.venv/bin/python src/case3_control.py --pruned > results/case5-pruned.runtime.log 2>&1`. The same reusable smoke evaluator verifies the removal manifest and artifact hash, then checks scene, prompt, template, runtime and decoding settings against the saved source control before evaluating. Only the pruned model is loaded; the original output is reused from evidence. No held-out ranking or training occurs.
+
+| Measurement | Saved original | Pruned 29-block model |
+| --- | ---: | ---: |
+| File bytes | 270,885,952 | 263,802,944 |
+| Constructor seconds | 0.08589 | 0.07790 |
+| Input wall seconds | 0.94285 | 0.80129 |
+| Prompt / generation evaluations | 74 / 127 | 74 / 127 |
+| Generation evaluation seconds | 0.83345 | 0.71961 |
+| Output words / SHOT headings | 66 / 0 | 110 / 0 |
+| Unigram F1 | 0.08560 | 0.12903 |
+| Finish reason | length | length |
+
+The model loads successfully and changes greedy text, but repeatedly says both characters are in the tea stall, without shot structure or the requested nervous speech. Increased overlap does not establish semantic improvement. This one capped scene demonstrates loadability and behavioral change, not useful compression quality. Separate single runs under uncontrolled cache/thermal conditions do not establish a speed advantage.
+
+Total checks/run took 1.397 seconds; process peak RSS was 453,672,960 bytes. All five phase/periodic readings showed normal pressure with 70% reported free, including before load/input and after close. Sampling can miss transients; RSS omits some unified-memory allocations. The model closed explicitly and the watcher joined. `results/case5-pruned.json` preserves raw output, metrics, timing and provenance links; the runtime log preserves loader evidence. Source and pruned hashes remain unchanged. This completes the bounded fixed-block tiny text-model removal experiment, without calibrated pruning, recovery training, broad quality evaluation or 7B VL editing. Case 6 remains pending.
