@@ -13,9 +13,12 @@ from case3_acquire import NAME, SHA256, digest
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--edited', action='store_true', help='Evaluate the verified norm edit against saved source output')
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--expanded', action='store_true', help='Evaluate the verified added block against saved source output')
+    mode.add_argument('--edited', action='store_true', help='Evaluate the verified norm edit against saved source output')
     args = parser.parse_args()
-    path = ROOT / ('results/case3-edited.json' if args.edited else 'results/case3-control.json')
+    variant = args.edited or args.expanded
+    path = ROOT / ('results/case4-expanded.json' if args.expanded else 'results/case3-edited.json' if args.edited else 'results/case3-control.json')
     start = time.perf_counter()
     raw = (ROOT / 'data/dataset.json').read_bytes()
     dataset_hash = hashlib.sha256(raw).hexdigest()
@@ -27,13 +30,13 @@ def main():
     result = dict(dataset_sha256=dataset_hash, dataset_index=6, input=scene,
                   system_prompt=SYSTEM, settings=settings, decoding=decoding, runs=[])
     artifacts = [(NAME, SHA256), ('SmolLM2-135M-Instruct-control.gguf', SHA256)]
-    if args.edited:
+    if variant:
         control_path = ROOT / 'results/case3-control.json'
         control = json.loads(control_path.read_text())
         assert control['status'] == 'completed' and control['outputs_identical']
         for key in ('dataset_sha256', 'dataset_index', 'input', 'system_prompt', 'settings', 'decoding'):
             assert result[key] == control[key], f'Control mismatch: {key}'
-        edit_path = ROOT / 'results/case3-perturb.json'
+        edit_path = ROOT / ('results/case4-expand.json' if args.expanded else 'results/case3-perturb.json')
         edit = json.loads(edit_path.read_text())
         assert edit['status'] == 'completed' and edit['source_sha256'] == SHA256
         artifacts = [(str((ROOT / edit['output_path']).relative_to(ROOT / 'models')), edit['output_sha256'])]
@@ -44,7 +47,7 @@ def main():
             from llama_cpp import Llama, llama_cpp
             result['llama_cpp_python'] = importlib.metadata.version('llama-cpp-python')
             result['system_info'] = llama_cpp.llama_print_system_info().decode()
-            if args.edited:
+            if variant:
                 assert result['llama_cpp_python'] == control['llama_cpp_python']
                 assert result['system_info'] == control['system_info']
             for name, expected_hash in artifacts:
@@ -80,7 +83,7 @@ def main():
                     run['load_seconds'] = time.perf_counter() - begin
                     run['chat_format'] = model.chat_format
                     run['embedded_chat_template'] = model.metadata.get('tokenizer.chat_template')
-                    if args.edited:
+                    if variant:
                         for key in ('chat_format', 'embedded_chat_template'):
                             assert run[key] == control['runs'][0][key], f'Control mismatch: {key}'
                     check_memory(sample('before_input'))
@@ -116,7 +119,7 @@ def main():
                     sample('after_close')
                     run['peak_process_rss_bytes'] = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
                 assert digest(source) == expected_hash
-            if args.edited:
+            if variant:
                 from baseline import compare, REFERENCE
                 reference = json.loads(raw)[6][REFERENCE]
                 result['outputs_identical'] = result['runs'][0]['output'] == control['runs'][0]['output']

@@ -53,7 +53,25 @@ Command: `.venv/bin/python src/case4_expand.py > results/case4-expand.runtime.lo
 
 Expanded artifact: `models/SmolLM2-135M-Instruct-plus1.gguf`, SHA256 `bb7594b5fbcddc3dda1b958d762a3df77624fd2ca7cf048c4d27ccf1561cc664`. Raw evidence `results/case4-expand.json` records the full block/tensor map, added tensor hashes, memory readings and tool version; the runtime log is retained. The original file hash remains unchanged. Phase/tensor snapshots are not continuous monitoring; RSS omits some unified-memory allocations.
 
-No model was loaded, no logits/output were measured, and no parameters were trained. Case 4 remains incomplete until the expanded artifact is loaded and compared against its own saved source smoke output with identical settings. A successful file rewrite proves neither runtime compatibility nor useful added capacity. No background process was started.
+No model was loaded, no logits/output were measured, and no parameters were trained. Loading and comparison were pending at this serialization checkpoint; the measured follow-up is below. A successful file rewrite proves neither runtime compatibility nor useful added capacity. No background process was started.
+
+### 2026-11-11: expanded-model CPU smoke comparison
+
+Command: `.venv/bin/python src/case3_control.py --expanded > results/case4-expanded.runtime.log 2>&1`. The shared guarded inference code verifies the expanded artifact and saved source-control evidence hashes, then checks identical scene index 6, system prompt, context, greedy decoding, seed, CPU settings, runtime version and chat template. It reuses the saved source output rather than loading both models together. References stay outside prompts. Raw evidence is `results/case4-expanded.json`.
+
+| Measurement | Original source control | Expanded model |
+| --- | ---: | ---: |
+| Constructor seconds | 0.08589 | 0.07885 |
+| Input wall seconds | 0.94285 | 0.81778 |
+| Prompt / generation evaluation tokens | 74 / 127 | 74 / 127 |
+| Output words / SHOT headings | 66 / 0 | 103 / 0 |
+| Unigram F1 | 0.08560 | 0.11978 |
+| Finish reason | length | length |
+| Peak process RSS bytes | 460,947,456 | 472,039,424 |
+
+The 31-block artifact loaded successfully and changed greedy text. Instead of the source's repeated scene title, it invents a tea spill and repeats waiting/anxiety and dialogue-like fragments. Neither output provides the requested shot structure. Increased lexical overlap does not demonstrate semantic improvement or useful capacity. No training or logit parity was attempted. These separate single runs have uncontrolled cache/thermal conditions; their timings do not establish a speed advantage from adding depth.
+
+Expanded prompt/generation evaluation took 0.065812/0.733039 seconds; the complete run including hash checks took 1.422 seconds. All five before/during/after readings showed normal pressure and 69% reported free memory. RSS excludes some unified-memory allocations and short-run sampling can miss transients. The source and expanded hashes remain unchanged. The model explicitly closed and the watcher joined before process exit. This completes the bounded case 4 artifact/load/output experiment; useful added capacity and trained expansion remain unestablished. Cases 5-6 remain pending.
 
 ## Sources consulted
 

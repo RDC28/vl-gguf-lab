@@ -33,4 +33,4 @@ Read docs/01-baseline.md through docs/06-transformer-plan.md in order. docs/07-p
 
 Case 3 preparation acquired one pinned small F16 GGUF with a read-only tensor inventory in `results/case3-source.json`; see docs/03-modify-layers.md. The no-change GGUFWriter control is byte-identical to the source, verified in `results/case3-rewrite.json`; sequential original/control CPU inference produced identical capped smoke outputs in `results/case3-control.json`; the predeclared norm edit is verified in `results/case3-perturb.json`, and `results/case3-edited.json` confirms safe loading with unchanged fixed-prompt text.
 
-Case 4 has a verified 31-block tiny GGUF created by copying the original final block; `results/case4-expand.json` preserves its map and hashes. Loading and output comparison remain pending. See docs/04-add-layers.md.
+Case 4 has a verified 31-block tiny GGUF created by copying the original final block; `results/case4-expand.json` preserves its map and hashes. The guarded CPU comparison in `results/case4-expanded.json` confirms loading and changed repetitive text, without useful shot structure or established quality gain. See docs/04-add-layers.md.
