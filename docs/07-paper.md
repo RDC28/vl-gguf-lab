@@ -4,7 +4,7 @@ Draft paper skeleton, 2026-11-11. Observed setup facts are distinguished from pl
 
 ## Abstract
 
-We investigate whether a compact, locally executed vision-language model can generate useful shot breakdowns from short text scene descriptions on an 8 GB Apple Silicon MacBook Air. The supplied dataset contains 150 text input/output pairs. The initial candidate is an Unsloth Qwen2.5-VL-7B-Instruct Q3_K_M GGUF language file under 4 GB. The planned sequence covers untrained inference, adapter fine-tuning, weight modification, block addition, block removal, and reconstruction/training with our own implementation. The current implementation covers baseline inference and resumable evidence collection. The first GPU output completed in 143.8 seconds at 6.46 evaluation tokens/s; seven CPU sample outputs have completed, four capped, with transient warning pressure in recent attempts; later stages remain plans. The text-only dataset cannot support conclusions about vision performance.
+We investigate whether a compact, locally executed vision-language model can generate useful shot breakdowns from short text scene descriptions on an 8 GB Apple Silicon MacBook Air. The supplied dataset contains 150 text input/output pairs. The initial candidate is an Unsloth Qwen2.5-VL-7B-Instruct Q3_K_M GGUF language file under 4 GB. The planned sequence covers untrained inference, adapter fine-tuning, weight modification, block addition, block removal, and reconstruction/training with our own implementation. The current implementation covers baseline inference and resumable evidence collection. The first GPU output completed in 143.8 seconds at 6.46 evaluation tokens/s; all ten fixed CPU sample outputs have completed, six capped, with transient warning pressure in recent attempts; later stages remain plans. The text-only dataset cannot support conclusions about vision performance.
 
 ## Research questions
 
@@ -55,7 +55,7 @@ Decode tensor/configuration facts, implement operations, compare intermediate va
 
 | Case | Current status | Result location |
 | --- | --- | --- |
-| 1 | One GPU output completed; resumed GPU probe stopped safely before generation; CPU-only sample has 7 of 10 scenes completed, four capped; latest attempt had transient warning pressure | results/baseline.jsonl; case 1 findings |
+| 1 | One GPU output completed; resumed GPU probe stopped safely before generation; CPU-only fixed sample has 10 of 10 scenes completed, six capped; latest attempt had transient warning pressure | results/baseline.jsonl; case 1 findings |
 | 2 | Not run | Future findings in case 2 |
 | 3 | Not run | Future findings in case 3 |
 | 4 | Not run | Future findings in case 4 |
@@ -74,6 +74,8 @@ A second bounded CPU continuation completed indexes 28 and 35 in 83.654/118.406 
 
 A third bounded CPU continuation completed indexes 57 and 62 in 132.444/81.823 seconds, evaluating 1,023/563 generation tokens at 8.177/7.186 tokens/s. Index 57 was capped; index 62 stopped naturally. Outputs had 769/383 words and six/five headings against 426/423 words and four reference headings; unigram F1 was 0.20418/0.23573. Load took 7.759 seconds and total attempt time was 221.885 seconds. Peak process RSS was 3,957,096,448 bytes, excluding some Metal allocations. Minimum free memory was 40% across 113 samples; three samples showed warning pressure during generation, while both inputs started under normal pressure. No critical pressure occurred and the model closed normally. Index 57 preserves the four named cats but cannot establish visual identity consistency; index 62 omits Ulluman's name and repeats movement despite maintaining a grounded atmosphere. Seven CPU scenes are complete, four capped; mean wall time is 112.981 seconds, mean unigram F1 is 0.22293, and the full-set extrapolation is 4.71 hours excluding load. Three sample scenes remain; cases 2-6 remain unattempted. Case 1 links raw outputs, memory evidence, and validation.
 
+A final three-row continuation completed indexes 70, 108, and 139 in 126.178/147.191/159.017 seconds at 7.727/7.168/6.625 generation tokens/s. The latter two were capped. Load took 8.047 seconds, total attempt time was 440.320 seconds, and peak process RSS was 3,991,896,064 bytes, excluding some Metal allocations. Across 223 samples, minimum reported free memory was 39%, with three warning-pressure samples and no critical readings. All inputs started at normal pressure; after closing, pressure was normal with 63% free. Row 70 invents investigative equipment and a discovery; row 108 repeats lake/light views; row 139 proposes showing fire consuming Sati despite the non-graphic request. All ten fixed CPU sample scenes are now complete, six capped, with mean wall time 122.326 seconds and mean unigram F1 0.21726. Completed-input wall time totals 20.39 minutes excluding loading and incomplete attempts. The updated full-set extrapolation is 5.10 hours, not a measured duration. Case 1 and the cumulative summary preserve the raw evidence and validation. Cases 2-6 remain unattempted; the next step is a small case 2 experiment after checkpointing the sample.
+
 ## Discussion
 
 The resource limit is unified memory shared with the operating system and other applications. A sub-4-GB file is not proof of a safe runtime fit. Quantization, sampling settings, output caps, prompt design, and software versions are confounders and must remain explicit. Unigram overlap and headings are weak indicators; fluent output may still invent details or violate continuity.
@@ -82,7 +84,7 @@ The small dataset supports a narrow exploratory task and invites overfitting in 
 
 ## Conclusion placeholder
 
-One coherent output establishes that text-only GPU generation can run after other applications are closed. The sample is too small to establish dataset quality or stable full-run resource use. Further baseline measurements and manual review remain pending. Later-case conclusions remain empty until their experiments are performed.
+One coherent output establishes that text-only GPU generation can run after other applications are closed. The sample is too small to establish dataset quality or stable full-run resource use. The completed ten-scene CPU sample exposes frequent truncation, repetition, and scene-fidelity failures. Full-set measurements remain pending. Later-case conclusions remain empty until their experiments are performed.
 
 ## Sources and reproducibility
 

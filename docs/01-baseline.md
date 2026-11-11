@@ -193,3 +193,21 @@ Manual inspection: index 57 retains all four named cats on one rooftop and assig
 Across seven CPU scenes, four are capped, mean input time is 112.981 seconds, and mean unigram F1 is 0.22293. Estimated time is 18.83 minutes for ten or 4.71 hours for 150, excluding loading; these remain extrapolations rather than measured full-run durations. Cases 2-6 remain unattempted.
 
 Raw evidence: `results/baseline-cpu-continuation-03.runtime.log`, `results/baseline-cpu-probe.attempt-20261111T173657628480Z.metadata.json`, and the appended JSONL rows. The cumulative summary was refreshed after checking the dataset hash, all seven source strings and recomputed metrics, unique indexes, successful attempt completion, and byte preservation of previous evidence. No code or dependencies changed. Next: complete the three remaining fixed-sample scenes in a bounded continuation before moving to case 2.
+
+### 2026-11-11 17:43 UTC: fixed CPU sample completed
+
+The unchanged resume command with `--max-new-rows 3` completed indexes 70, 108, and 139. All ten fixed-sample scenes are now saved; prior CPU rows and original GPU output/metadata remain byte-identical.
+
+| Index | Wall seconds | Evaluated generation tokens | Generation tokens/s | Output/reference words | Output/reference headings | Unigram F1 | Finish |
+| ---: | ---: | ---: | ---: | --- | --- | ---: | --- |
+| 70 | 126.178 | 920 | 7.727 | 612 / 426 | 7 / 4 | 0.23314 | stop |
+| 108 | 147.191 | 1023 | 7.168 | 687 / 431 | 9 / 4 | 0.18068 | length |
+| 139 | 159.017 | 1023 | 6.625 | 721 / 439 | 8 / 4 | 0.19828 | length |
+
+Load including backend initialization took 8.047 seconds and total attempt time was 440.320 seconds. Peak process RSS was 3,991,896,064 bytes, excluding some Metal allocations. Before-load and after-close readings were normal pressure with 66% and 63% reported free memory. Across 223 samples, minimum free memory was 39%; three samples showed warning pressure during generation. All three inputs started under normal pressure; no critical pressure or below-8% reading occurred. Guards remained unchanged and the model closed normally.
+
+Manual inspection: index 70 keeps Murli's investigation within ordinary actions, but invents binoculars, factory entry, tools, and a leaking-valve discovery. Index 108 retains the dawn lake and faint lights but repeatedly cycles through similar views, ending mid-sentence. Index 139 includes fire and crowd reactions, but its proposed shot of fire consuming Sati conflicts with the requested non-graphic treatment despite its introductory assurance. It too ends mid-field. These are limited observations, not rubric scores.
+
+Across ten CPU scenes, six outputs are capped. Mean input wall time is 122.326 seconds, total completed-input wall time is 1,223.256 seconds (20.39 minutes, excluding loads and failed/unfinished attempts), and mean unigram F1 is 0.21726. A 150-input extrapolation is 5.10 hours excluding loads, not a measured full-set result. The fixed sample establishes a resumable local baseline, with substantial repetition, overlong outputs, and fidelity limitations. It does not establish reliable scene-to-shot quality.
+
+Raw evidence: `results/baseline-cpu-continuation-04.runtime.log`, `results/baseline-cpu-probe.attempt-20261111T174355862948Z.metadata.json`, and appended JSONL rows. The refreshed cumulative summary verifies all ten source strings, recomputed metrics, dataset hash, unique indexes, matching new attempt IDs, successful completion, and preservation of previous raw bytes. No source code or dependencies changed. Cases 2-6 remain unattempted. Next: checkpoint this completed sample, then begin the smallest safe case 2 experiment before committing further hours to full-set inference.
