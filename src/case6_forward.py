@@ -1,8 +1,10 @@
 """Independent NumPy forward pass over unchanged decoded F16 GGUF weights."""
+import argparse
 import gc
 import importlib.metadata
 import json
 import resource
+from pathlib import Path
 import threading
 import time
 
@@ -13,7 +15,7 @@ from baseline import ROOT, check_memory, memory_state
 from case3_acquire import NAME, SHA256, digest
 
 
-def forward(reader, tokens, config, guard):
+def forward(reader, tokens, config, guard, *, f16_inputs=False):
     tensors = {t.name: t for t in reader.tensors}
 
     def weight(name):
@@ -21,6 +23,12 @@ def forward(reader, tokens, config, guard):
         assert tensor.tensor_type.name in ('F16', 'F32')
         # GGUFReader exposes C-order arrays with the GGML dimensions reversed.
         return tensor.data.astype(np.float32)
+
+    def linear(x, name):
+        # F16 GGML CPU dot products round the other operand to F16 too.
+        if f16_inputs:
+            x = x.astype(np.float16).astype(np.float32)
+        return x @ weight(name).T
 
     eps = config['llama.attention.layer_norm_rms_epsilon']
     heads = config['llama.attention.head_count']
@@ -50,9 +58,9 @@ def forward(reader, tokens, config, guard):
         guard('before_block:' + str(layer))
         prefix = f'blk.{layer}.'
         z = norm(x, weight(prefix + 'attn_norm'))
-        q = rope((z @ weight(prefix + 'attn_q').T).reshape(length, heads, dim))
-        k = rope((z @ weight(prefix + 'attn_k').T).reshape(length, kv_heads, dim))
-        v = (z @ weight(prefix + 'attn_v').T).reshape(length, kv_heads, dim)
+        q = rope((linear(z, prefix + 'attn_q')).reshape(length, heads, dim))
+        k = rope((linear(z, prefix + 'attn_k')).reshape(length, kv_heads, dim))
+        v = (linear(z, prefix + 'attn_v')).reshape(length, kv_heads, dim)
         k = np.repeat(k, heads // kv_heads, axis=1)
         v = np.repeat(v, heads // kv_heads, axis=1)
         scores = np.einsum('thd,shd->hts', q, k) / np.sqrt(np.float32(dim))
@@ -60,17 +68,22 @@ def forward(reader, tokens, config, guard):
         probs = np.exp(scores - scores.max(axis=-1, keepdims=True))
         probs /= probs.sum(axis=-1, keepdims=True)
         attention = np.einsum('hts,shd->thd', probs, v).reshape(length, width)
-        x = x + attention @ weight(prefix + 'attn_output').T
+        x = x + linear(attention, prefix + 'attn_output')
         z = norm(x, weight(prefix + 'ffn_norm'))
-        gate = z @ weight(prefix + 'ffn_gate').T
-        up = z @ weight(prefix + 'ffn_up').T
-        x = x + ((gate / (1 + np.exp(-gate))) * up) @ weight(prefix + 'ffn_down').T
-    return norm(x, weight('output_norm')) @ embedding.T
+        gate = linear(z, prefix + 'ffn_gate')
+        up = linear(z, prefix + 'ffn_up')
+        x = x + linear((gate / (1 + np.exp(-gate))) * up, prefix + 'ffn_down')
+    return linear(norm(x, weight('output_norm')), 'token_embd')
 
 
 def main():
-    path = ROOT / 'results/case6-forward.json'
-    output = ROOT / 'results/case6-forward-logits.npz'
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--f16-inputs', action='store_true',
+                        help='Round linear operands to F16 before float32 accumulation')
+    args = parser.parse_args()
+    stem = 'case6-forward-f16-inputs' if args.f16_inputs else 'case6-forward'
+    path = ROOT / f'results/{stem}.json'
+    output = ROOT / f'results/{stem}-logits.npz'
     if path.exists() or output.exists():
         raise FileExistsError('Forward evidence already exists')
     start = time.perf_counter()
@@ -79,6 +92,9 @@ def main():
     source = ROOT / 'models' / NAME
     result = dict(source_sha256=SHA256, reference_sha256=digest(reference_path),
                   numpy_version=importlib.metadata.version('numpy'),
+                  f16_linear_inputs=args.f16_inputs,
+                  implementation_sha256=digest(Path(__file__)),
+                  cpu_source_sha256=digest(ROOT / 'results/case6-cpu-source.c'),
                   implementation='NumPy float32, full 30-block decoded F16 source; causal full-sequence attention; no KV cache',
                   memory_samples=[], acceptance=reference['acceptance'])
     stop, critical = threading.Event(), threading.Event()
@@ -124,7 +140,7 @@ def main():
             result['token_ids'] = tokens
             check_memory(sample('before_input'))
             begin = time.perf_counter()
-            logits = forward(reader, tokens, config, guard)
+            logits = forward(reader, tokens, config, guard, f16_inputs=args.f16_inputs)
             result['forward_seconds'] = time.perf_counter()-begin
             guard('after_forward')
             assert logits.shape == expected.shape and np.isfinite(logits).all()

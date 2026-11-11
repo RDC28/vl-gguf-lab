@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/rohit/.treehouse/vl-gguf-lab-5389dd/1/vl-gguf-lab/src/case6_forward.py", line 177, in <module>
+    main()
+  File "/Users/rohit/.treehouse/vl-gguf-lab-5389dd/1/vl-gguf-lab/src/case6_forward.py", line 95, in main
+    implementation_sha256=digest(__file__),
+                          ^^^^^^^^^^^^^^^^
+  File "/Users/rohit/.treehouse/vl-gguf-lab-5389dd/1/vl-gguf-lab/src/case3_acquire.py", line 20, in digest
+    with path.open('rb') as source:
+         ^^^^^^^^^
+AttributeError: 'str' object has no attribute 'open'

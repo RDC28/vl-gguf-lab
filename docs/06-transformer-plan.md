@@ -80,3 +80,24 @@ Before implementation, the pinned [Llama graph](https://github.com/ggml-org/llam
 **The declared numerical criterion failed.** Matching argmax IDs does not establish parity. The criterion remains unchanged; the underlying cause is unresolved. The custom path performs float32 matrix arithmetic on decoded weights, while reference kernel precision and accumulation behavior have not yet been matched. Position zero also differs (maximum error 0.14151), so positional rotation alone cannot explain all error. Investigate runtime matrix arithmetic and intermediate activations before claiming parity; do not attribute this to quantization without measurements. No repair or tolerance adjustment was attempted after observing the result in this iteration.
 
 Raw custom logits, their hash, reference metadata hash, per-position errors, timing and memory evidence are in `results/case6-forward*`. All 37 readings showed normal pressure and at least 70% reported free memory. Arrays/readers were released and the watcher joined; RSS omits some unified-memory use and sampling can miss transients. The original source and reference evidence remain unchanged. Training, generation and tokenizer reconstruction remain pending. Case 6 is a measured partial attempt, not completed parity or training.
+
+
+### 2026-11-11: bounded F16 operand-rounding diagnosis
+
+The pinned [CPU matrix implementation](https://github.com/ggml-org/llama.cpp/blob/0c1e57098bba43ac29e6e3b677cdceebdd22334f/ggml/src/ggml-cpu/ggml-cpu.c) declares F16 dot-product operands for F16 weights and converts the other operand in its generic matrix path. The file also has tiled and alternative dispatch paths, so this source inspection alone does not identify the exact kernel used by the saved reference. The exact source is retained in `results/case6-cpu-source.c`, SHA256 `94e4c599aa8e6a0e047b1e4a40830cd5b54a5e0bc773acaccd3be2d4702caf39`.
+
+A single diagnostic variant, `.venv/bin/python src/case6_forward.py --f16-inputs`, rounds inputs of every learned linear projection (including tied output projection) to F16, then converts back to F32 for NumPy accumulation. Norms, attention arithmetic, source weights, tokens and the predeclared acceptance criterion remain unchanged. This is a controlled arithmetic hypothesis, not an exact runtime kernel reproduction. It writes separate exclusive-create evidence; original logits/measurements remain unchanged. A startup path-type error occurred before loading and was corrected; its traceback is retained in `case6-forward-f16-inputs-startup-error.runtime.log`.
+
+| Measurement | Original F32 inputs | F16-rounded inputs |
+| --- | ---: | ---: |
+| Maximum absolute error | 0.14151001 | 0.15121794 |
+| RMS absolute error | 0.02623361 | 0.03068966 |
+| Outside unchanged tolerance / 245,760 | 170,368 | 188,251 |
+| Argmax agreement | 5/5 | 5/5 |
+| Forward seconds | 0.30590 | 0.31204 |
+
+**Operand rounding alone does not resolve the mismatch.** No parity is claimed. Further diagnosis needs intermediate activation or runtime-dispatch evidence, rather than more unverified arithmetic substitutions. Training remains pending.
+
+`results/case6-forward-f16-inputs*` preserves raw logits, hashes, implementation hash and measurements. Total work was 1.70621 seconds, peak process RSS 716,668,928 bytes, and all 36 memory readings showed normal pressure with 70% reported free before/during/after. RSS excludes some unified-memory use and samples can miss transients. No reference model was loaded; custom arrays/readers and watcher were released before process exit. This iteration performs no further hypothesis search or training.
+
+Validation: raw-logit metrics and provenance hashes were independently recomputed; the default F32-input implementation reproduced its original saved logits exactly. All prior tracked results remain byte-identical. Python compilation, notebook schema/code syntax, dependency compatibility (131 packages) and diff whitespace checks passed. All experiment processes exited; no servers or background models were started.
