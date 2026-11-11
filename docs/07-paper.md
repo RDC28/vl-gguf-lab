@@ -93,6 +93,8 @@ Case 2's fixed saved adapter completed the identical-settings 15-scene held-out 
 
 Case 3 preparation acquired a separate SmolLM2-135M F16 GGUF from `bartowski/SmolLM2-135M-Instruct-GGUF` at revision `09816acd5d99df7be770d85ea30822623dab342c`. The 270,885,952-byte artifact matches upstream SHA256 `f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57`. Read-only inspection records 272 tensors (211 F16, 61 F32), 134,515,008 stored elements, and a 30-block Llama architecture. Every tensor and metadata value has an inventory hash. Acquisition/inventory took 14.788 seconds with 494,092,288-byte peak process RSS and normal before/after pressure at 69%/68% free. These are acquisition measurements, not inference memory or performance. The predeclared first edit scales the existing 576-element F32 block-zero attention norm by 1.01, after a no-change rewrite control. No rewrite, edit, load or output comparison has run; case 3 remains incomplete. Case 3 records provenance, primary sources, and limitations; cases 4-6 remain unattempted.
 
+The case 3 no-change GGUFWriter control is now verified byte-identical to its immutable 270,885,952-byte source, with matching full-file SHA256, all 272 tensor hashes and all 36 reader fields. Rewrite and verification took 5.110 seconds (0.199 seconds writing), with 909,770,752-byte peak process RSS, normal pressure at all 276 phase/tensor snapshots and at least 68% reported free memory. Snapshots are not continuous monitoring and RSS omits some unified-memory allocations. This verifies serialization preservation only; no inference or tensor perturbation ran. Raw measurements are in `results/case3-rewrite*`; case 3 remains incomplete.
+
 ## Discussion
 
 The resource limit is unified memory shared with the operating system and other applications. A sub-4-GB file is not proof of a safe runtime fit. Quantization, sampling settings, output caps, prompt design, and software versions are confounders and must remain explicit. Unigram overlap and headings are weak indicators; fluent output may still invent details or violate continuity.
@@ -101,7 +103,7 @@ The small dataset supports a narrow exploratory task and invites overfitting in 
 
 ## Conclusion placeholder
 
-One coherent output establishes that text-only GPU generation can run after other applications are closed. The sample is too small to establish dataset quality or stable full-run resource use. The completed ten-scene CPU sample exposes frequent truncation, repetition, and scene-fidelity failures. Full-set measurements remain pending. The tiny case 2 LoRA workflow completed safely but did not establish useful shot structure or semantic improvement. Case 3 has acquisition/inventory evidence only; its execution and cases 4-6 remain pending.
+One coherent output establishes that text-only GPU generation can run after other applications are closed. The sample is too small to establish dataset quality or stable full-run resource use. The completed ten-scene CPU sample exposes frequent truncation, repetition, and scene-fidelity failures. Full-set measurements remain pending. The tiny case 2 LoRA workflow completed safely but did not establish useful shot structure or semantic improvement. Case 3 has acquisition/inventory and byte-identical rewrite evidence; inference, perturbation and cases 4-6 remain pending.
 
 ## Sources and reproducibility
 

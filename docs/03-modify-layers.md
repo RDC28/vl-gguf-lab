@@ -2,7 +2,7 @@
 
 ## Goal
 
-Measure how a controlled change to existing layer weights changes loading, memory, speed, and output quality. Preserve the number of blocks and the original downloads. Small-artifact acquisition and inventory are complete; editing and inference remain pending.
+Measure how a controlled change to existing layer weights changes loading, memory, speed, and output quality. Preserve the number of blocks and the original downloads. Small-artifact acquisition, inventory and a byte-identical no-change rewrite are complete; editing and inference remain pending.
 
 ## Method
 
@@ -49,3 +49,11 @@ Sources: [pinned conversion repository](https://huggingface.co/bartowski/SmolLM2
 The GGUF specification and gguf-py project linked above were consulted on 2026-11-11. The inference architecture reference is [llama.cpp Qwen2-VL](https://github.com/ggml-org/llama.cpp/blob/master/src/models/qwen2vl.cpp). Proposed experimental controls are project plans, not claims of upstream support.
 
 Validation: independent full-file and per-tensor/metadata hash rechecks, preservation of all prior tracked results and the original manifest, Python compilation, notebook schema/code checks, dependency compatibility (131 packages), exactly seven main docs and diff whitespace checks passed. No background processes were started.
+
+### 2026-11-11: no-change rewrite control verified
+
+`src/case3_rewrite.py` used gguf 0.19.0 GGUFWriter to write `models/SmolLM2-135M-Instruct-control.gguf`, preserving metadata value types (including array element types), tensor order, shapes and data types. It refuses existing output/evidence paths. A fresh read verified all 272 tensor hashes and 36 reader fields (33 metadata entries plus three GGUF header fields) against the source; the source inventory also matched the saved acquisition evidence. The complete rewritten file is byte-identical: 270,885,952 bytes and SHA256 `f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57`. The original was rehashed and remains unchanged. No packed quantized data was edited.
+
+Total rewrite/verification time was 5.110 seconds, including 0.199 seconds writing. Peak process RSS was 909,770,752 bytes. All 276 phase/tensor-boundary snapshots showed normal pressure; reported free memory was at least 68%. These are snapshots rather than continuous monitoring, and RSS excludes some unified-memory allocations. No model was loaded or background process started. Raw evidence: `results/case3-rewrite.json` and `results/case3-rewrite.runtime.log`.
+
+This establishes serialization preservation, not an observed inference comparison. Next, run original/control fixed-prompt inference sequentially, then create the predeclared 1.01 norm perturbation and compare outputs. Case 3 remains incomplete. Implementation followed the [upstream GGUFWriter source](https://github.com/ggml-org/llama.cpp/blob/master/gguf-py/gguf/gguf_writer.py), consulted on 2026-11-11, and the installed pinned implementation.
