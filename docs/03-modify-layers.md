@@ -2,7 +2,7 @@
 
 ## Goal
 
-Measure how a controlled change to existing layer weights changes loading, memory, speed, and output quality. Preserve the number of blocks and the original downloads. Small-artifact acquisition, inventory and a byte-identical no-change rewrite are complete; source/control inference is verified; the norm edit is serialized and verified, with edited-model inference pending.
+Measure how a controlled change to existing layer weights changes loading, memory, speed, and output quality. Preserve the number of blocks and the original downloads. The tiny F16 artifact experiment is complete: the no-change control preserves bytes and text, and the verified norm edit loads safely with unchanged text on the fixed smoke input.
 
 ## Method
 
@@ -89,3 +89,25 @@ Fresh-reader verification found exactly one changed tensor, 271 byte-identical u
 Write time was 0.208 seconds; total rewrite/verification took 4.923 seconds. Process peak RSS was 909,721,600 bytes. All 276 phase/tensor snapshots showed normal pressure and at least 69% reported free memory. Snapshots are not continuous monitoring; RSS excludes some unified-memory allocations. No inference model or background process started. Raw measurements and hashes are in `results/case3-perturb.json` and its runtime log.
 
 Case 3 remains incomplete: the edited file has not loaded or generated output. Next, compare its load and fixed index-6 smoke output with `results/case3-control.json`, using identical CPU/settings/prompt and the same memory guards. No behavior or quality change is established by the artifact edit alone.
+
+
+### 2026-11-11: edited-model inference completed
+
+`.venv/bin/python src/case3_control.py --edited` loaded the verified norm101 artifact with exactly the saved original/control settings, scene index 6, system prompt, embedded template and runtime version/system information. The script checks these against saved control evidence before generation; evidence hashes bind the comparison to that control and edit manifest. It refuses an existing result path. No original/control inference was rerun, and no reference entered the prompt. The original and edited file hashes were rechecked after model closure.
+
+| Measurement | Saved original | Norm scaled by 1.01 |
+| --- | ---: | ---: |
+| Constructor seconds | 0.08589 | 0.08371 |
+| Input wall seconds | 0.94285 | 0.94162 |
+| Prompt / generation evaluation tokens | 74 / 127 | 74 / 127 |
+| Generation evaluation seconds | 0.83345 | 0.82898 |
+| Peak process RSS bytes | 460,947,456 | 462,782,464 |
+| Output words / SHOT headings | 66 / 0 | 66 / 0 |
+| Unigram F1 | 0.08560 | 0.08560 |
+| Finish reason | length | length |
+
+The edited output is byte-for-byte equal to the original and no-change control output. All repeat the scene title rather than producing useful shots; no improvement or degradation is observed on this one prompt. Identical greedy text does not imply identical logits or absence of effects on other prompts. Small timing differences from single runs under uncontrolled cache/thermal conditions do not establish a speed change. The file size remains unchanged at 270,885,952 bytes.
+
+Edited inference plus checks took 1.578 seconds. All six phase/periodic memory readings were normal pressure with 69% reported free, including before load, before input, during generation and after close. Existing guards were unchanged. RSS excludes some unified-memory allocations; sampling can miss transients. The model closed explicitly, its watcher joined and the process exited. Raw output, settings, source-evidence hashes, measurements and comparison metrics are in `results/case3-edited.json`; runtime logging is preserved in `results/case3-edited.runtime.log`.
+
+Case 3 is complete as a modest tiny text-model tensor-edit demonstration, not a 7B VL edit, logit-parity test or broad quality evaluation. Cases 4-6 remain unattempted. Validation independently rechecked the artifact inventories, exact prescribed edit, saved evidence hashes and output/metric equality; Python compilation, notebook schema/code checks, dependency compatibility and diff whitespace checks passed.

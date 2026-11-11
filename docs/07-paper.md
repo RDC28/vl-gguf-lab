@@ -4,7 +4,7 @@ Draft paper skeleton, 2026-11-11. Observed setup facts are distinguished from pl
 
 ## Abstract
 
-We investigate whether a compact, locally executed vision-language model can generate useful shot breakdowns from short text scene descriptions on an 8 GB Apple Silicon MacBook Air. The supplied dataset contains 150 text input/output pairs. The initial candidate is an Unsloth Qwen2.5-VL-7B-Instruct Q3_K_M GGUF language file under 4 GB. The planned sequence covers untrained inference, adapter fine-tuning, weight modification, block addition, block removal, and reconstruction/training with our own implementation. The current implementation covers baseline inference and resumable evidence collection. The first GPU output completed in 143.8 seconds at 6.46 evaluation tokens/s; all ten fixed CPU sample outputs have completed, six capped, with transient warning pressure in recent attempts; case 2 has a tiny text-model baseline and 20 LoRA updates, with a completed held-out re-test; case 3 has a byte-identical small GGUF rewrite and matching source/control smoke outputs, and a verified norm edit on disk, while edited-model inference and cases 4-6 remain pending. The text-only dataset cannot support conclusions about vision performance.
+We investigate whether a compact, locally executed vision-language model can generate useful shot breakdowns from short text scene descriptions on an 8 GB Apple Silicon MacBook Air. The supplied dataset contains 150 text input/output pairs. The initial candidate is an Unsloth Qwen2.5-VL-7B-Instruct Q3_K_M GGUF language file under 4 GB. The planned sequence covers untrained inference, adapter fine-tuning, weight modification, block addition, block removal, and reconstruction/training with our own implementation. The current implementation covers baseline inference and resumable evidence collection. The first GPU output completed in 143.8 seconds at 6.46 evaluation tokens/s; all ten fixed CPU sample outputs have completed, six capped, with transient warning pressure in recent attempts; case 2 has a tiny text-model baseline and 20 LoRA updates, with a completed held-out re-test; case 3 completed a byte-identical small GGUF control and a verified norm edit that loaded safely with unchanged fixed-prompt text; cases 4-6 remain pending. The text-only dataset cannot support conclusions about vision performance.
 
 ## Research questions
 
@@ -57,7 +57,7 @@ Decode tensor/configuration facts, implement operations, compare intermediate va
 | --- | --- | --- |
 | 1 | One GPU output completed; resumed GPU probe stopped safely before generation; CPU-only fixed sample has 10 of 10 scenes completed, six capped; latest attempt had transient warning pressure | results/baseline.jsonl; case 1 findings |
 | 2 | Split frozen (120/15/15); pinned 135M text model loaded; 20 LoRA updates and paired 15-scene before/after test completed; all after-outputs capped | results/case2-split.json; case 2 findings |
-| 3 | Byte-identical rewrite, sequential source/control inference and norm edit verified; edited-model inference pending | results/case3-control.json; case 3 findings |
+| 3 | Tiny F16 tensor-edit experiment completed; norm edit loads with unchanged fixed-prompt text versus original/control | results/case3-edited.json; case 3 findings |
 | 4 | Not run | Future findings in case 4 |
 | 5 | Not run | Future findings in case 5 |
 | 6 | Not run | Future findings in case 6 |
@@ -99,6 +99,8 @@ The original and no-change small GGUF now also loaded sequentially on CPU and pr
 
 The predeclared case 3 edit is now serialized: float32 scaling of the 576-element block-zero attention norm by 1.01 changed exactly that tensor, preserving all 271 unrelated tensors and all metadata. The 270,885,952-byte edited file has SHA256 `336f76366de192df5dc66185ea0caf98b00a1b75ba03d9089aa4dd481358b49e`; the original remains unchanged. Rewrite/verification took 4.923 seconds with 909,721,600-byte peak RSS; all 276 snapshots were normal pressure with at least 69% free. These snapshots and RSS omit some memory behavior. Raw edit hashes/statistics are in `results/case3-perturb*`. No edited-model inference ran, so load behavior and output changes remain unmeasured and case 3 remains incomplete.
 
+Case 3 completed edited-model inference with the same CPU settings, template, scene and 128-token cap as its saved control. The 1.01 block-zero attention-norm scaling produced exactly unchanged text: 66 words, zero SHOT headings, unigram F1 0.08560 and a length stop. The output still repeats the scene title. Edited constructor/input time was 0.08371/0.94162 seconds, with 74 prompt and 127 generation evaluations; total checks/run took 1.578 seconds. Peak process RSS was 462,782,464 bytes, excluding some unified-memory allocations. All six phase/periodic readings were normal with 69% free. The original hash remains unchanged and the edited size is unchanged. The model closed and watcher joined. This completes a tiny text-model edit workflow with no measured text effect on one prompt, not proof of equal logits, broad robustness, quality improvement or a 7B VL result. `results/case3-edited*` preserves raw evidence and links to the saved control/edit manifests. Cases 4-6 remain unattempted.
+
 ## Discussion
 
 The resource limit is unified memory shared with the operating system and other applications. A sub-4-GB file is not proof of a safe runtime fit. Quantization, sampling settings, output caps, prompt design, and software versions are confounders and must remain explicit. Unigram overlap and headings are weak indicators; fluent output may still invent details or violate continuity.
@@ -107,7 +109,7 @@ The small dataset supports a narrow exploratory task and invites overfitting in 
 
 ## Conclusion placeholder
 
-One coherent output establishes that text-only GPU generation can run after other applications are closed. The sample is too small to establish dataset quality or stable full-run resource use. The completed ten-scene CPU sample exposes frequent truncation, repetition, and scene-fidelity failures. Full-set measurements remain pending. The tiny case 2 LoRA workflow completed safely but did not establish useful shot structure or semantic improvement. Case 3 has acquisition/inventory, byte-identical rewrite and matching smoke inference evidence; edited-model inference and cases 4-6 remain pending.
+One coherent output establishes that text-only GPU generation can run after other applications are closed. The sample is too small to establish dataset quality or stable full-run resource use. The completed ten-scene CPU sample exposes frequent truncation, repetition, and scene-fidelity failures. Full-set measurements remain pending. The tiny case 2 LoRA workflow completed safely but did not establish useful shot structure or semantic improvement. Case 3 completed a controlled tiny F16 norm edit with unchanged fixed-prompt text; cases 4-6 remain pending.
 
 ## Sources and reproducibility
 
