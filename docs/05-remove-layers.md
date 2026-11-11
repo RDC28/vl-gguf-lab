@@ -2,7 +2,7 @@
 
 ## Goal
 
-Measure the size/speed/quality trade-off from reducing decoder depth while preserving a valid model artifact. Planning only in this task.
+Measure the size/speed/quality trade-off from reducing decoder depth while preserving a valid model artifact. The first bounded experiment uses the tiny F16 text model from case 3.
 
 ## Method
 
@@ -33,7 +33,27 @@ Depth reduction can break factual recall, instruction following, and vision-lang
 
 ## Findings
 
-Not run. Reserved: ranking method, calibration split hash, removed indexes, metadata changes, output hashes, load behavior, speed/memory, and quality deterioration. No layers have been removed.
+### 2026-11-11: verified fixed interior-block removal
+
+Before any pruned-output inspection, `src/case5_remove.py` fixes original block 15 for removal from the immutable case 3 SmolLM2-135M F16 GGUF. This is a simple damage control, without activation ranking, calibration, recovery training or held-out score selection. Original blocks 0-14 retain their indexes; original blocks 16-29 become new blocks 15-28. Embeddings, output norm and tokenizer remain unchanged. No Qwen VL weights are removed.
+
+The pinned [Llama runtime source](https://github.com/ggml-org/llama.cpp/blob/0c1e57098bba43ac29e6e3b677cdceebdd22334f/src/models/llama.cpp), inspected before coding, constructs tensors and residual blocks by declared layer count and index. An unrecognized depth is labeled unknown model type; this alone does not prove loading succeeds. This artifact has homogeneous attention/FFN shapes and no per-layer position metadata requiring adjustment. Actual runtime loading is the next check.
+
+| Measurement | Observed |
+| --- | --- |
+| Source | Case 3 immutable 30-block F16 artifact, SHA256 `f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57` |
+| Output | `models/SmolLM2-135M-Instruct-minus1.gguf` |
+| Output SHA256 | `391046ca968852f26f72402386b5732f562fb37719e660d031c6f460629964c4` |
+| Blocks / tensors | 30 / 272 before; 29 / 263 after |
+| Removed | Nine block-15 tensors, 3,540,096 elements, 7,082,496 tensor bytes |
+| File bytes | 263,802,944, a reduction of 7,083,008 (2.61%) |
+| Metadata | Only `llama.block_count` and header tensor count changed; 34 other fields preserved |
+| Retained tensor verification | All 263 names mapped, with matching shapes, types and byte hashes |
+| Rewrite / total verification time | 0.199 / 5.263 seconds |
+| Peak process RSS | 903,086,080 bytes |
+| Memory readings | 267 snapshots, all normal pressure; minimum 70% reported free |
+
+Run: `.venv/bin/python src/case5_remove.py > results/case5-remove.runtime.log 2>&1`. The script refuses to overwrite artifacts/evidence and rechecks the original full-file hash after writing. It uses gguf 0.19.0 and the existing memory guard. `results/case5-remove.json` preserves the complete index/tensor map, removed tensor inventory, hashes and memory readings. Phase/tensor snapshots are not continuous monitoring, and RSS excludes some unified-memory allocations. No model was loaded and no training ran. Loading, outputs and inference timing remain unmeasured, so case 5 is incomplete and no efficiency or quality improvement is claimed.
 
 ## Sources consulted
 
