@@ -159,3 +159,20 @@ Manual inspection: row 22 asks for exact costume/location continuity with a prev
 All three CPU outputs are capped. Mean input wall time is 124.848 seconds, mean unigram F1 is 0.20855, and an extrapolation is 20.81 minutes for ten inputs or 5.20 hours for 150, excluding loading. This replaces the one-row CPU estimate; the full dataset duration remains unmeasured. Generation throughput declined across these observations, but no thermal measurements were collected and no cause is established.
 
 `results/baseline-cpu-sample-summary.json` records the cumulative metrics and remaining indexes. Validation checked unique indexes, dataset hash/source strings, recomputed metrics, and successful attempt completion. Existing GPU output/metadata and the earlier CPU row/attempts remain unchanged. Next: resume the same output/configuration for the remaining seven fixed-sample indexes before deciding how much full-set inference fits alongside cases 2-6.
+
+### 2026-11-11 17:26 UTC: second two-row CPU continuation
+
+The same resume command and unchanged settings appended only indexes 28 and 35. Prior CPU rows remain byte-identical. The fixed sample now contains five completed scenes; indexes 57, 62, 70, 108, and 139 remain.
+
+| Index | Wall seconds | Evaluated generation tokens | Generation tokens/s | Output/reference words | Output/reference headings | Unigram F1 | Finish |
+| ---: | ---: | ---: | ---: | --- | --- | ---: | --- |
+| 28 | 83.654 | 692 | 9.001 | 466 / 428 | 6 / 4 | 0.24161 | stop |
+| 35 | 118.406 | 680 | 5.923 | 458 / 450 | 6 / 4 | 0.25330 | stop |
+
+These are the first naturally stopped CPU outputs; neither hit the generation cap. Load including backend initialization took 9.127 seconds (8.881 seconds constructor), and the attempt lasted 211.060 seconds. Peak process RSS was 3,969,187,840 bytes, which does not include all Metal allocations. Reported free memory was 68% before load, a minimum 36% during sampling, and 62% after closing. Across 108 samples, ten recorded warning pressure level 2 during generation; none recorded critical pressure level 4 or free memory below 8%. Both before-input guards observed normal pressure (42% free for index 28, 60% for index 35). Thus the existing policy permitted completion without being weakened. Pressure returned to normal after each input and after closing. These warnings qualify the earlier CPU observations of consistently normal pressure; safe headroom remains dependent on system conditions.
+
+Manual inspection: index 28 depicts shyness followed by confidence, but never explicitly calls action, introduces possible singing, and invents a bow and exit. Index 35 retains the café power cut but does not allocate the requested 15 seconds, keeps essentially one framing across six headings, and invents phone checking and power restoration. Natural stopping is not evidence of scene fidelity or useful distinct shot coverage.
+
+Across five CPU scenes, three are capped, mean input wall time is 115.321 seconds, and mean unigram F1 is 0.22411. The updated extrapolation is 19.22 minutes for ten inputs or 4.81 hours for 150, excluding load; full-set duration remains unmeasured. Row 35's lower throughput has no established cause because thermals and competing system activity were not measured.
+
+Raw evidence: `results/baseline-cpu-continuation-02.runtime.log`, `results/baseline-cpu-probe.attempt-20261111T172633499026Z.metadata.json`, and appended `results/baseline-cpu-probe.jsonl` rows. The cumulative summary was refreshed after verifying source strings, dataset hash, unique indexes, recomputed metrics, matching attempt IDs, successful attempt completion, and preservation of earlier CPU bytes and original GPU output/metadata. The inference process exited normally and closed its model. No code or dependency changed. Next: continue the five missing fixed-sample scenes in bounded slices, then checkpoint case 1 before cases 2-6.
