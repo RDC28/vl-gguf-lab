@@ -114,3 +114,31 @@ The actual command was `.venv/bin/python src/baseline.py --resume --max-new-rows
 The baseline still contains only one completed row. Neither its raw bytes nor its original metadata were changed. This retry shows that 70% free before loading alone does not guarantee safe full-GPU inference. The next bounded experiment should use the same immutable 7B Q3 file with `--n-gpu-layers 0`, a separate output path, and `--max-new-rows 1`; CPU results must remain separate. No CPU speed or safe fit is established yet. The original one-row full-set estimate remains provisional.
 
 Validation: real CLI reproduction of the existing-file refusal preceded the change. CLI checks reject mismatched settings, duplicate indexes, and incomplete trailing rows without modifying evidence; an already-completed selection exits without model loading. Temporary synthetic fixtures were removed. Notebook schema/code-cell checks, Python compilation, dependency compatibility (`uv pip check`, 106 packages), and diff whitespace checks passed. `results/resume-validation.json` records these checks. Successful appended generation remains to be exercised once a configuration passes the memory guard.
+
+### 2026-11-11 17:15 UTC: CPU-only configuration probe
+
+The same SHA256-verified immutable 7B Q3_K_M file completed a CPU-only probe with `.venv/bin/python src/baseline.py --output results/baseline-cpu-probe.jsonl --n-gpu-layers 0 --max-new-rows 1`. All other settings and the prompt remained unchanged. The separate CPU sample starts at row 6, allowing a configuration comparison with the existing GPU output. This is not an additional unique scene and does not increase the GPU sample count. References remained outside the prompt. The runtime confirms zero of 29 layers offloaded, mmap enabled, a 3,199.93 MiB CPU-mapped model buffer, a 1,675.20 MiB CPU repack buffer, and a 112 MiB CPU KV buffer. Buffer sizes are not additive resident-memory measurements.
+
+| Measurement | CPU probe |
+| --- | ---: |
+| Load including backend initialization | 4.256 seconds |
+| Constructor alone | 3.997 seconds |
+| Input wall time | 114.320 seconds |
+| Prompt evaluation | 72 tokens / 6.151 seconds |
+| Generation evaluation | 1,023 tokens / 107.301 seconds |
+| Generation evaluation throughput | 9.534 tokens/s |
+| Peak process RSS | 4,330,668,032 bytes |
+| Free before / minimum sampled / after close | 68% / 42% / 68% |
+| Highest pressure across 60 samples | 1 (normal) |
+| Output / reference words | 704 / 448 |
+| Output / reference SHOT headings | 8 / 4 |
+| Unigram F1 | 0.22396 |
+| Finish reason | length |
+
+The CPU output retains the characters, tea stall, and nervous speech, but invents confusion and frustration for Zain. Shots 5-7 substantially repeat shots 2-4, and shot 8 ends mid-description at the generation cap. The CPU and GPU outputs differ despite greedy settings; no numerical parity or quality advantage is claimed. The CPU throughput exceeded the earlier GPU measurement under uncontrolled thermal/cache and operating-system conditions, with different generated text and token counts. One run does not establish a general CPU speed advantage. RSS remains a process measure, not all unified-memory allocations.
+
+Raw output, runtime log, and timestamped metadata use the `results/baseline-cpu-probe` stem; `results/baseline-cpu-comparison.json` records validated metrics and output hashes. The process exited normally and closed the model. The original GPU row and metadata remain unchanged. At this CPU input wall time, 10 inputs would take about 19 minutes and 150 about 4.76 hours plus loading, an extrapolation from one capped input rather than measured dataset duration.
+
+The next bounded step is to resume this separate CPU sample for its nine missing indexes using `--resume --n-gpu-layers 0` and the same output path, with a bounded row count. This successful safe probe provides no reason to download the 3B fallback yet. Cases 2-6 remain unattempted.
+
+A follow-up resume validation mistakenly used `--limit 1`, which draws a new seed-42 sample (index 28), rather than selecting the first member of the ten-row sample. It started inference and was deliberately SIGINT-stopped without completing a row; its separate attempt metadata preserves `KeyboardInterrupt` and memory readings. This was a validation-command mistake, not a memory failure. Keep `--limit 10` (the default) and use `--max-new-rows` to bound continuation. No runtime log was redirected for this interrupted validation attempt.
