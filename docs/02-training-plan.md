@@ -1,6 +1,6 @@
 # Case 2: train and re-test on a frozen split
 
-Run [02_train_retest.ipynb](../notebooks/02_train_retest.ipynb). This is a text-model training comparison, separate from the VL GGUF baseline. The default model is pinned `HuggingFaceTB/SmolLM2-1.7B-Instruct`, loaded in FP16 on CUDA with FP32 LoRA parameters. Query/value projections receive rank-16 LoRA adapters with alpha 32 and no dropout. The small CPU path uses the pinned 135M model and one optimizer step.
+Run [02_train_retest.ipynb](../notebooks/02_train_retest.ipynb). This is a text-model training comparison, separate from the VL GGUF baseline. The default model is pinned `HuggingFaceTB/SmolLM2-1.7B-Instruct`, loaded in FP32 with FP32 LoRA parameters, so backward needs no loss scaling. Query/value projections receive rank-16 LoRA adapters with alpha 32 and no dropout. The small CPU path uses the pinned 135M model and one optimizer step.
 
 `src/freeze_split.py:build()` freezes the committed dataset hash and 120/15/15 train/validation/test partition using input-only manual story groups, exact duplicate detection and lexical similarity. Prior exploratory inputs are forced into training. The same test indexes are used in cases 2-6. Characters and story worlds still cross splits, so this is a small held-out test with limited semantic independence. The validation set remains reserved; the fixed-budget default does not tune on validation or test.
 

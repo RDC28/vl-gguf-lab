@@ -1,5 +1,6 @@
 """Behavioral checks for persistence, scoring, edits, decoder and optimizer recovery."""
 from pathlib import Path
+import shutil
 
 import numpy as np
 import pytest
@@ -57,6 +58,18 @@ def test_storage_resume_and_interrupted_tail(tmp_path):
     with pytest.raises(ValueError, match='differs'):
         Run(1, {'seed': 7}, root=tmp_path, resume=run.path.name)
     assert results_root(local_root=tmp_path) == tmp_path
+
+
+def test_progress_log_reaches_console_during_capture(tmp_path, capsys):
+    run = Run(1, {}, root=tmp_path)
+    with run.capture():
+        print('library noise')
+        run.log('scene 3 completed')
+    console = capsys.readouterr().out
+    assert 'scene 3 completed' in console
+    assert 'library noise' not in console
+    assert 'library noise' in (run.path / 'runtime.log').read_text()
+    assert run.rows('events.jsonl')[-1]['message'] == 'scene 3 completed'
 
 
 def test_metrics_and_evaluation_skip_completed(tmp_path):
@@ -132,7 +145,7 @@ class ToyTokenizer:
 
 def test_training_resume_matches_uninterrupted(tiny_gguf, tmp_path):
     config = dict(seed=42, learning_rate=.001, epochs=1, train_steps=None,
-                  checkpoint_every=1, device='cpu', train_context=16)
+                  checkpoint_every=1, drive_snapshot_every=None, device='cpu', train_context=16)
     data = [{"user's scene description": 'bridge', 'shot breakdown': 'reference'}] * 2
     complete = DecodedTransformer(tiny_gguf)
     initial = {k: v.detach().clone() for k, v in complete.named_parameters()}
@@ -155,3 +168,38 @@ def test_training_resume_matches_uninterrupted(tiny_gguf, tmp_path):
     assert [r['step'] for r in retry_run.rows('training.jsonl')] == [1, 2]
     for a, b in zip(complete.parameters(), fresh.parameters(), strict=True):
         torch.testing.assert_close(a, b, atol=0, rtol=0)
+
+
+def test_training_falls_back_to_drive_snapshot_after_runtime_reset(tiny_gguf, tmp_path, monkeypatch):
+    local = tmp_path / 'local-disk'
+    local.mkdir()
+    monkeypatch.setattr('tempfile.tempdir', str(local))
+    config = dict(seed=42, learning_rate=.001, epochs=1, train_steps=None,
+                  checkpoint_every=1, drive_snapshot_every=1, device='cpu', train_context=16)
+    data = [{"user's scene description": 'bridge', 'shot breakdown': 'reference'}] * 2
+    run = Run(6, config, root=tmp_path / 'drive')
+    append = run.append
+    def crash(name, value):
+        append(name, value)
+        if name == 'training.jsonl' and value['step'] == 2:
+            raise RuntimeError('simulated runtime reset')
+    run.append = crash
+    with pytest.raises(RuntimeError, match='reset'):
+        train(DecodedTransformer(tiny_gguf), ToyTokenizer(), data, [0, 1], config, run, own=True)
+    run.append = append
+    assert (local / 'vl-gguf-lab-checkpoints' / run.path.name / 'checkpoint.pt').exists()
+    assert not (run.path / 'checkpoint.pt').exists()
+    first = torch.load(run.path / 'weights-snapshot.pt', weights_only=True)
+    assert first['step'] == 1
+    assert all(v.dtype == torch.float16 for v in first['parameters'].values())
+    shutil.rmtree(local / 'vl-gguf-lab-checkpoints')
+    resumed = DecodedTransformer(tiny_gguf)
+    result = train(resumed, ToyTokenizer(), data, [0, 1], config, run, own=True)
+    assert result['optimizer_restarted_at_steps'] == [1]
+    assert [r['step'] for r in run.rows('training.jsonl')] == [1, 2]
+    final = torch.load(run.path / 'weights-snapshot.pt', weights_only=True)
+    assert final['step'] == 2 and final['optimizer_restarts'] == [1]
+    for key, value in resumed.named_parameters():
+        torch.testing.assert_close(final['parameters'][key], value.detach().half(), atol=0, rtol=0)
+    assert not (local / 'vl-gguf-lab-checkpoints' / run.path.name).exists()
+    assert train(resumed, ToyTokenizer(), data, [0, 1], config, run, own=True)['optimizer_restarted_at_steps'] == [1]

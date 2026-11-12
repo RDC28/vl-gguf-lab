@@ -97,9 +97,11 @@ class DecodedTransformer(nn.Module):
 
 def parity(model, gguf_path, run):
     """Retain the original tolerance and report failures without relaxing it."""
-    from llama_cpp import Llama
-    reference = Llama(model_path=str(gguf_path), n_ctx=128, n_batch=128,
-                      n_gpu_layers=0, logits_all=True, verbose=False)
+    from llama_cpp import Llama, llama_cpp
+    settings = dict(n_ctx=128, n_batch=128, n_gpu_layers=0, logits_all=True, offload_kqv=False,
+                    op_offload=False, flash_attn=False, type_k=llama_cpp.GGML_TYPE_F32,
+                    type_v=llama_cpp.GGML_TYPE_F32)
+    reference = Llama(model_path=str(gguf_path), verbose=False, **settings)
     try:
         tokens = reference.tokenize(b'The quiet bridge beside the river.', add_bos=True)[:5]
         reference.eval(tokens)
@@ -112,6 +114,7 @@ def parity(model, gguf_path, run):
     error = np.abs(actual.astype(np.float64) - expected)
     acceptance = dict(atol=0.001, rtol=0.001)
     report = dict(token_ids=tokens, acceptance=acceptance,
+                  reference_settings=dict(settings, type_k='GGML_TYPE_F32', type_v='GGML_TYPE_F32'),
                   max_absolute_error=float(error.max()), rms_error=float(np.sqrt((error ** 2).mean())),
                   violating_logits=int((error > acceptance['atol'] + acceptance['rtol'] * np.abs(expected)).sum()),
                   argmax_agreement=float(np.mean(actual.argmax(-1) == expected.argmax(-1))),

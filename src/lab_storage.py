@@ -68,6 +68,7 @@ class Run:
             commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
             atomic_json(self.path / 'environment.json', dict(python=sys.version, platform=platform.platform(),
                                                             packages=packages, commit=commit))
+        self.console = sys.stdout
         self.log('Run opened: ' + str(self.path))
 
     def json(self, name, value):
@@ -99,6 +100,7 @@ class Run:
 
     def log(self, message):
         self.append('events.jsonl', dict(time=datetime.now(timezone.utc).isoformat(), message=message))
+        print(message, file=self.console, flush=True)
 
     @contextmanager
     def capture(self):

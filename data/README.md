@@ -1,6 +1,6 @@
 # Dataset
 
-`dataset.json` is committed in this private repository. It contains 150 text-only pairs copied unchanged from the supplied dataset: `user's scene description` is the input and `shot breakdown` is the reference. References are never included in evaluation prompts. There are no images, so no experiment establishes visual understanding.
+`dataset.json` is committed in this public repository. It contains 150 text-only pairs copied unchanged from the supplied dataset: `user's scene description` is the input and `shot breakdown` is the reference. References are never included in evaluation prompts. There are no images, so no experiment establishes visual understanding.
 
 SHA256: `073bd194bdb79e3ecfcfad51e09f23510ca697431475221b785c369619d7b8cf`.
 

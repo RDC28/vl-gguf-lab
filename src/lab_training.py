@@ -1,6 +1,9 @@
 """Response-only supervised training and identical-settings held-out evaluation."""
 import gc
+from pathlib import Path
 import random
+import shutil
+import tempfile
 import time
 
 import torch
@@ -55,28 +58,35 @@ def load_hf(config):
     from peft import LoraConfig, get_peft_model
     repo, revision = HF_MODELS[config['training_tier']]
     tokenizer = AutoTokenizer.from_pretrained(repo, revision=revision)
-    dtype = torch.float16 if config['device'] == 'cuda' else torch.float32
-    base = AutoModelForCausalLM.from_pretrained(repo, revision=revision, torch_dtype=dtype,
+    base = AutoModelForCausalLM.from_pretrained(repo, revision=revision, torch_dtype=torch.float32,
                                                attn_implementation='sdpa' if config['device'] == 'cuda' else 'eager').to(config['device'])
     model = get_peft_model(base, LoraConfig(r=16, lora_alpha=32, lora_dropout=0,
                                            target_modules=['q_proj', 'v_proj'], task_type='CAUSAL_LM'))
     if config['device'] == 'cuda':
         model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={'use_reentrant': False})
         model.enable_input_require_grads()
-    # Frozen base stays low precision. Master LoRA parameters and optimizer are float32.
-    for p in model.parameters():
-        if p.requires_grad:
-            p.data = p.data.float()
     return model, tokenizer
 
 
+def save(path, value):
+    temporary = path.with_suffix('.partial')
+    torch.save(value, temporary)
+    temporary.replace(path)
+
+
 def train(model, tokenizer, data, indexes, config, run, *, own=False):
-    """Fixed epoch budget, train split only, exact optimizer/RNG resumption."""
+    """Fixed epoch budget, train split only, exact optimizer/RNG resumption from full checkpoints."""
     random.seed(config['seed'])
     torch.manual_seed(config['seed'])
     trainable = {k: p for k, p in model.named_parameters() if p.requires_grad}
     optimizer = torch.optim.AdamW(trainable.values(), lr=config['learning_rate'])
-    checkpoint = run.path / 'checkpoint.pt'
+    snapshot_every = config['drive_snapshot_every']
+    if snapshot_every:
+        checkpoint = Path(tempfile.gettempdir()) / 'vl-gguf-lab-checkpoints' / run.path.name / 'checkpoint.pt'
+        checkpoint.parent.mkdir(parents=True, exist_ok=True)
+    else:
+        checkpoint = run.path / 'checkpoint.pt'
+    snapshot = run.path / 'weights-snapshot.pt'
     schedule = []
     rng = random.Random(config['seed'])
     for _ in range(config['epochs']):
@@ -87,6 +97,7 @@ def train(model, tokenizer, data, indexes, config, run, *, own=False):
         schedule = schedule[:config['train_steps']]
     start_step = 0
     history = []
+    restarts = []
     if checkpoint.exists():
         state = torch.load(checkpoint, map_location='cpu', weights_only=True)
         with torch.no_grad():
@@ -98,6 +109,18 @@ def train(model, tokenizer, data, indexes, config, run, *, own=False):
             torch.cuda.set_rng_state_all(state['cuda_rng'])
         start_step = state['step']
         history = state['history']
+        restarts = state['optimizer_restarts']
+    elif snapshot_every and snapshot.exists():
+        state = torch.load(snapshot, map_location='cpu', weights_only=True)
+        with torch.no_grad():
+            for key, value in state['parameters'].items():
+                trainable[key].copy_(value.to(trainable[key].device))
+        start_step = state['step']
+        history = state['history']
+        restarts = state['optimizer_restarts']
+        if start_step < len(schedule):
+            restarts = restarts + [start_step]
+            run.log(f'Resumed float16 weights from Drive snapshot at step {start_step}; optimizer state restarted')
     # Remove uncommitted log rows after the last durable optimizer checkpoint.
     log_path = run.path / 'training.jsonl'
     log_path.write_text('')
@@ -131,19 +154,25 @@ def train(model, tokenizer, data, indexes, config, run, *, own=False):
         history.append(record)
         run.append('training.jsonl', record)
         del logits, loss
-        if (step + 1) % config['checkpoint_every'] == 0 or step + 1 == len(schedule):
-            temporary = checkpoint.with_suffix('.partial')
-            torch.save(dict(step=step + 1, history=history,
-                            parameters={k: p.detach().cpu() for k, p in trainable.items()},
-                            optimizer=optimizer.state_dict(), rng=torch.get_rng_state(),
-                            cuda_rng=torch.cuda.get_rng_state_all() if config['device'] == 'cuda' else None), temporary)
-            temporary.replace(checkpoint)
+        last = step + 1 == len(schedule)
+        if (step + 1) % config['checkpoint_every'] == 0 or last:
+            save(checkpoint, dict(step=step + 1, history=history, optimizer_restarts=restarts,
+                                  parameters={k: p.detach().cpu() for k, p in trainable.items()},
+                                  optimizer=optimizer.state_dict(), rng=torch.get_rng_state(),
+                                  cuda_rng=torch.cuda.get_rng_state_all() if config['device'] == 'cuda' else None))
             run.log(f'Checkpoint durable at step {step + 1}')
+        if snapshot_every and ((step + 1) % snapshot_every == 0 or last):
+            save(snapshot, dict(step=step + 1, history=history, optimizer_restarts=restarts,
+                                parameters={k: p.detach().half().cpu() for k, p in trainable.items()}))
+            run.log(f'Drive weight snapshot saved at step {step + 1}')
+    if snapshot_every:
+        shutil.rmtree(checkpoint.parent)
     history = run.rows('training.jsonl')
     result = dict(steps=len(history), trainable_parameters=sum(p.numel() for p in trainable.values()),
                   total_supervised_tokens=sum(r['supervised_tokens'] for r in history),
                   sequence_truncation_rate=sum(r['sequence_truncated'] for r in history) / max(1, len(history)),
-                  epochs=config['epochs'], schedule_size=len(schedule), checkpoint_every=config['checkpoint_every'])
+                  epochs=config['epochs'], schedule_size=len(schedule), checkpoint_every=config['checkpoint_every'],
+                  drive_snapshot_every=snapshot_every, optimizer_restarted_at_steps=restarts)
     atomic_json(run.path / 'training-summary.json', result)
     model.eval()
     gc.collect()

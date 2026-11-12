@@ -19,6 +19,7 @@ def configuration(case, smoke=False):
                 context=4096 if smoke else 8192, max_tokens=24 if smoke else 4096,
                 train_context=256 if smoke else 2048, epochs=1 if smoke else 3,
                 train_steps=1 if smoke else None, checkpoint_every=1 if smoke else 10,
+                drive_snapshot_every=(1 if smoke else 120) if case == 6 else None,
                 learning_rate=0.0001, limit=1 if smoke else None,
                 norm_strengths=[1.01] if smoke else [0.9, 1.01, 1.1],
                 edit_layers=[15] if smoke else [0, 15, 29],
@@ -81,7 +82,6 @@ def run_case(case, config, *, resume=None, root=None):
     run = Run(case, config, root=root, resume=resume)
     run.json('split.json', split)
     run.log('Experiment started')
-    print('Saving incrementally to', run.path)
     indexes = list(range(len(data))) if case == 1 else split['indexes']['test']
     if config['limit']:
         indexes = indexes[:config['limit']]
@@ -161,6 +161,7 @@ def run_case(case, config, *, resume=None, root=None):
                       status='completed', path=str(run.path), n_expected=len(indexes))
         if case == 6:
             result['parity'] = json.loads((run.path / 'parity.json').read_text())
+        (run.path / 'failure.json').unlink(missing_ok=True)
         run.json('summary.json', result)
         run.log('Experiment completed')
         return result

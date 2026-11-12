@@ -1,5 +1,6 @@
 """Install pinned notebook dependencies and verify actual CUDA backend support."""
 from pathlib import Path
+import importlib.metadata
 import subprocess
 import sys
 
@@ -12,7 +13,12 @@ def setup(*, smoke=False):
         colab = False
     if colab:
         root = Path(__file__).resolve().parents[1]
+        imported = {name: sys.modules[name].__version__ for name in ('numpy', 'torch') if name in sys.modules}
         subprocess.run([sys.executable, '-m', 'pip', 'install', '-q', '-r', str(root / 'requirements.txt')], check=True)
+        stale = [name for name, version in imported.items() if importlib.metadata.version(name) != version]
+        if stale:
+            raise RuntimeError(', '.join(stale) + ' changed version after being imported. '
+                               'Restart the Colab session and run from the top.')
         if not smoke:
             subprocess.run(['nvidia-smi'], check=True)
             # Official CUDA 12.4 wheel; --only-binary prevents a silent CPU source build.

@@ -1,6 +1,6 @@
 # VL GGUF lab on Google Colab
 
-Six notebooks run six experiments on 150 scene-description / shot-breakdown pairs. The dataset is committed in this private repository; weights download from pinned Hugging Face revisions. All inputs are text. These experiments test the language side of a vision-language model, not image understanding.
+Six notebooks run six experiments on 150 scene-description / shot-breakdown pairs. The dataset is committed in this public repository; weights download from pinned Hugging Face revisions. All inputs are text. These experiments test the language side of a vision-language model, not image understanding.
 
 | Case | One notebook | Full experiment |
 | --- | --- | --- |
@@ -11,7 +11,7 @@ Six notebooks run six experiments on 150 scene-description / shot-breakdown pair
 | 5 | [Remove layers](notebooks/05_remove_layers.ipynb) | F16 control: remove a block at 3 positions |
 | 6 | [Own transformer](notebooks/06_own_transformer.ipynb) | Decode F16 GGUF into our PyTorch decoder, check logits, train and re-test |
 
-Open a notebook and click its **Open in Colab** badge. Select **Runtime > Change runtime type > T4 GPU** or a larger GPU. Add a `GH_TOKEN` with repository read access to Colab Secrets and allow notebook access, since the repo is private. The setup cell clones the repository without storing the token in Git configuration, installs pinned dependencies, checks `nvidia-smi`, and installs the official CUDA llama-cpp-python wheel. If packages were imported before setup, restart the Colab session and run from the top. A missing CUDA backend raises an error instead of silently running the full experiment on CPU.
+Open a notebook and click its **Open in Colab** badge. Select **Runtime > Change runtime type > T4 GPU** or a larger GPU. The setup cell clones the public repository anonymously over HTTPS, installs pinned dependencies, checks `nvidia-smi`, and installs the official CUDA llama-cpp-python wheel. If packages were imported before setup, restart the Colab session and run from the top. A missing CUDA backend raises an error instead of silently running the full experiment on CPU.
 
 The badges and setup currently select `fm/vlgguf-colab`, so they work before merge. Once this branch is deleted, select `main` in the Colab URL and set `REPO_REF = "main"` in setup. Use one notebook at a time. Run all cells in order, inspect the config, authorize Drive mounting, and keep the printed run folder name. Full experiments can take hours and may exceed a free Colab session; resumable storage is part of the workflow, not a guarantee of uninterrupted GPU availability.
 
@@ -33,7 +33,7 @@ Case 2 uses pinned `HuggingFaceTB/SmolLM2-1.7B-Instruct` with LoRA on query/valu
 
 The shared helper mounts Drive and saves to `MyDrive/vl-gguf-lab/results/<case>/runs/<UTC timestamp>-<id>/` by default. Set `CONFIG["drive_root"]` to another relative Drive folder before starting. Each run contains immutable config and dataset/split hashes, environment versions and Git revision, raw scene JSONL, parsed structure and overlap scores, metrics, event/runtime logs, charts, and training checkpoints where relevant. Edited model bytes are temporary; saved tensor hashes and block maps make each variant reproducible from its pinned source.
 
-Scene rows and training-step logs are flushed incrementally. Metrics update after every scene. Training checkpoints save optimizer state, trainable weights, RNG state and the completed step, every 10 steps and at completion (configurable with `checkpoint_every`). A disconnect can lose at most that interval of training work; logs after the last checkpoint are replayed correctly. Drive is remote storage: do not assume POSIX atomicity or durability through an active Drive outage. If a final JSONL append was interrupted, resumption discards only that incomplete tail.
+Scene rows and training-step logs are flushed incrementally. Metrics update after every scene. Training checkpoints save optimizer state, trainable weights, RNG state and the completed step, every 10 steps and at completion (configurable with `checkpoint_every`). A disconnect can lose at most that interval of training work; logs after the last checkpoint are replayed correctly. Case 6 is the exception: its full checkpoints (all decoder weights plus AdamW state, about 1.6 GB) stay on Colab local disk, and Drive receives one fixed-name float16 `weights-snapshot.pt` per epoch so a free 15 GB Drive, including Trash, is not exhausted. After a runtime reset, case 6 resumes from that snapshot with a restarted optimizer, repeating up to one epoch; restart steps are recorded in `training-summary.json`. Drive is remote storage: do not assume POSIX atomicity or durability through an active Drive outage. If a final JSONL append was interrupted, resumption discards only that incomplete tail.
 
 To resume, rerun setup, keep exactly the same `CONFIG`, and set `RESUME` to the timestamped folder name. The helper rejects changed provenance/config. Completed scenes are skipped; training resumes from its optimizer checkpoint. To change caps, tiers, epochs or splits, start a new run. Outside Colab, the same helper uses `results/<case>/runs/` without requiring Google packages; `LOCAL_ROOT` can override it.
 
@@ -47,11 +47,11 @@ Case 6 re-runs the original strict per-logit criterion (`atol=0.001`, `rtol=0.00
 
 ## Local validation
 
-Use Python 3.12. Install portable requirements and a platform-appropriate llama.cpp build:
+Use Python 3.12. Install portable runtime and local test requirements and a platform-appropriate llama.cpp build:
 
 ```sh
 uv venv --python 3.12 .venv
-uv pip install --python .venv/bin/python -r requirements.txt
+uv pip install --python .venv/bin/python -r requirements-dev.txt
 # Apple Silicon; use the official CPU wheel index on Linux without CUDA instead.
 CMAKE_ARGS='-DGGML_METAL=ON' uv pip install --python .venv/bin/python llama-cpp-python==0.3.36
 .venv/bin/python -m pytest
