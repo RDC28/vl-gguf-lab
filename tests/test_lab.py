@@ -170,7 +170,7 @@ def test_training_resume_matches_uninterrupted(tiny_gguf, tmp_path):
         torch.testing.assert_close(a, b, atol=0, rtol=0)
 
 
-def test_training_falls_back_to_drive_snapshot_after_runtime_reset(tiny_gguf, tmp_path, monkeypatch):
+def snapshot_setup(tmp_path, monkeypatch):
     local = tmp_path / 'local-disk'
     local.mkdir()
     monkeypatch.setattr('tempfile.tempdir', str(local))
@@ -178,6 +178,11 @@ def test_training_falls_back_to_drive_snapshot_after_runtime_reset(tiny_gguf, tm
                   checkpoint_every=1, drive_snapshot_every=1, device='cpu', train_context=16)
     data = [{"user's scene description": 'bridge', 'shot breakdown': 'reference'}] * 2
     run = Run(6, config, root=tmp_path / 'drive')
+    return local / 'vl-gguf-lab-checkpoints' / run.path.name, config, data, run
+
+
+def test_training_falls_back_to_drive_snapshot_after_runtime_reset(tiny_gguf, tmp_path, monkeypatch):
+    local, config, data, run = snapshot_setup(tmp_path, monkeypatch)
     append = run.append
     def crash(name, value):
         append(name, value)
@@ -187,19 +192,41 @@ def test_training_falls_back_to_drive_snapshot_after_runtime_reset(tiny_gguf, tm
     with pytest.raises(RuntimeError, match='reset'):
         train(DecodedTransformer(tiny_gguf), ToyTokenizer(), data, [0, 1], config, run, own=True)
     run.append = append
-    assert (local / 'vl-gguf-lab-checkpoints' / run.path.name / 'checkpoint.pt').exists()
+    assert (local / 'checkpoint.pt').exists()
     assert not (run.path / 'checkpoint.pt').exists()
     first = torch.load(run.path / 'weights-snapshot.pt', weights_only=True)
     assert first['step'] == 1
     assert all(v.dtype == torch.float16 for v in first['parameters'].values())
-    shutil.rmtree(local / 'vl-gguf-lab-checkpoints')
+    shutil.rmtree(local)
     resumed = DecodedTransformer(tiny_gguf)
     result = train(resumed, ToyTokenizer(), data, [0, 1], config, run, own=True)
     assert result['optimizer_restarted_at_steps'] == [1]
+    assert result['float16_snapshot_restores_at_steps'] == [1]
     assert [r['step'] for r in run.rows('training.jsonl')] == [1, 2]
     final = torch.load(run.path / 'weights-snapshot.pt', weights_only=True)
-    assert final['step'] == 2 and final['optimizer_restarts'] == [1]
+    assert final['step'] == 2
     for key, value in resumed.named_parameters():
-        torch.testing.assert_close(final['parameters'][key], value.detach().half(), atol=0, rtol=0)
-    assert not (local / 'vl-gguf-lab-checkpoints' / run.path.name).exists()
-    assert train(resumed, ToyTokenizer(), data, [0, 1], config, run, own=True)['optimizer_restarted_at_steps'] == [1]
+        torch.testing.assert_close(final['parameters'][key].float(), value.detach(), atol=0, rtol=0)
+
+
+def test_after_evaluation_weights_identical_across_post_training_resumes(tiny_gguf, tmp_path, monkeypatch):
+    local, config, data, run = snapshot_setup(tmp_path, monkeypatch)
+    tokens = torch.tensor([[1, 2, 3]])
+    completed = DecodedTransformer(tiny_gguf)
+    result = train(completed, ToyTokenizer(), data, [0, 1], config, run, own=True)
+    assert result['after_evaluation_weights'] == 'float16 final Drive snapshot'
+    assert result['float16_snapshot_restores_at_steps'] == []
+    with torch.no_grad():
+        expected = completed(tokens)
+    assert (local / 'checkpoint.pt').exists()
+    same_runtime = DecodedTransformer(tiny_gguf)
+    assert train(same_runtime, ToyTokenizer(), data, [0, 1], config, run, own=True)[
+        'float16_snapshot_restores_at_steps'] == []
+    shutil.rmtree(local)
+    reset_runtime = DecodedTransformer(tiny_gguf)
+    result = train(reset_runtime, ToyTokenizer(), data, [0, 1], config, run, own=True)
+    assert result['float16_snapshot_restores_at_steps'] == [2]
+    assert result['optimizer_restarted_at_steps'] == []
+    with torch.no_grad():
+        assert torch.equal(same_runtime(tokens), expected)
+        assert torch.equal(reset_runtime(tokens), expected)

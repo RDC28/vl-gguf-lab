@@ -2,7 +2,6 @@
 import gc
 from pathlib import Path
 import random
-import shutil
 import tempfile
 import time
 
@@ -97,7 +96,6 @@ def train(model, tokenizer, data, indexes, config, run, *, own=False):
         schedule = schedule[:config['train_steps']]
     start_step = 0
     history = []
-    restarts = []
     if checkpoint.exists():
         state = torch.load(checkpoint, map_location='cpu', weights_only=True)
         with torch.no_grad():
@@ -109,7 +107,6 @@ def train(model, tokenizer, data, indexes, config, run, *, own=False):
             torch.cuda.set_rng_state_all(state['cuda_rng'])
         start_step = state['step']
         history = state['history']
-        restarts = state['optimizer_restarts']
     elif snapshot_every and snapshot.exists():
         state = torch.load(snapshot, map_location='cpu', weights_only=True)
         with torch.no_grad():
@@ -117,10 +114,8 @@ def train(model, tokenizer, data, indexes, config, run, *, own=False):
                 trainable[key].copy_(value.to(trainable[key].device))
         start_step = state['step']
         history = state['history']
-        restarts = state['optimizer_restarts']
-        if start_step < len(schedule):
-            restarts = restarts + [start_step]
-            run.log(f'Resumed float16 weights from Drive snapshot at step {start_step}; optimizer state restarted')
+        run.append('snapshot-restores.jsonl', dict(step=start_step))
+        run.log(f'Restored float16 weights from Drive snapshot at step {start_step}; optimizer state not recovered')
     # Remove uncommitted log rows after the last durable optimizer checkpoint.
     log_path = run.path / 'training.jsonl'
     log_path.write_text('')
@@ -155,24 +150,30 @@ def train(model, tokenizer, data, indexes, config, run, *, own=False):
         run.append('training.jsonl', record)
         del logits, loss
         last = step + 1 == len(schedule)
+        if snapshot_every and ((step + 1) % snapshot_every == 0 or last):
+            save(snapshot, dict(step=step + 1, history=history,
+                                parameters={k: p.detach().half().cpu() for k, p in trainable.items()}))
+            run.log(f'Drive weight snapshot saved at step {step + 1}')
         if (step + 1) % config['checkpoint_every'] == 0 or last:
-            save(checkpoint, dict(step=step + 1, history=history, optimizer_restarts=restarts,
+            save(checkpoint, dict(step=step + 1, history=history,
                                   parameters={k: p.detach().cpu() for k, p in trainable.items()},
                                   optimizer=optimizer.state_dict(), rng=torch.get_rng_state(),
                                   cuda_rng=torch.cuda.get_rng_state_all() if config['device'] == 'cuda' else None))
             run.log(f'Checkpoint durable at step {step + 1}')
-        if snapshot_every and ((step + 1) % snapshot_every == 0 or last):
-            save(snapshot, dict(step=step + 1, history=history, optimizer_restarts=restarts,
-                                parameters={k: p.detach().half().cpu() for k, p in trainable.items()}))
-            run.log(f'Drive weight snapshot saved at step {step + 1}')
     if snapshot_every:
-        shutil.rmtree(checkpoint.parent)
+        with torch.no_grad():
+            for p in trainable.values():
+                p.copy_(p.half())
     history = run.rows('training.jsonl')
+    restores = [r['step'] for r in run.rows('snapshot-restores.jsonl')]
     result = dict(steps=len(history), trainable_parameters=sum(p.numel() for p in trainable.values()),
                   total_supervised_tokens=sum(r['supervised_tokens'] for r in history),
                   sequence_truncation_rate=sum(r['sequence_truncated'] for r in history) / max(1, len(history)),
                   epochs=config['epochs'], schedule_size=len(schedule), checkpoint_every=config['checkpoint_every'],
-                  drive_snapshot_every=snapshot_every, optimizer_restarted_at_steps=restarts)
+                  drive_snapshot_every=snapshot_every,
+                  after_evaluation_weights='float16 final Drive snapshot' if snapshot_every else 'float32',
+                  float16_snapshot_restores_at_steps=restores,
+                  optimizer_restarted_at_steps=[step for step in restores if step < len(schedule)])
     atomic_json(run.path / 'training-summary.json', result)
     model.eval()
     gc.collect()
