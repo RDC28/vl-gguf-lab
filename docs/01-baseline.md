@@ -1,6 +1,6 @@
 # Case 1: complete VL baseline on Colab
 
-Run [01_baseline.ipynb](../notebooks/01_baseline.ipynb). Setup installs the pinned portable requirements and official CUDA llama.cpp wheel, checks CUDA, and clones the private repo using Colab Secrets. Configuration selects the pinned model tier, generation cap and Drive root. Shared implementation: `src/lab_experiments.py`, `src/lab_models.py`, `src/lab_metrics.py` and `src/lab_storage.py`.
+Run [01_baseline.ipynb](../notebooks/01_baseline.ipynb). Setup clones the public repository anonymously over HTTPS, installs the pinned portable requirements and official CUDA llama.cpp wheel, and checks CUDA. Configuration selects the pinned model tier, generation cap and Drive root. Shared implementation: `src/lab_experiments.py`, `src/lab_models.py`, `src/lab_metrics.py` and `src/lab_storage.py`.
 
 The full run uses all 150 committed text-only inputs, greedy generation, an 8,192-token context and a 4,096-token completion cap. Default weights are Qwen2.5-VL-7B Q4_K_M; Q8_0 and BF16 tiers target L4 and A100. The vision projector is not loaded because there are no images. The baseline estimates descriptive performance over the full dataset, not held-out training generalization.
 
