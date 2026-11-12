@@ -19,8 +19,8 @@ def main():
     phase = 'after' if args.after else 'before'
     os.environ['HF_HUB_OFFLINE'] = '1'
     os.environ['HF_HOME'] = str(ROOT / 'models/.hf-cache')
-    output = ROOT / f'results/case2-{phase}.jsonl'
-    metadata = ROOT / f'results/case2-{phase}.metadata.json'
+    output = ROOT / f'results/02/local-2026-11-11/case2-{phase}.jsonl'
+    metadata = ROOT / f'results/02/local-2026-11-11/case2-{phase}.metadata.json'
     with metadata.open('x') as dest, output.open('x') as rows:
         result = {'phase': 'trained_adapter' if args.after else 'untrained', 'seed': 42, 'temperature': 0,
                   'max_tokens': 128, 'context_limit': 2048, 'system_prompt': SYSTEM,
@@ -60,7 +60,7 @@ def main():
             from mlx_lm.sample_utils import make_sampler
             result['versions'] = {p: importlib.metadata.version(p) for p in
                                   ('mlx', 'mlx-metal', 'mlx-lm', 'transformers', 'tokenizers')}
-            provenance = json.loads((ROOT / 'results/case2-model-provenance.json').read_text())
+            provenance = json.loads((ROOT / 'results/02/local-2026-11-11/case2-model-provenance.json').read_text())
             model_path = ROOT / provenance['local_directory']
             for item in provenance['files']:
                 with (model_path / item['name']).open('rb') as source:
@@ -68,14 +68,14 @@ def main():
             result['model_revision'] = provenance['revision']
             result['model_weight_sha256'] = provenance['files'][-1]['sha256']
             from freeze_split import build
-            split = json.loads((ROOT / 'results/case2-split.json').read_text())
+            split = json.loads((ROOT / 'results/02/local-2026-11-11/case2-split.json').read_text())
             assert build() == split, 'Frozen split changed'
             result['split_sha256'] = split['split_sha256']
             result['dataset_sha256'] = split['dataset_sha256']
             data = json.loads((ROOT / 'data/dataset.json').read_text())
             adapter_path = None
             if args.after:
-                training = json.loads((ROOT / 'results/case2-train.json').read_text())
+                training = json.loads((ROOT / 'results/02/local-2026-11-11/case2-train.json').read_text())
                 assert training['status'] == 'completed'
                 assert training['split_sha256'] == split['split_sha256']
                 assert training['model_revision'] == provenance['revision']

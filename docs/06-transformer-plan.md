@@ -1,103 +1,23 @@
-# Case 6: rebuild the decoded transformer and train it
+# Case 6: independent decoded transformer and training
 
-## Goal
+Run [06_own_transformer.ipynb](../notebooks/06_own_transformer.ipynb). `src/lab_transformer.py` implements a trainable PyTorch decoder directly from pinned F16 SmolLM2-135M GGUF tensors. It implements embedding, RMSNorm, grouped-query causal attention, adjacent-pair rotary positions, SwiGLU, residual connections and tied output projection. Transformers supplies only the tokenizer for this case, not the decoder. Packed quantization and vision encoders are not implemented.
 
-Understand the downloaded model well enough to implement its forward architecture ourselves, check the implementation against a trusted runtime, and later train a model with our own code. Architecture reproduction and training from scratch are different milestones. The bounded local target is the unchanged case 3 SmolLM2-135M F16 GGUF; the 7B VL model remains outside the reconstruction memory budget.
+The implementation keeps decoded parameters in float32 and uses its own KV cache for generation. Training uses full-sequence causal attention, while cached inference attends to all prior keys. Local behavioral tests compare full-sequence math against the existing independent NumPy forward pass on a small architecture, compare cached/full logits and require finite gradients. These checks establish implementation properties, not exact agreement with llama.cpp's kernels on the production weights.
 
-## Method
+Before training, run the unchanged model through CPU llama.cpp and the independent decoder on the same short token sequence. Save both logit arrays, maximum and RMS error, violating-logit count and argmax agreement. Keep the original acceptance rule: every logit must satisfy `abs(custom-reference) <= 0.001 + 0.001*abs(reference)`. Argmax agreement alone does not pass. The historical NumPy run failed tolerance despite matching argmax, and rounding F16 inputs alone did not close the gap. Float32 PyTorch and CPU GGML use different operand rounding, reductions and kernel ordering; the new run measures the remaining discrepancy without asserting an unproven root cause or loosening the criterion.
 
-Read GGUF architecture metadata, tensor names/shapes/types, tokenizer, and chat template. Reconstruct computation from those observations together with the published Qwen configuration and runtime implementation. Weights do not reveal the original corpus, optimizer history, or all training choices.
+If parity still fails, the notebook records that failure and proceeds with training explicitly labeled **exploratory, numerical equivalence unestablished**. This is a documented gap, not a validated exact decoder claim. Review saved logits and kernel semantics before treating it as an equivalent replacement for llama.cpp.
 
-The published Qwen2.5-VL-7B configuration lists 28 language blocks, hidden width 3,584, feed-forward width 18,944, 28 attention heads, 4 KV heads, vocabulary size 152,064, RMSNorm epsilon 0.000001, and MRoPE sections 16/24/24. Its vision configuration lists 32 blocks with hidden width 1,280 and output width 3,584. These are upstream configuration facts, not yet an inventory measured from our GGUF. The historical `transformers_version` field is not a recommendation for a current install. [Official configuration](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/blob/main/config.json)
+Evaluate all 15 frozen test scenes before training. Train all decoded parameters on the 120 training scenes for three seeded shuffled epochs using response-only cross entropy, AdamW at 0.0001, gradient clipping and a 2,048-token training cap. Then evaluate the same held-out scenes at identical greedy settings. Record supervised token counts, clipped-target rates, finite loss/gradients, per-step losses, before/after overlap and structure, truncation and paired changes. Full checkpoints include all trained parameters and optimizer/RNG state, about 1.6 GB. They stay on Colab local disk so repeated replacement does not fill a free Drive through Trash.
 
-Reproduce text tokenization, embeddings, RMSNorm, grouped-query attention, positional encoding, causal masking, gated feed-forward blocks, residuals, and output projection. Start with text-only forward parity. Image patch encoding, vision blocks, positional handling, and the projector are an additional milestone. Consult the [Qwen2-VL runtime implementation](https://github.com/ggml-org/llama.cpp/blob/master/src/models/qwen2vl.cpp) rather than inferring every operation from tensor shapes.
+Every step is logged and every test answer is saved directly under the case `06` Drive run. Every 10 steps and at completion a full checkpoint is written locally; once per epoch and at completion a fixed-name float16 `weights-snapshot.pt` is written to Drive. Resume restores weights and optimizer from the local checkpoint when it survives, otherwise float16 weights from the Drive snapshot with a restarted optimizer and recorded restart step, never from an arbitrary later loss log. Every snapshot restore is recorded in `snapshot-restores.jsonl` and `training-summary.json`. The after-training evaluation always uses the final float16 snapshot weights, so every after answer comes from the same saved model even across reconnects. The CPU smoke path performs a real logit comparison, one optimizer step and one short before/after generation.
 
-## Tools and versions
+| Full Colab measure | Result |
+| --- | --- |
+| Strict parity / max error / RMS / violations | PENDING COLAB RUN |
+| Argmax agreement | PENDING COLAB RUN |
+| Completed training steps / loss / clipped targets | PENDING COLAB RUN |
+| Before and after overlap / structure | PENDING COLAB RUN |
+| Before and after truncation / paired changes | PENDING COLAB RUN |
 
-Python 3.12.13, gguf 0.19.0, and the case 1 llama-cpp-python 0.3.36/runtime commit are the installed inspection/reference stack. Choose either PyTorch or MLX for the new implementation after testing required operations; MLX 0.32.4 is already installed and pinned from case 2. Before implementation, pin the framework and the exact trusted model/config/source revisions. The source configuration consulted here is on upstream main as of 2026-11-11 and must be pinned for a parity experiment.
-
-## Feasibility on the 8 GB Air
-
-Read-only GGUF metadata/tensor inspection and a tiny educational transformer are realistic candidates. A full 7B floating-point reconstruction needs about 15.23 GB of language weights before execution buffers and exceeds available RAM. Training that architecture from scratch is far beyond this hardware and a 150-example dataset. Layer-by-layer checks might reduce resident weights, but require measurement and do not make full training feasible. Quantized decoded weights also differ from the original floating-point checkpoint.
-
-## Concrete plan
-
-1. Save an architecture/tensor inventory and compare it with the source configuration. Resolve naming, transposition, quantization, tokenizer, and position details explicitly.
-2. Implement a tiny shape-compatible test block in our own framework code. Verify individual operations and gradients with small synthetic tensors.
-3. For selected real tensors, check dequantization and intermediate activations against the same quantized reference. Define absolute/relative tolerances before judging parity.
-4. Establish a one-block text forward check, then grow toward full forward parity on suitable hardware. A matching greedy sentence alone is insufficient evidence; compare logits and intermediate values.
-5. Add vision encoding/projector parity only if image support becomes a requirement, with a separate image dataset.
-6. Build an explicit training loop for a tiny model first. Freeze train/test data, record architecture, initialization, optimizer, loss, memory, speed, and held-out quality. Treat a full-scale reconstruction/training run as a separately budgeted project.
-
-## Risks and open questions
-
-Quantization error can be confused with implementation error. Missing tokenizer special tokens, wrong tensor orientation, MRoPE, attention masks, or KV-cache layout can produce plausible but incorrect outputs. Decide whether the target is Qwen reproduction or a new architecture, whether weights are reused or randomly initialized, whether vision is required, and what corpus/compute is available. The small scene dataset can evaluate a narrow task; it cannot pretrain a capable 7B model.
-
-## Findings
-
-### 2026-11-11: fixed-token reference capture
-
-`src/case6_reference.py` saved the unchanged tiny F16 source's logits to `results/case6-reference-logits.npz`, with settings, token pieces, hashes and measurements in `results/case6-reference.json` and the raw runtime log. Source SHA256 remains `f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57`; this is the case 3 GGUF, not the case 2 BF16 checkpoint or the 7B VL model.
-
-Decoded metadata establishes 30 Llama blocks, width 576, feed-forward width 1,536, nine query heads, three KV heads, 64 dimensions per head, RoPE base 100,000, RMSNorm epsilon approximately 1e-5 and vocabulary 49,152. The existing inventory records F16 matrix weights, F32 norms and no separate output matrix; later implementation must resolve tied embeddings and GGUF RoPE weight layout against the runtime, rather than assume Hugging Face layout.
-
-The fixed plain text `The camera moves slowly.` tokenizes without BOS or special handling to [504, 6715, 7488, 6351, 30]. No dataset or chat template is involved. Each saved row is the raw next-token logit vector after consuming that position (positions 0-4), before sampling or softmax. Sequential one-token evaluation uses CPU-only execution, float32 K/V cache, context 64, four threads, no operation/KQV offload and no flash attention. Float32 cache deliberately simplifies later comparison and differs from earlier text smoke settings.
-
-| Measurement | Observed |
-| --- | ---: |
-| Logit array | 5 x 49,152 float32, all finite |
-| Constructor / evaluation seconds | 0.07526 / 0.07423 |
-| Total capture/check seconds | 0.46166 |
-| Peak process RSS bytes | 422,625,280 |
-| Before / minimum / after free | 70% / 70% / 70% |
-| Pressure across eight readings | Normal throughout |
-
-The compressed logits have SHA256 `627ac8a032c8b98645fb4b904d9ba5cb5d73f11efe6f8ee8d411732eb1248040`. The model explicitly closed and watcher joined before exit. RSS excludes some unified-memory allocations and snapshots can miss transients.
-
-Before implementing the custom forward pass, acceptance is fixed as every logit satisfying `abs(custom-reference) <= 0.001 + 0.001*abs(reference)`. Also report maximum/RMS absolute error and per-position argmax agreement. This is a proposed numerical criterion, not a measured pass. Do not relax it silently if the implementation fails. No custom transformer, parity comparison, or training has run; case 6 is incomplete. Next implement the full tiny decoded architecture with the same weights, then compare to this saved reference with the reference runtime closed.
-
-The pinned [llama-cpp-python evaluation implementation](https://github.com/abetlen/llama-cpp-python/blob/v0.3.36/llama_cpp/llama.py) was checked before capture: `logits_all=True` retains each evaluated position's scores. The installed implementation was also inspected directly. The pinned llama.cpp model-source fetch failed in this iteration; resolve that computation source before implementing unfamiliar RoPE/weight handling.
-
-## Sources consulted
-
-The official Qwen configuration, [model card](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct), Qwen2-VL runtime implementation, and [GGUF specification](https://github.com/ggml-org/ggml/blob/master/docs/gguf.md) were consulted on 2026-11-11. Proposed milestones and memory estimates are project reasoning rather than completed results.
-
-### 2026-11-11: independent full tiny-model forward comparison
-
-`src/case6_forward.py` implements all 30 decoded blocks directly in NumPy 2.5.4, using the unchanged F16 GGUF matrices converted exactly to float32 and its F32 norms. It implements RMSNorm, nine-query/three-KV grouped attention, adjacent-pair RoPE with base 100,000, causal softmax, residual connections, SiLU-gated feed-forward layers and tied embedding output projection. GGUFReader arrays already reverse GGML dimension order; matrix multiplication uses their transpose. This is the full tiny source architecture, not a shape-reduced substitute or the 7B VL model. The code consumes the five saved token IDs, without reimplementing tokenization. Full-sequence attention is compared with the saved sequential reference; no reference model was loaded concurrently.
-
-Before implementation, the pinned [Llama graph](https://github.com/ggml-org/llama.cpp/blob/0c1e57098bba43ac29e6e3b677cdceebdd22334f/src/models/llama.cpp) and [CPU rotary operations](https://github.com/ggml-org/llama.cpp/blob/0c1e57098bba43ac29e6e3b677cdceebdd22334f/ggml/src/ggml-cpu/ops.cpp) were fetched directly after browser fetch failure. Exact source copies are preserved as `results/case6-llama-source.cpp` and `results/case6-ops-source.cpp`. They establish tied output embeddings, pre-norm residual ordering, gated SiLU and adjacent-pair normal RoPE.
-
-| Measurement | Observed |
-| --- | ---: |
-| Compared logits | 245,760 (5 x 49,152) |
-| Maximum / RMS absolute error | 0.14151001 / 0.02623361 |
-| Outside predeclared tolerance | 170,368 |
-| Per-position argmax agreement | 5/5 |
-| Custom forward / total seconds | 0.30590 / 1.70015 |
-| Peak process RSS bytes | 603,013,120 |
-
-**The declared numerical criterion failed.** Matching argmax IDs does not establish parity. The criterion remains unchanged; the underlying cause is unresolved. The custom path performs float32 matrix arithmetic on decoded weights, while reference kernel precision and accumulation behavior have not yet been matched. Position zero also differs (maximum error 0.14151), so positional rotation alone cannot explain all error. Investigate runtime matrix arithmetic and intermediate activations before claiming parity; do not attribute this to quantization without measurements. No repair or tolerance adjustment was attempted after observing the result in this iteration.
-
-Raw custom logits, their hash, reference metadata hash, per-position errors, timing and memory evidence are in `results/case6-forward*`. All 37 readings showed normal pressure and at least 70% reported free memory. Arrays/readers were released and the watcher joined; RSS omits some unified-memory use and sampling can miss transients. The original source and reference evidence remain unchanged. Training, generation and tokenizer reconstruction remain pending. Case 6 is a measured partial attempt, not completed parity or training.
-
-
-### 2026-11-11: bounded F16 operand-rounding diagnosis
-
-The pinned [CPU matrix implementation](https://github.com/ggml-org/llama.cpp/blob/0c1e57098bba43ac29e6e3b677cdceebdd22334f/ggml/src/ggml-cpu/ggml-cpu.c) declares F16 dot-product operands for F16 weights and converts the other operand in its generic matrix path. The file also has tiled and alternative dispatch paths, so this source inspection alone does not identify the exact kernel used by the saved reference. The exact source is retained in `results/case6-cpu-source.c`, SHA256 `94e4c599aa8e6a0e047b1e4a40830cd5b54a5e0bc773acaccd3be2d4702caf39`.
-
-A single diagnostic variant, `.venv/bin/python src/case6_forward.py --f16-inputs`, rounds inputs of every learned linear projection (including tied output projection) to F16, then converts back to F32 for NumPy accumulation. Norms, attention arithmetic, source weights, tokens and the predeclared acceptance criterion remain unchanged. This is a controlled arithmetic hypothesis, not an exact runtime kernel reproduction. It writes separate exclusive-create evidence; original logits/measurements remain unchanged. A startup path-type error occurred before loading and was corrected; its traceback is retained in `case6-forward-f16-inputs-startup-error.runtime.log`.
-
-| Measurement | Original F32 inputs | F16-rounded inputs |
-| --- | ---: | ---: |
-| Maximum absolute error | 0.14151001 | 0.15121794 |
-| RMS absolute error | 0.02623361 | 0.03068966 |
-| Outside unchanged tolerance / 245,760 | 170,368 | 188,251 |
-| Argmax agreement | 5/5 | 5/5 |
-| Forward seconds | 0.30590 | 0.31204 |
-
-**Operand rounding alone does not resolve the mismatch.** No parity is claimed. Further diagnosis needs intermediate activation or runtime-dispatch evidence, rather than more unverified arithmetic substitutions. Training remains pending.
-
-`results/case6-forward-f16-inputs*` preserves raw logits, hashes, implementation hash and measurements. Total work was 1.70621 seconds, peak process RSS 716,668,928 bytes, and all 36 memory readings showed normal pressure with 70% reported free before/during/after. RSS excludes some unified-memory use and samples can miss transients. No reference model was loaded; custom arrays/readers and watcher were released before process exit. This iteration performs no further hypothesis search or training.
-
-Validation: raw-logit metrics and provenance hashes were independently recomputed; the default F32-input implementation reproduced its original saved logits exactly. All prior tracked results remain byte-identical. Python compilation, notebook schema/code syntax, dependency compatibility (131 packages) and diff whitespace checks passed. All experiment processes exited; no servers or background models were started.
+Historical source excerpts, reference logits, NumPy outputs and rounding diagnostics remain untouched in `results/06/local-2026-11-11/`. Full Colab parity, training feasibility, GPU memory and held-out outcomes remain unmeasured until the notebook runs.

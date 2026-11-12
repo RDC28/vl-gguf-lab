@@ -12,16 +12,16 @@ from case3_acquire import NAME, SHA256, digest
 
 
 def main():
-    path = ROOT / 'results/case6-reference.json'
-    logits_path = ROOT / 'results/case6-reference-logits.npz'
+    path = ROOT / 'results/06/local-2026-11-11/case6-reference.json'
+    logits_path = ROOT / 'results/06/local-2026-11-11/case6-reference-logits.npz'
     if path.exists() or logits_path.exists():
         raise FileExistsError('Reference evidence already exists')
     start = time.perf_counter()
     source = ROOT / 'models' / NAME
     assert digest(source) == SHA256
-    inventory = json.loads((ROOT / 'results/case3-source.json').read_text())
+    inventory = json.loads((ROOT / 'results/03/local-2026-11-11/case3-source.json').read_text())
     result = dict(source_sha256=SHA256, source_model=NAME,
-                  inventory_sha256=digest(ROOT / 'results/case3-source.json'),
+                  inventory_sha256=digest(ROOT / 'results/03/local-2026-11-11/case3-source.json'),
                   architecture={k: v['value'] for k, v in inventory['fields'].items()
                                 if k.startswith('llama.') or k == 'general.architecture'},
                   text='The camera moves slowly.', add_bos=False, special=False,

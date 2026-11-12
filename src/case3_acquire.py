@@ -22,7 +22,7 @@ def digest(path):
 
 
 def main():
-    result_path = ROOT / 'results/case3-source.json'
+    result_path = ROOT / 'results/03/local-2026-11-11/case3-source.json'
     if result_path.exists():
         raise FileExistsError(result_path)
     start = time.perf_counter()

@@ -1,0 +1,6 @@
+# Local notebook execution and tests. Colab installs only requirements.txt.
+-r requirements.txt
+nbformat==5.10.4
+nbclient==0.10.2
+ipykernel==6.30.1
+pytest==8.4.2

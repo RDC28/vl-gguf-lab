@@ -93,7 +93,7 @@ def build():
 
 
 if __name__ == '__main__':
-    path = ROOT / 'results/case2-split.json'
+    path = ROOT / 'results/02/local-2026-11-11/case2-split.json'
     with path.open('x') as dest:
         dest.write(json.dumps(build(), indent=2) + '\n')
     print(path)

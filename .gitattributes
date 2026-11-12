@@ -1,2 +1,2 @@
 # Runtime evidence is retained byte for byte, including upstream trailing spaces.
-results/*.runtime.log -whitespace
+results/**/*.runtime.log -whitespace
