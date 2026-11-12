@@ -50,7 +50,7 @@ def compare(output, reference):
             'unigram_f1': 2 * precision * recall / (precision + recall) if precision + recall else 0}
 
 
-def run(dataset=ROOT / 'data/dataset.json', output=ROOT / 'results/baseline.jsonl', limit=10, seed=42, max_tokens=1024, n_ctx=2048, resume=False, max_new_rows=None, n_gpu_layers=-1):
+def run(dataset=ROOT / 'data/dataset.json', output=ROOT / 'results/01/local-2026-11-11/baseline.jsonl', limit=10, seed=42, max_tokens=1024, n_ctx=2048, resume=False, max_new_rows=None, n_gpu_layers=-1):
     if not 1 <= limit <= 150 or not 1 <= max_tokens < n_ctx:
         raise ValueError('Require 1 <= limit <= 150 and 1 <= max_tokens < n_ctx')
     if max_new_rows is not None and max_new_rows < 1:
@@ -226,7 +226,7 @@ def run(dataset=ROOT / 'data/dataset.json', output=ROOT / 'results/baseline.json
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--dataset', type=Path, default=ROOT / 'data/dataset.json')
-    parser.add_argument('--output', type=Path, default=ROOT / 'results/baseline.jsonl')
+    parser.add_argument('--output', type=Path, default=ROOT / 'results/01/local-2026-11-11/baseline.jsonl')
     parser.add_argument('--limit', type=int, default=10)
     parser.add_argument('--seed', type=int, default=42)
     parser.add_argument('--max-tokens', type=int, default=1024)

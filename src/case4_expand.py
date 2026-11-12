@@ -12,7 +12,7 @@ COUNT_KEY = 'llama.block_count'
 
 def main():
     output = ROOT / 'models/SmolLM2-135M-Instruct-plus1.gguf'
-    evidence = ROOT / 'results/case4-expand.json'
+    evidence = ROOT / 'results/04/local-2026-11-11/case4-expand.json'
     if output.exists() or evidence.exists():
         raise FileExistsError('Edited artifact or evidence exists; refusing overwrite')
     start = time.perf_counter()
@@ -36,7 +36,7 @@ def main():
             assert digest(source) == SHA256
             reader = GGUFReader(source, 'r')
             original = inventory(reader)
-            saved = json.loads((ROOT / 'results/case3-source.json').read_text())
+            saved = json.loads((ROOT / 'results/03/local-2026-11-11/case3-source.json').read_text())
             assert original['fields'] == {k: {x: v[x] for x in ('types', 'value_sha256')} for k, v in saved['fields'].items()}
             for tensor, previous in zip(original['tensors'], saved['tensors'], strict=True):
                 assert all(tensor[k] == previous[k] for k in tensor)

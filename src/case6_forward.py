@@ -82,19 +82,19 @@ def main():
                         help='Round linear operands to F16 before float32 accumulation')
     args = parser.parse_args()
     stem = 'case6-forward-f16-inputs' if args.f16_inputs else 'case6-forward'
-    path = ROOT / f'results/{stem}.json'
-    output = ROOT / f'results/{stem}-logits.npz'
+    path = ROOT / f'results/06/local-2026-11-11/{stem}.json'
+    output = ROOT / f'results/06/local-2026-11-11/{stem}-logits.npz'
     if path.exists() or output.exists():
         raise FileExistsError('Forward evidence already exists')
     start = time.perf_counter()
-    reference_path = ROOT / 'results/case6-reference.json'
+    reference_path = ROOT / 'results/06/local-2026-11-11/case6-reference.json'
     reference = json.loads(reference_path.read_text())
     source = ROOT / 'models' / NAME
     result = dict(source_sha256=SHA256, reference_sha256=digest(reference_path),
                   numpy_version=importlib.metadata.version('numpy'),
                   f16_linear_inputs=args.f16_inputs,
                   implementation_sha256=digest(Path(__file__)),
-                  cpu_source_sha256=digest(ROOT / 'results/case6-cpu-source.c'),
+                  cpu_source_sha256=digest(ROOT / 'results/06/local-2026-11-11/case6-cpu-source.c'),
                   implementation='NumPy float32, full 30-block decoded F16 source; causal full-sequence attention; no KV cache',
                   memory_samples=[], acceptance=reference['acceptance'])
     stop, critical = threading.Event(), threading.Event()
@@ -127,7 +127,7 @@ def main():
             check_memory(sample('before_load'))
             watcher.start()
             assert digest(source) == SHA256
-            saved_path = ROOT / 'results/case6-reference-logits.npz'
+            saved_path = ROOT / 'results/06/local-2026-11-11/case6-reference-logits.npz'
             assert digest(saved_path) == reference['logits_sha256']
             with np.load(saved_path) as saved:
                 expected = saved['logits'].copy()

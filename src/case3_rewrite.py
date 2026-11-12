@@ -21,7 +21,7 @@ def inventory(reader):
 
 def main():
     output = ROOT / 'models/SmolLM2-135M-Instruct-control.gguf'
-    result_path = ROOT / 'results/case3-rewrite.json'
+    result_path = ROOT / 'results/03/local-2026-11-11/case3-rewrite.json'
     if output.exists() or result_path.exists():
         raise FileExistsError('Control or evidence already exists; refusing overwrite')
     start = time.perf_counter()
@@ -45,7 +45,7 @@ def main():
             reader = GGUFReader(source, 'r')
             original = inventory(reader)
             # Match the independently saved acquisition inventory before writing.
-            saved = json.loads((ROOT / 'results/case3-source.json').read_text())
+            saved = json.loads((ROOT / 'results/03/local-2026-11-11/case3-source.json').read_text())
             for name, field in original['fields'].items():
                 assert field['types'] == saved['fields'][name]['types']
                 assert field['value_sha256'] == saved['fields'][name]['value_sha256']

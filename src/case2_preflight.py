@@ -14,7 +14,7 @@ from baseline import ROOT, INPUT, REFERENCE, SYSTEM, check_memory, memory_state
 def main():
     os.environ['HF_HUB_OFFLINE'] = '1'
     os.environ['HF_HOME'] = str(ROOT / 'models/.hf-cache')
-    path = ROOT / 'results/case2-preflight.json'
+    path = ROOT / 'results/02/local-2026-11-11/case2-preflight.json'
     with path.open('x') as dest:
         result = {'purpose': 'Feasibility only; no optimizer step, no saved adapter, no held-out inspection',
                   'seed': 42, 'sequence_cap': 128, 'batch_size': 1, 'memory_samples': []}
@@ -56,14 +56,14 @@ def main():
 
             result['versions'] = {p: importlib.metadata.version(p) for p in
                                   ('mlx', 'mlx-metal', 'mlx-lm', 'transformers', 'tokenizers')}
-            provenance = json.loads((ROOT / 'results/case2-model-provenance.json').read_text())
+            provenance = json.loads((ROOT / 'results/02/local-2026-11-11/case2-model-provenance.json').read_text())
             model_path = ROOT / 'models/SmolLM2-135M-Instruct'
             for item in provenance['files']:
                 source = model_path / item['name']
                 with source.open('rb') as stream:
                     assert hashlib.file_digest(stream, 'sha256').hexdigest() == item['sha256']
             raw = (ROOT / 'data/dataset.json').read_bytes()
-            split = json.loads((ROOT / 'results/case2-split.json').read_text())
+            split = json.loads((ROOT / 'results/02/local-2026-11-11/case2-split.json').read_text())
             assert hashlib.sha256(raw).hexdigest() == split['dataset_sha256']
             result['split_sha256'] = split['split_sha256']
             index = split['indexes']['train'][0]

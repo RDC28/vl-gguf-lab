@@ -19,7 +19,7 @@ def main():
     mode.add_argument('--edited', action='store_true', help='Evaluate the verified norm edit against saved source output')
     args = parser.parse_args()
     variant = args.edited or args.expanded or args.pruned
-    path = ROOT / ('results/case5-pruned.json' if args.pruned else 'results/case4-expanded.json' if args.expanded else 'results/case3-edited.json' if args.edited else 'results/case3-control.json')
+    path = ROOT / ('results/05/local-2026-11-11/case5-pruned.json' if args.pruned else 'results/04/local-2026-11-11/case4-expanded.json' if args.expanded else 'results/03/local-2026-11-11/case3-edited.json' if args.edited else 'results/03/local-2026-11-11/case3-control.json')
     start = time.perf_counter()
     raw = (ROOT / 'data/dataset.json').read_bytes()
     dataset_hash = hashlib.sha256(raw).hexdigest()
@@ -32,12 +32,12 @@ def main():
                   system_prompt=SYSTEM, settings=settings, decoding=decoding, runs=[])
     artifacts = [(NAME, SHA256), ('SmolLM2-135M-Instruct-control.gguf', SHA256)]
     if variant:
-        control_path = ROOT / 'results/case3-control.json'
+        control_path = ROOT / 'results/03/local-2026-11-11/case3-control.json'
         control = json.loads(control_path.read_text())
         assert control['status'] == 'completed' and control['outputs_identical']
         for key in ('dataset_sha256', 'dataset_index', 'input', 'system_prompt', 'settings', 'decoding'):
             assert result[key] == control[key], f'Control mismatch: {key}'
-        edit_path = ROOT / ('results/case5-remove.json' if args.pruned else 'results/case4-expand.json' if args.expanded else 'results/case3-perturb.json')
+        edit_path = ROOT / ('results/05/local-2026-11-11/case5-remove.json' if args.pruned else 'results/04/local-2026-11-11/case4-expand.json' if args.expanded else 'results/03/local-2026-11-11/case3-perturb.json')
         edit = json.loads(edit_path.read_text())
         assert edit['status'] == 'completed' and edit['source_sha256'] == SHA256
         artifacts = [(str((ROOT / edit['output_path']).relative_to(ROOT / 'models')), edit['output_sha256'])]
