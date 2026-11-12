@@ -1,0 +1,659 @@
+{
+  "dataset_sha256": "073bd194bdb79e3ecfcfad51e09f23510ca697431475221b785c369619d7b8cf",
+  "model": {
+    "repo": "unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+    "revision": "68bb8bc4b7df5289c143aaec0ab477a7d4051aab",
+    "files": [
+      {
+        "name": "Qwen2.5-VL-7B-Instruct-Q3_K_M.gguf",
+        "size_bytes": 3808390016,
+        "sha256": "accacb52744cadbe58b49f37ebb44e094f8de7ee2b52eb0b51ed9289329ef0c1"
+      },
+      {
+        "name": "mmproj-F16.gguf",
+        "size_bytes": 1354163040,
+        "sha256": "987dd0733033fb5dd9b124d1ca926ae865572e432384eee7618b2eec3e735e17"
+      }
+    ]
+  },
+  "settings": {
+    "seed": 42,
+    "temperature": 0,
+    "top_p": 1,
+    "top_k": 1,
+    "repeat_penalty": 1,
+    "n_ctx": 2048,
+    "max_tokens": 1024,
+    "n_gpu_layers": 0,
+    "n_batch": 128,
+    "n_threads": 4,
+    "n_threads_batch": 4
+  },
+  "system_prompt": "You are a film storyboard assistant. Turn the scene description into a detailed shot breakdown. Use numbered SHOT headings and describe the framing, camera movement, action, and sound for each shot.",
+  "attempt_id": "20261111T173657628480Z",
+  "sample_indexes": [
+    6,
+    22,
+    26,
+    28,
+    35,
+    57,
+    62,
+    70,
+    108,
+    139
+  ],
+  "pending_indexes": [
+    57,
+    62
+  ],
+  "previously_completed_indexes": [
+    6,
+    22,
+    26,
+    28,
+    35
+  ],
+  "completed_indexes": [
+    57,
+    62
+  ],
+  "memory_before": {
+    "pressure_level": 1,
+    "free_percent": 66
+  },
+  "started_utc": "2026-11-11T17:36:57.894468+00:00",
+  "dataset_rows": 150,
+  "python": "3.12.13",
+  "macos": "27.0.1",
+  "machine": "arm64",
+  "llama_cpp_python": "0.3.36",
+  "llama_system_info": "MTL : EMBED_LIBRARY = 1 | CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | ACCELERATE = 1 | REPACK = 1 | ",
+  "backend_init_seconds": 0.25810558299963304,
+  "constructor_load_seconds": 7.500871083000675,
+  "load_seconds": 7.758976666000308,
+  "chat_format": "chat_template.default",
+  "embedded_chat_template": "{% set image_count = namespace(value=0) %}{% set video_count = namespace(value=0) %}{% for message in messages %}{% if loop.first and message['role'] != 'system' %}<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n{% endif %}<|im_start|>{{ message['role'] }}\n{% if message['content'] is string %}{{ message['content'] }}<|im_end|>\n{% else %}{% for content in message['content'] %}{% if content['type'] == 'image' or 'image' in content or 'image_url' in content %}{% set image_count.value = image_count.value + 1 %}{% if add_vision_id %}Picture {{ image_count.value }}: {% endif %}<|vision_start|><|image_pad|><|vision_end|>{% elif content['type'] == 'video' or 'video' in content %}{% set video_count.value = video_count.value + 1 %}{% if add_vision_id %}Video {{ video_count.value }}: {% endif %}<|vision_start|><|video_pad|><|vision_end|>{% elif 'text' in content %}{{ content['text'] }}{% endif %}{% endfor %}<|im_end|>\n{% endif %}{% endfor %}{% if add_generation_prompt %}<|im_start|>assistant\n{% endif %}",
+  "active_dataset_index": 62,
+  "total_seconds": 221.88489079099963,
+  "peak_process_rss_bytes": 3957096448,
+  "memory_samples": [
+    {
+      "elapsed_seconds": 2.0235874999998487,
+      "pressure_level": 1,
+      "free_percent": 66
+    },
+    {
+      "elapsed_seconds": 4.042787541000507,
+      "pressure_level": 1,
+      "free_percent": 59
+    },
+    {
+      "elapsed_seconds": 6.059526332999667,
+      "pressure_level": 1,
+      "free_percent": 48
+    },
+    {
+      "elapsed_seconds": 7.509033415999511,
+      "dataset_index": 57,
+      "phase": "before_input",
+      "pressure_level": 1,
+      "free_percent": 40
+    },
+    {
+      "elapsed_seconds": 8.085285750001276,
+      "pressure_level": 2,
+      "free_percent": 41
+    },
+    {
+      "elapsed_seconds": 10.106600332999733,
+      "pressure_level": 2,
+      "free_percent": 40
+    },
+    {
+      "elapsed_seconds": 12.129804958000022,
+      "pressure_level": 2,
+      "free_percent": 40
+    },
+    {
+      "elapsed_seconds": 14.166646249999758,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 16.1859020410011,
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 18.2042957499998,
+      "pressure_level": 1,
+      "free_percent": 56
+    },
+    {
+      "elapsed_seconds": 20.232232415999533,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 22.25187433300016,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 24.272167250001075,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 26.30286250000063,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 28.321573250001165,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 30.360211541001263,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 32.38922262500091,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 34.40090962500108,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 36.427823250000074,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 38.45452458299951,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 40.484548250000444,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 42.5134721659997,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 44.529584416000944,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 46.56277120800041,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 48.58151333299975,
+      "pressure_level": 1,
+      "free_percent": 57
+    },
+    {
+      "elapsed_seconds": 50.59586195799966,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 52.62261475000014,
+      "pressure_level": 1,
+      "free_percent": 57
+    },
+    {
+      "elapsed_seconds": 54.65096379100032,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 56.67020487500122,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 58.69804554100119,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 60.72562662500059,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 62.75168329100052,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 64.7817732500007,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 66.81030250000003,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 68.8370865830002,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 70.86347825000121,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 72.88077545800115,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 74.90063025000018,
+      "pressure_level": 1,
+      "free_percent": 57
+    },
+    {
+      "elapsed_seconds": 76.92376954100109,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 78.95122987499963,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 80.97672341600082,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 83.00380562499959,
+      "pressure_level": 1,
+      "free_percent": 57
+    },
+    {
+      "elapsed_seconds": 85.0384806660004,
+      "pressure_level": 1,
+      "free_percent": 57
+    },
+    {
+      "elapsed_seconds": 87.06698125000003,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 89.10330150000118,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 91.13953204100108,
+      "pressure_level": 1,
+      "free_percent": 57
+    },
+    {
+      "elapsed_seconds": 93.17014758299956,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 95.20808666599987,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 97.23639212499984,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 99.2643461660009,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 101.28889341600006,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 103.31667916600054,
+      "pressure_level": 1,
+      "free_percent": 57
+    },
+    {
+      "elapsed_seconds": 105.337821041001,
+      "pressure_level": 1,
+      "free_percent": 57
+    },
+    {
+      "elapsed_seconds": 107.3722359580006,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 109.3902633329999,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 111.41796104100104,
+      "pressure_level": 1,
+      "free_percent": 59
+    },
+    {
+      "elapsed_seconds": 113.44421291599974,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 115.47603366600015,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 117.50223483300033,
+      "pressure_level": 1,
+      "free_percent": 59
+    },
+    {
+      "elapsed_seconds": 119.53812441599985,
+      "pressure_level": 1,
+      "free_percent": 59
+    },
+    {
+      "elapsed_seconds": 121.55962250000084,
+      "pressure_level": 1,
+      "free_percent": 57
+    },
+    {
+      "elapsed_seconds": 123.58577404100106,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 125.61568887500107,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 127.64588712499972,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 129.6743782909998,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 131.69335750000027,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 133.72024650000094,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 135.7478120830001,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 137.7684102080002,
+      "pressure_level": 1,
+      "free_percent": 59
+    },
+    {
+      "elapsed_seconds": 139.7972178330001,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 139.95779225000115,
+      "dataset_index": 57,
+      "phase": "after_input",
+      "pressure_level": 1,
+      "free_percent": 59
+    },
+    {
+      "elapsed_seconds": 139.97410270799992,
+      "dataset_index": 62,
+      "phase": "before_input",
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 141.82740841600025,
+      "pressure_level": 1,
+      "free_percent": 53
+    },
+    {
+      "elapsed_seconds": 143.85838379100096,
+      "pressure_level": 1,
+      "free_percent": 61
+    },
+    {
+      "elapsed_seconds": 145.88842841600126,
+      "pressure_level": 1,
+      "free_percent": 59
+    },
+    {
+      "elapsed_seconds": 147.91347708300054,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 149.9423312910003,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 151.97104929099987,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 153.99986033300047,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 156.02800666599978,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 158.05651500000022,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 160.07516387500073,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 162.10360995799965,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 164.1352596659999,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 166.15491166600077,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 168.18278166600066,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 170.20413966600063,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 172.24028941600045,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 174.27469016600116,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 176.30212399999982,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 178.3277658750012,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 180.35340612500113,
+      "pressure_level": 1,
+      "free_percent": 57
+    },
+    {
+      "elapsed_seconds": 182.38225150000108,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 184.40944595800102,
+      "pressure_level": 1,
+      "free_percent": 57
+    },
+    {
+      "elapsed_seconds": 186.4302531659996,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 188.45849199999975,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 190.4828314160004,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 192.51106341600098,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 194.53739124999993,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 196.59255875000053,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 198.617629458,
+      "pressure_level": 1,
+      "free_percent": 57
+    },
+    {
+      "elapsed_seconds": 200.64643191600044,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 202.67274670799998,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 204.690977708,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 206.72223508299976,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 208.74335362500096,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 210.77267054100048,
+      "pressure_level": 1,
+      "free_percent": 57
+    },
+    {
+      "elapsed_seconds": 212.79321579099997,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 214.81220295800085,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 216.83699058300044,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 218.86472729100024,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 220.88461741600076,
+      "pressure_level": 1,
+      "free_percent": 58
+    },
+    {
+      "elapsed_seconds": 221.79823133300124,
+      "dataset_index": 62,
+      "phase": "after_input",
+      "pressure_level": 1,
+      "free_percent": 58
+    }
+  ],
+  "memory_after_close": {
+    "pressure_level": 1,
+    "free_percent": 62
+  }
+}

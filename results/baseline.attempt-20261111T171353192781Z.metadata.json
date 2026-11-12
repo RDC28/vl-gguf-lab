@@ -1,0 +1,89 @@
+{
+  "dataset_sha256": "073bd194bdb79e3ecfcfad51e09f23510ca697431475221b785c369619d7b8cf",
+  "model": {
+    "repo": "unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+    "revision": "68bb8bc4b7df5289c143aaec0ab477a7d4051aab",
+    "files": [
+      {
+        "name": "Qwen2.5-VL-7B-Instruct-Q3_K_M.gguf",
+        "size_bytes": 3808390016,
+        "sha256": "accacb52744cadbe58b49f37ebb44e094f8de7ee2b52eb0b51ed9289329ef0c1"
+      },
+      {
+        "name": "mmproj-F16.gguf",
+        "size_bytes": 1354163040,
+        "sha256": "987dd0733033fb5dd9b124d1ca926ae865572e432384eee7618b2eec3e735e17"
+      }
+    ]
+  },
+  "settings": {
+    "seed": 42,
+    "temperature": 0,
+    "top_p": 1,
+    "top_k": 1,
+    "repeat_penalty": 1,
+    "n_ctx": 2048,
+    "max_tokens": 1024,
+    "n_gpu_layers": -1,
+    "n_batch": 128,
+    "n_threads": 4,
+    "n_threads_batch": 4
+  },
+  "system_prompt": "You are a film storyboard assistant. Turn the scene description into a detailed shot breakdown. Use numbered SHOT headings and describe the framing, camera movement, action, and sound for each shot.",
+  "attempt_id": "20261111T171353192781Z",
+  "sample_indexes": [
+    6,
+    22,
+    26,
+    28,
+    35,
+    57,
+    62,
+    70,
+    108,
+    139
+  ],
+  "pending_indexes": [
+    22
+  ],
+  "previously_completed_indexes": [
+    6
+  ],
+  "completed_indexes": [],
+  "started_utc": "2026-11-11T17:13:53.479471+00:00",
+  "dataset_rows": 150,
+  "python": "3.12.13",
+  "macos": "27.0.1",
+  "machine": "arm64",
+  "llama_cpp_python": "0.3.36",
+  "llama_system_info": "MTL : EMBED_LIBRARY = 1 | CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | ACCELERATE = 1 | REPACK = 1 | ",
+  "backend_init_seconds": 0.27832658300030744,
+  "memory_before": {
+    "pressure_level": 1,
+    "free_percent": 70
+  },
+  "constructor_load_seconds": 4.004311291000704,
+  "load_seconds": 4.282637874001011,
+  "chat_format": "chat_template.default",
+  "embedded_chat_template": "{% set image_count = namespace(value=0) %}{% set video_count = namespace(value=0) %}{% for message in messages %}{% if loop.first and message['role'] != 'system' %}<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n{% endif %}<|im_start|>{{ message['role'] }}\n{% if message['content'] is string %}{{ message['content'] }}<|im_end|>\n{% else %}{% for content in message['content'] %}{% if content['type'] == 'image' or 'image' in content or 'image_url' in content %}{% set image_count.value = image_count.value + 1 %}{% if add_vision_id %}Picture {{ image_count.value }}: {% endif %}<|vision_start|><|image_pad|><|vision_end|>{% elif content['type'] == 'video' or 'video' in content %}{% set video_count.value = video_count.value + 1 %}{% if add_vision_id %}Video {{ video_count.value }}: {% endif %}<|vision_start|><|video_pad|><|vision_end|>{% elif 'text' in content %}{{ content['text'] }}{% endif %}{% endfor %}<|im_end|>\n{% endif %}{% endfor %}{% if add_generation_prompt %}<|im_start|>assistant\n{% endif %}",
+  "active_dataset_index": 22,
+  "error": "RuntimeError: Insufficient memory headroom; close other work before retrying: {'pressure_level': 2, 'free_percent': 15}",
+  "total_seconds": 4.141493333001563,
+  "peak_process_rss_bytes": 3386982400,
+  "memory_samples": [
+    {
+      "elapsed_seconds": 2.016452083000331,
+      "pressure_level": 1,
+      "free_percent": 69
+    },
+    {
+      "elapsed_seconds": 4.120068666001316,
+      "pressure_level": 2,
+      "free_percent": 15
+    }
+  ],
+  "memory_after_close": {
+    "pressure_level": 2,
+    "free_percent": 15
+  }
+}

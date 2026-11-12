@@ -1,0 +1,27 @@
+{
+  "purpose": "CPU-only configuration probe on previously measured GPU row 6; not additional unique scene coverage",
+  "dataset_index": 6,
+  "cpu": {
+    "finish_reason": "length",
+    "wall_seconds": 114.32008320900059,
+    "prompt_eval_tokens": 72,
+    "prompt_eval_seconds": 6.1506170000000004,
+    "completion_eval_tokens": 1023,
+    "generation_eval_seconds": 107.30136,
+    "generation_tokens_per_second": 9.53389593570855,
+    "peak_process_rss_bytes": 4330668032,
+    "output_words": 704,
+    "reference_words": 448,
+    "output_shot_headings": 8,
+    "reference_shot_headings": 4,
+    "unigram_precision": 0.18323863636363635,
+    "unigram_recall": 0.28794642857142855,
+    "unigram_f1": 0.22395833333333331
+  },
+  "gpu_output_sha256": "d99258671465437ce0e018f2cdbfe7f4e4f90fb514b70eecea28bd10e5ce52eb",
+  "cpu_output_sha256": "ed1f2af2174055f474d1c6fffd2051b75006cc0c264449433e084aec4ef9f177",
+  "outputs_equal": false,
+  "minimum_sampled_free_percent": 42,
+  "maximum_sampled_pressure_level": 1,
+  "memory_sample_count": 60
+}

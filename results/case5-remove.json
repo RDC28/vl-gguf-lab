@@ -1,0 +1,2006 @@
+{
+  "source_sha256": "f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57",
+  "output_path": "models/SmolLM2-135M-Instruct-minus1.gguf",
+  "operation": "remove original block 15; shift original blocks 16-29 down one; no training",
+  "memory_samples": [
+    {
+      "phase": "before_import",
+      "elapsed_seconds": 0.0059447080002428265,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:token_embd.weight",
+      "elapsed_seconds": 1.6424213749996852,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.0.attn_norm.weight",
+      "elapsed_seconds": 1.6502907079993747,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.0.ffn_down.weight",
+      "elapsed_seconds": 1.6582061250010156,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.0.ffn_gate.weight",
+      "elapsed_seconds": 1.6649947080004495,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.0.ffn_up.weight",
+      "elapsed_seconds": 1.672298416000558,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.0.ffn_norm.weight",
+      "elapsed_seconds": 1.680002916000376,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.0.attn_k.weight",
+      "elapsed_seconds": 1.6874472500003321,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.0.attn_output.weight",
+      "elapsed_seconds": 1.6958943330009788,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.0.attn_q.weight",
+      "elapsed_seconds": 1.7035555410002416,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.0.attn_v.weight",
+      "elapsed_seconds": 1.710586790999514,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.1.attn_norm.weight",
+      "elapsed_seconds": 1.718066749999707,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.1.ffn_down.weight",
+      "elapsed_seconds": 1.725549791000958,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.1.ffn_gate.weight",
+      "elapsed_seconds": 1.7323403330010478,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.1.ffn_up.weight",
+      "elapsed_seconds": 1.7392760410002666,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.1.ffn_norm.weight",
+      "elapsed_seconds": 1.7462229160009883,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.1.attn_k.weight",
+      "elapsed_seconds": 1.7535066660002485,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.1.attn_output.weight",
+      "elapsed_seconds": 1.7616026249997958,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.1.attn_q.weight",
+      "elapsed_seconds": 1.7694750829996337,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.1.attn_v.weight",
+      "elapsed_seconds": 1.7774757080005656,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.10.attn_norm.weight",
+      "elapsed_seconds": 1.7850159160007024,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.10.ffn_down.weight",
+      "elapsed_seconds": 1.7927953329999582,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.10.ffn_gate.weight",
+      "elapsed_seconds": 1.8007117079996533,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.10.ffn_up.weight",
+      "elapsed_seconds": 1.8085756250002305,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.10.ffn_norm.weight",
+      "elapsed_seconds": 1.8162683749997086,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.10.attn_k.weight",
+      "elapsed_seconds": 1.8232522500002233,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.10.attn_output.weight",
+      "elapsed_seconds": 1.8308539999998175,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.10.attn_q.weight",
+      "elapsed_seconds": 1.8388552500000515,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.10.attn_v.weight",
+      "elapsed_seconds": 1.8460950829994545,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.11.attn_norm.weight",
+      "elapsed_seconds": 1.8530681249994814,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.11.ffn_down.weight",
+      "elapsed_seconds": 1.8606482909999613,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.11.ffn_gate.weight",
+      "elapsed_seconds": 1.8681636250003066,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.11.ffn_up.weight",
+      "elapsed_seconds": 1.8757272500006366,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.11.ffn_norm.weight",
+      "elapsed_seconds": 1.8830438750010217,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.11.attn_k.weight",
+      "elapsed_seconds": 1.8905575000007957,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.11.attn_output.weight",
+      "elapsed_seconds": 1.8979793329999666,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.11.attn_q.weight",
+      "elapsed_seconds": 1.9049737500008632,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.11.attn_v.weight",
+      "elapsed_seconds": 1.9125608750000538,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.12.attn_norm.weight",
+      "elapsed_seconds": 1.9199851249995845,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.12.ffn_down.weight",
+      "elapsed_seconds": 1.9271831660007592,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.12.ffn_gate.weight",
+      "elapsed_seconds": 1.9335987909998948,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.12.ffn_up.weight",
+      "elapsed_seconds": 1.940597250000792,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.12.ffn_norm.weight",
+      "elapsed_seconds": 1.9469550829999207,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.12.attn_k.weight",
+      "elapsed_seconds": 1.953817290999723,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.12.attn_output.weight",
+      "elapsed_seconds": 1.9602315000011004,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.12.attn_q.weight",
+      "elapsed_seconds": 1.9675249160009116,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.12.attn_v.weight",
+      "elapsed_seconds": 1.9743148329998803,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.13.attn_norm.weight",
+      "elapsed_seconds": 1.9811592910009495,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.13.ffn_down.weight",
+      "elapsed_seconds": 1.988321332999476,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.13.ffn_gate.weight",
+      "elapsed_seconds": 1.9958374580000964,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.13.ffn_up.weight",
+      "elapsed_seconds": 2.003334332999657,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.13.ffn_norm.weight",
+      "elapsed_seconds": 2.010934541000097,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.13.attn_k.weight",
+      "elapsed_seconds": 2.0172792079993087,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.13.attn_output.weight",
+      "elapsed_seconds": 2.0241090409999742,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.13.attn_q.weight",
+      "elapsed_seconds": 2.030911333000404,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.13.attn_v.weight",
+      "elapsed_seconds": 2.0375920000005863,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.14.attn_norm.weight",
+      "elapsed_seconds": 2.0445087909993163,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.14.ffn_down.weight",
+      "elapsed_seconds": 2.0513009160004003,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.14.ffn_gate.weight",
+      "elapsed_seconds": 2.058007457999338,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.14.ffn_up.weight",
+      "elapsed_seconds": 2.0651265409996995,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.14.ffn_norm.weight",
+      "elapsed_seconds": 2.072208583000247,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.14.attn_k.weight",
+      "elapsed_seconds": 2.0802426659993216,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.14.attn_output.weight",
+      "elapsed_seconds": 2.088233374999618,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.14.attn_q.weight",
+      "elapsed_seconds": 2.0956686660010746,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.14.attn_v.weight",
+      "elapsed_seconds": 2.1031174159998045,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.15.attn_norm.weight",
+      "elapsed_seconds": 2.110879375000877,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.15.ffn_down.weight",
+      "elapsed_seconds": 2.118686040999819,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.15.ffn_gate.weight",
+      "elapsed_seconds": 2.126481999999669,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.15.ffn_up.weight",
+      "elapsed_seconds": 2.134072124999875,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.15.ffn_norm.weight",
+      "elapsed_seconds": 2.141566165999393,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.15.attn_k.weight",
+      "elapsed_seconds": 2.149159624999811,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.15.attn_output.weight",
+      "elapsed_seconds": 2.156730624999909,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.15.attn_q.weight",
+      "elapsed_seconds": 2.163973458000328,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.15.attn_v.weight",
+      "elapsed_seconds": 2.171797291000985,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.16.attn_norm.weight",
+      "elapsed_seconds": 2.1795078329996613,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.16.ffn_down.weight",
+      "elapsed_seconds": 2.186580707999383,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.16.ffn_gate.weight",
+      "elapsed_seconds": 2.194187041000987,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.16.ffn_up.weight",
+      "elapsed_seconds": 2.200996583000233,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.16.ffn_norm.weight",
+      "elapsed_seconds": 2.208289958000023,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.16.attn_k.weight",
+      "elapsed_seconds": 2.215395958000954,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.16.attn_output.weight",
+      "elapsed_seconds": 2.2227595830008795,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.16.attn_q.weight",
+      "elapsed_seconds": 2.23028075000002,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.16.attn_v.weight",
+      "elapsed_seconds": 2.237598749999961,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.17.attn_norm.weight",
+      "elapsed_seconds": 2.2463895410000987,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.17.ffn_down.weight",
+      "elapsed_seconds": 2.2534890410006483,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.17.ffn_gate.weight",
+      "elapsed_seconds": 2.260610875000566,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.17.ffn_up.weight",
+      "elapsed_seconds": 2.267130457999883,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.17.ffn_norm.weight",
+      "elapsed_seconds": 2.2743530410007224,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.17.attn_k.weight",
+      "elapsed_seconds": 2.283054458001061,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.17.attn_output.weight",
+      "elapsed_seconds": 2.2912793750001583,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.17.attn_q.weight",
+      "elapsed_seconds": 2.298393749999377,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.17.attn_v.weight",
+      "elapsed_seconds": 2.3053671659999964,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.18.attn_norm.weight",
+      "elapsed_seconds": 2.3129386250002426,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.18.ffn_down.weight",
+      "elapsed_seconds": 2.320156457999474,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.18.ffn_gate.weight",
+      "elapsed_seconds": 2.327238583000508,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.18.ffn_up.weight",
+      "elapsed_seconds": 2.334295541000756,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.18.ffn_norm.weight",
+      "elapsed_seconds": 2.3414116250005463,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.18.attn_k.weight",
+      "elapsed_seconds": 2.3487406250005733,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.18.attn_output.weight",
+      "elapsed_seconds": 2.356251625000368,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.18.attn_q.weight",
+      "elapsed_seconds": 2.363292125000953,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.18.attn_v.weight",
+      "elapsed_seconds": 2.370771500000046,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.2.attn_norm.weight",
+      "elapsed_seconds": 2.377634374999616,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.2.ffn_down.weight",
+      "elapsed_seconds": 2.383590749999712,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.2.ffn_gate.weight",
+      "elapsed_seconds": 2.3898526249995484,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.2.ffn_up.weight",
+      "elapsed_seconds": 2.396436958000777,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.2.ffn_norm.weight",
+      "elapsed_seconds": 2.4026731659996585,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.2.attn_k.weight",
+      "elapsed_seconds": 2.4091355410000688,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.2.attn_output.weight",
+      "elapsed_seconds": 2.41565645800074,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.2.attn_q.weight",
+      "elapsed_seconds": 2.423442666000483,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.2.attn_v.weight",
+      "elapsed_seconds": 2.4305132909994427,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.19.attn_norm.weight",
+      "elapsed_seconds": 2.4371722910000244,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.19.ffn_down.weight",
+      "elapsed_seconds": 2.4445436250007333,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.19.ffn_gate.weight",
+      "elapsed_seconds": 2.4513890409998567,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.19.ffn_up.weight",
+      "elapsed_seconds": 2.4585818329996982,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.19.ffn_norm.weight",
+      "elapsed_seconds": 2.465459250001004,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.19.attn_k.weight",
+      "elapsed_seconds": 2.4722212079996098,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.19.attn_output.weight",
+      "elapsed_seconds": 2.4787711250010034,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.19.attn_q.weight",
+      "elapsed_seconds": 2.4850284999993164,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.19.attn_v.weight",
+      "elapsed_seconds": 2.491452083000695,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.20.attn_norm.weight",
+      "elapsed_seconds": 2.497608333000244,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.20.ffn_down.weight",
+      "elapsed_seconds": 2.503923541000404,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.20.ffn_gate.weight",
+      "elapsed_seconds": 2.5104734579999786,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.20.ffn_up.weight",
+      "elapsed_seconds": 2.5166912080003385,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.20.ffn_norm.weight",
+      "elapsed_seconds": 2.5230675830007385,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.20.attn_k.weight",
+      "elapsed_seconds": 2.529421540999465,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.20.attn_output.weight",
+      "elapsed_seconds": 2.5355629160003446,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.20.attn_q.weight",
+      "elapsed_seconds": 2.5417833749997953,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.20.attn_v.weight",
+      "elapsed_seconds": 2.548121290999916,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.21.attn_norm.weight",
+      "elapsed_seconds": 2.554329458000211,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.21.ffn_down.weight",
+      "elapsed_seconds": 2.56070229100078,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.21.ffn_gate.weight",
+      "elapsed_seconds": 2.5669560830010596,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.21.ffn_up.weight",
+      "elapsed_seconds": 2.5730430830008117,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.21.ffn_norm.weight",
+      "elapsed_seconds": 2.579224000000977,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.21.attn_k.weight",
+      "elapsed_seconds": 2.585543208000672,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.21.attn_output.weight",
+      "elapsed_seconds": 2.591690749999543,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.21.attn_q.weight",
+      "elapsed_seconds": 2.597819291000633,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.21.attn_v.weight",
+      "elapsed_seconds": 2.6041891660006513,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.22.attn_norm.weight",
+      "elapsed_seconds": 2.61019104099978,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.22.ffn_down.weight",
+      "elapsed_seconds": 2.6163706250008545,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.22.ffn_gate.weight",
+      "elapsed_seconds": 2.6233587080005236,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.22.ffn_up.weight",
+      "elapsed_seconds": 2.6303990409996914,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.22.ffn_norm.weight",
+      "elapsed_seconds": 2.636919415999728,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.22.attn_k.weight",
+      "elapsed_seconds": 2.643615041000885,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.22.attn_output.weight",
+      "elapsed_seconds": 2.6505020410004363,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.22.attn_q.weight",
+      "elapsed_seconds": 2.6570009580009355,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.22.attn_v.weight",
+      "elapsed_seconds": 2.6633487079998304,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.23.attn_norm.weight",
+      "elapsed_seconds": 2.669822290999946,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.23.ffn_down.weight",
+      "elapsed_seconds": 2.676235541001006,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.23.ffn_gate.weight",
+      "elapsed_seconds": 2.6825330829997256,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.23.ffn_up.weight",
+      "elapsed_seconds": 2.68878229099937,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.23.ffn_norm.weight",
+      "elapsed_seconds": 2.695292333000907,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.23.attn_k.weight",
+      "elapsed_seconds": 2.7015365829993243,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.23.attn_output.weight",
+      "elapsed_seconds": 2.707809666000685,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.23.attn_q.weight",
+      "elapsed_seconds": 2.714149916000679,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.23.attn_v.weight",
+      "elapsed_seconds": 2.720316332999573,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.24.attn_norm.weight",
+      "elapsed_seconds": 2.7264792080004554,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.24.ffn_down.weight",
+      "elapsed_seconds": 2.732817166001041,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.24.ffn_gate.weight",
+      "elapsed_seconds": 2.7390792080004758,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.24.ffn_up.weight",
+      "elapsed_seconds": 2.745284000000538,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.24.ffn_norm.weight",
+      "elapsed_seconds": 2.751752333000695,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.24.attn_k.weight",
+      "elapsed_seconds": 2.7582784999995056,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.24.attn_output.weight",
+      "elapsed_seconds": 2.764316875000077,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.24.attn_q.weight",
+      "elapsed_seconds": 2.7706959580009425,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.24.attn_v.weight",
+      "elapsed_seconds": 2.776999583000361,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.25.attn_norm.weight",
+      "elapsed_seconds": 2.7830493330002355,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.25.ffn_down.weight",
+      "elapsed_seconds": 2.7894648330002383,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.25.ffn_gate.weight",
+      "elapsed_seconds": 2.7958130829993024,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.25.ffn_up.weight",
+      "elapsed_seconds": 2.8020255000010366,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.25.ffn_norm.weight",
+      "elapsed_seconds": 2.8083185409996076,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.25.attn_k.weight",
+      "elapsed_seconds": 2.8147317500006466,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.25.attn_output.weight",
+      "elapsed_seconds": 2.8208225409998704,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.25.attn_q.weight",
+      "elapsed_seconds": 2.8271470409999893,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.25.attn_v.weight",
+      "elapsed_seconds": 2.8334768330005318,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.26.attn_norm.weight",
+      "elapsed_seconds": 2.8395480409999436,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.26.ffn_down.weight",
+      "elapsed_seconds": 2.8458070409997163,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.26.ffn_gate.weight",
+      "elapsed_seconds": 2.85269791599967,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.26.ffn_up.weight",
+      "elapsed_seconds": 2.8589631659997394,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.26.ffn_norm.weight",
+      "elapsed_seconds": 2.865064749999874,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.26.attn_k.weight",
+      "elapsed_seconds": 2.871321665999858,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.26.attn_output.weight",
+      "elapsed_seconds": 2.8775827499994193,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.26.attn_q.weight",
+      "elapsed_seconds": 2.8837922910006455,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.26.attn_v.weight",
+      "elapsed_seconds": 2.8901721660004114,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.27.attn_norm.weight",
+      "elapsed_seconds": 2.896470125000633,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.27.ffn_down.weight",
+      "elapsed_seconds": 2.902797124999779,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.27.ffn_gate.weight",
+      "elapsed_seconds": 2.909023874999548,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.27.ffn_up.weight",
+      "elapsed_seconds": 2.915199875000326,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.27.ffn_norm.weight",
+      "elapsed_seconds": 2.9213392910005496,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.27.attn_k.weight",
+      "elapsed_seconds": 2.9275836249998974,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.27.attn_output.weight",
+      "elapsed_seconds": 2.93375662499966,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.27.attn_q.weight",
+      "elapsed_seconds": 2.9398418750006385,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.27.attn_v.weight",
+      "elapsed_seconds": 2.9461758750003355,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.28.attn_norm.weight",
+      "elapsed_seconds": 2.9523592080004164,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.28.ffn_down.weight",
+      "elapsed_seconds": 2.9585860410006717,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.28.ffn_gate.weight",
+      "elapsed_seconds": 2.964929290999862,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.28.ffn_up.weight",
+      "elapsed_seconds": 2.9713306659996306,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.28.ffn_norm.weight",
+      "elapsed_seconds": 2.977531624999756,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.28.attn_k.weight",
+      "elapsed_seconds": 2.9837368330008758,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.28.attn_output.weight",
+      "elapsed_seconds": 2.9900887080002576,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.28.attn_q.weight",
+      "elapsed_seconds": 2.996245333000843,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.28.attn_v.weight",
+      "elapsed_seconds": 3.0025988750003307,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.3.attn_norm.weight",
+      "elapsed_seconds": 3.0088892910007417,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.3.ffn_down.weight",
+      "elapsed_seconds": 3.014940500001103,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.3.ffn_gate.weight",
+      "elapsed_seconds": 3.021231208000245,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.3.ffn_up.weight",
+      "elapsed_seconds": 3.0276927079994493,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.3.ffn_norm.weight",
+      "elapsed_seconds": 3.0337602910003625,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.3.attn_k.weight",
+      "elapsed_seconds": 3.0398710000008577,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.3.attn_output.weight",
+      "elapsed_seconds": 3.046278666000944,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.3.attn_q.weight",
+      "elapsed_seconds": 3.0532222080000793,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.3.attn_v.weight",
+      "elapsed_seconds": 3.0594637079993845,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.4.attn_norm.weight",
+      "elapsed_seconds": 3.06580437500088,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.4.ffn_down.weight",
+      "elapsed_seconds": 3.071961833000387,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.4.ffn_gate.weight",
+      "elapsed_seconds": 3.0783666250008537,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.4.ffn_up.weight",
+      "elapsed_seconds": 3.0848370830008207,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.4.ffn_norm.weight",
+      "elapsed_seconds": 3.0909685000005993,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.4.attn_k.weight",
+      "elapsed_seconds": 3.097153624999919,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.4.attn_output.weight",
+      "elapsed_seconds": 3.1034361250003712,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.4.attn_q.weight",
+      "elapsed_seconds": 3.109479458000351,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.4.attn_v.weight",
+      "elapsed_seconds": 3.115701500000796,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.5.attn_norm.weight",
+      "elapsed_seconds": 3.1220092910007224,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.5.ffn_down.weight",
+      "elapsed_seconds": 3.1280233329998737,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.5.ffn_gate.weight",
+      "elapsed_seconds": 3.1343194159999257,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.5.ffn_up.weight",
+      "elapsed_seconds": 3.140595500000927,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.5.ffn_norm.weight",
+      "elapsed_seconds": 3.1471066659996723,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.5.attn_k.weight",
+      "elapsed_seconds": 3.153645250000409,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.5.attn_output.weight",
+      "elapsed_seconds": 3.1599959159993887,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.5.attn_q.weight",
+      "elapsed_seconds": 3.1659638750006707,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.5.attn_v.weight",
+      "elapsed_seconds": 3.1722524159995373,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.6.attn_norm.weight",
+      "elapsed_seconds": 3.178435375000845,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.6.ffn_down.weight",
+      "elapsed_seconds": 3.184744291000243,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.6.ffn_gate.weight",
+      "elapsed_seconds": 3.1911616249999497,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.6.ffn_up.weight",
+      "elapsed_seconds": 3.197528874999989,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.6.ffn_norm.weight",
+      "elapsed_seconds": 3.203699540999878,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.6.attn_k.weight",
+      "elapsed_seconds": 3.2100892500002374,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.6.attn_output.weight",
+      "elapsed_seconds": 3.21640487500008,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.6.attn_q.weight",
+      "elapsed_seconds": 3.222556708000411,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.6.attn_v.weight",
+      "elapsed_seconds": 3.2287901660001808,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.7.attn_norm.weight",
+      "elapsed_seconds": 3.235155374999522,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.7.ffn_down.weight",
+      "elapsed_seconds": 3.241401332999885,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.7.ffn_gate.weight",
+      "elapsed_seconds": 3.247761582999374,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.7.ffn_up.weight",
+      "elapsed_seconds": 3.254555290999633,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.7.ffn_norm.weight",
+      "elapsed_seconds": 3.2607548750002024,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.7.attn_k.weight",
+      "elapsed_seconds": 3.267174915999931,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.7.attn_output.weight",
+      "elapsed_seconds": 3.2735232909999468,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.7.attn_q.weight",
+      "elapsed_seconds": 3.2798463750004885,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.7.attn_v.weight",
+      "elapsed_seconds": 3.2862612909993913,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.8.attn_norm.weight",
+      "elapsed_seconds": 3.2926390409993473,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.8.ffn_down.weight",
+      "elapsed_seconds": 3.29880837500059,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.8.ffn_gate.weight",
+      "elapsed_seconds": 3.3053653330007364,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.8.ffn_up.weight",
+      "elapsed_seconds": 3.311738458000036,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.8.ffn_norm.weight",
+      "elapsed_seconds": 3.318044290999751,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.8.attn_k.weight",
+      "elapsed_seconds": 3.32435550000082,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.8.attn_output.weight",
+      "elapsed_seconds": 3.3307165000005625,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.8.attn_q.weight",
+      "elapsed_seconds": 3.3368073330002517,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.8.attn_v.weight",
+      "elapsed_seconds": 3.343028332999893,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.9.attn_norm.weight",
+      "elapsed_seconds": 3.349398457999996,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.9.ffn_down.weight",
+      "elapsed_seconds": 3.355669291000595,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.9.ffn_gate.weight",
+      "elapsed_seconds": 3.3618294580010115,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.9.ffn_up.weight",
+      "elapsed_seconds": 3.3680399999993824,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.9.ffn_norm.weight",
+      "elapsed_seconds": 3.3740807909998694,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.9.attn_k.weight",
+      "elapsed_seconds": 3.3803420000003825,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.9.attn_output.weight",
+      "elapsed_seconds": 3.3867766660005145,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.9.attn_q.weight",
+      "elapsed_seconds": 3.3928993749996152,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:blk.9.attn_v.weight",
+      "elapsed_seconds": 3.399196207999921,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "register:output_norm.weight",
+      "elapsed_seconds": 3.405520083000738,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_write",
+      "elapsed_seconds": 3.4120138329999463,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "after_write",
+      "elapsed_seconds": 3.617872291000822,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "after_verification",
+      "elapsed_seconds": 5.262815166001019,
+      "pressure_level": 1,
+      "free_percent": 70
+    }
+  ],
+  "gguf_version": "0.19.0",
+  "original_blocks": 30,
+  "pruned_blocks": 29,
+  "removed_block": 15,
+  "selection_rule": "predetermined interior block; no calibration or score selection",
+  "new_to_source_block_map": {
+    "0": 0,
+    "1": 1,
+    "2": 2,
+    "3": 3,
+    "4": 4,
+    "5": 5,
+    "6": 6,
+    "7": 7,
+    "8": 8,
+    "9": 9,
+    "10": 10,
+    "11": 11,
+    "12": 12,
+    "13": 13,
+    "14": 14,
+    "15": 16,
+    "16": 17,
+    "17": 18,
+    "18": 19,
+    "19": 20,
+    "20": 21,
+    "21": 22,
+    "22": 23,
+    "23": 24,
+    "24": 25,
+    "25": 26,
+    "26": 27,
+    "27": 28,
+    "28": 29
+  },
+  "retained_tensor_map": {
+    "token_embd.weight": "token_embd.weight",
+    "blk.0.attn_norm.weight": "blk.0.attn_norm.weight",
+    "blk.0.ffn_down.weight": "blk.0.ffn_down.weight",
+    "blk.0.ffn_gate.weight": "blk.0.ffn_gate.weight",
+    "blk.0.ffn_up.weight": "blk.0.ffn_up.weight",
+    "blk.0.ffn_norm.weight": "blk.0.ffn_norm.weight",
+    "blk.0.attn_k.weight": "blk.0.attn_k.weight",
+    "blk.0.attn_output.weight": "blk.0.attn_output.weight",
+    "blk.0.attn_q.weight": "blk.0.attn_q.weight",
+    "blk.0.attn_v.weight": "blk.0.attn_v.weight",
+    "blk.1.attn_norm.weight": "blk.1.attn_norm.weight",
+    "blk.1.ffn_down.weight": "blk.1.ffn_down.weight",
+    "blk.1.ffn_gate.weight": "blk.1.ffn_gate.weight",
+    "blk.1.ffn_up.weight": "blk.1.ffn_up.weight",
+    "blk.1.ffn_norm.weight": "blk.1.ffn_norm.weight",
+    "blk.1.attn_k.weight": "blk.1.attn_k.weight",
+    "blk.1.attn_output.weight": "blk.1.attn_output.weight",
+    "blk.1.attn_q.weight": "blk.1.attn_q.weight",
+    "blk.1.attn_v.weight": "blk.1.attn_v.weight",
+    "blk.10.attn_norm.weight": "blk.10.attn_norm.weight",
+    "blk.10.ffn_down.weight": "blk.10.ffn_down.weight",
+    "blk.10.ffn_gate.weight": "blk.10.ffn_gate.weight",
+    "blk.10.ffn_up.weight": "blk.10.ffn_up.weight",
+    "blk.10.ffn_norm.weight": "blk.10.ffn_norm.weight",
+    "blk.10.attn_k.weight": "blk.10.attn_k.weight",
+    "blk.10.attn_output.weight": "blk.10.attn_output.weight",
+    "blk.10.attn_q.weight": "blk.10.attn_q.weight",
+    "blk.10.attn_v.weight": "blk.10.attn_v.weight",
+    "blk.11.attn_norm.weight": "blk.11.attn_norm.weight",
+    "blk.11.ffn_down.weight": "blk.11.ffn_down.weight",
+    "blk.11.ffn_gate.weight": "blk.11.ffn_gate.weight",
+    "blk.11.ffn_up.weight": "blk.11.ffn_up.weight",
+    "blk.11.ffn_norm.weight": "blk.11.ffn_norm.weight",
+    "blk.11.attn_k.weight": "blk.11.attn_k.weight",
+    "blk.11.attn_output.weight": "blk.11.attn_output.weight",
+    "blk.11.attn_q.weight": "blk.11.attn_q.weight",
+    "blk.11.attn_v.weight": "blk.11.attn_v.weight",
+    "blk.12.attn_norm.weight": "blk.12.attn_norm.weight",
+    "blk.12.ffn_down.weight": "blk.12.ffn_down.weight",
+    "blk.12.ffn_gate.weight": "blk.12.ffn_gate.weight",
+    "blk.12.ffn_up.weight": "blk.12.ffn_up.weight",
+    "blk.12.ffn_norm.weight": "blk.12.ffn_norm.weight",
+    "blk.12.attn_k.weight": "blk.12.attn_k.weight",
+    "blk.12.attn_output.weight": "blk.12.attn_output.weight",
+    "blk.12.attn_q.weight": "blk.12.attn_q.weight",
+    "blk.12.attn_v.weight": "blk.12.attn_v.weight",
+    "blk.13.attn_norm.weight": "blk.13.attn_norm.weight",
+    "blk.13.ffn_down.weight": "blk.13.ffn_down.weight",
+    "blk.13.ffn_gate.weight": "blk.13.ffn_gate.weight",
+    "blk.13.ffn_up.weight": "blk.13.ffn_up.weight",
+    "blk.13.ffn_norm.weight": "blk.13.ffn_norm.weight",
+    "blk.13.attn_k.weight": "blk.13.attn_k.weight",
+    "blk.13.attn_output.weight": "blk.13.attn_output.weight",
+    "blk.13.attn_q.weight": "blk.13.attn_q.weight",
+    "blk.13.attn_v.weight": "blk.13.attn_v.weight",
+    "blk.14.attn_norm.weight": "blk.14.attn_norm.weight",
+    "blk.14.ffn_down.weight": "blk.14.ffn_down.weight",
+    "blk.14.ffn_gate.weight": "blk.14.ffn_gate.weight",
+    "blk.14.ffn_up.weight": "blk.14.ffn_up.weight",
+    "blk.14.ffn_norm.weight": "blk.14.ffn_norm.weight",
+    "blk.14.attn_k.weight": "blk.14.attn_k.weight",
+    "blk.14.attn_output.weight": "blk.14.attn_output.weight",
+    "blk.14.attn_q.weight": "blk.14.attn_q.weight",
+    "blk.14.attn_v.weight": "blk.14.attn_v.weight",
+    "blk.15.attn_norm.weight": "blk.16.attn_norm.weight",
+    "blk.15.ffn_down.weight": "blk.16.ffn_down.weight",
+    "blk.15.ffn_gate.weight": "blk.16.ffn_gate.weight",
+    "blk.15.ffn_up.weight": "blk.16.ffn_up.weight",
+    "blk.15.ffn_norm.weight": "blk.16.ffn_norm.weight",
+    "blk.15.attn_k.weight": "blk.16.attn_k.weight",
+    "blk.15.attn_output.weight": "blk.16.attn_output.weight",
+    "blk.15.attn_q.weight": "blk.16.attn_q.weight",
+    "blk.15.attn_v.weight": "blk.16.attn_v.weight",
+    "blk.16.attn_norm.weight": "blk.17.attn_norm.weight",
+    "blk.16.ffn_down.weight": "blk.17.ffn_down.weight",
+    "blk.16.ffn_gate.weight": "blk.17.ffn_gate.weight",
+    "blk.16.ffn_up.weight": "blk.17.ffn_up.weight",
+    "blk.16.ffn_norm.weight": "blk.17.ffn_norm.weight",
+    "blk.16.attn_k.weight": "blk.17.attn_k.weight",
+    "blk.16.attn_output.weight": "blk.17.attn_output.weight",
+    "blk.16.attn_q.weight": "blk.17.attn_q.weight",
+    "blk.16.attn_v.weight": "blk.17.attn_v.weight",
+    "blk.17.attn_norm.weight": "blk.18.attn_norm.weight",
+    "blk.17.ffn_down.weight": "blk.18.ffn_down.weight",
+    "blk.17.ffn_gate.weight": "blk.18.ffn_gate.weight",
+    "blk.17.ffn_up.weight": "blk.18.ffn_up.weight",
+    "blk.17.ffn_norm.weight": "blk.18.ffn_norm.weight",
+    "blk.17.attn_k.weight": "blk.18.attn_k.weight",
+    "blk.17.attn_output.weight": "blk.18.attn_output.weight",
+    "blk.17.attn_q.weight": "blk.18.attn_q.weight",
+    "blk.17.attn_v.weight": "blk.18.attn_v.weight",
+    "blk.18.attn_norm.weight": "blk.19.attn_norm.weight",
+    "blk.18.ffn_down.weight": "blk.19.ffn_down.weight",
+    "blk.18.ffn_gate.weight": "blk.19.ffn_gate.weight",
+    "blk.18.ffn_up.weight": "blk.19.ffn_up.weight",
+    "blk.18.ffn_norm.weight": "blk.19.ffn_norm.weight",
+    "blk.18.attn_k.weight": "blk.19.attn_k.weight",
+    "blk.18.attn_output.weight": "blk.19.attn_output.weight",
+    "blk.18.attn_q.weight": "blk.19.attn_q.weight",
+    "blk.18.attn_v.weight": "blk.19.attn_v.weight",
+    "blk.2.attn_norm.weight": "blk.2.attn_norm.weight",
+    "blk.2.ffn_down.weight": "blk.2.ffn_down.weight",
+    "blk.2.ffn_gate.weight": "blk.2.ffn_gate.weight",
+    "blk.2.ffn_up.weight": "blk.2.ffn_up.weight",
+    "blk.2.ffn_norm.weight": "blk.2.ffn_norm.weight",
+    "blk.2.attn_k.weight": "blk.2.attn_k.weight",
+    "blk.2.attn_output.weight": "blk.2.attn_output.weight",
+    "blk.2.attn_q.weight": "blk.2.attn_q.weight",
+    "blk.2.attn_v.weight": "blk.2.attn_v.weight",
+    "blk.19.attn_norm.weight": "blk.20.attn_norm.weight",
+    "blk.19.ffn_down.weight": "blk.20.ffn_down.weight",
+    "blk.19.ffn_gate.weight": "blk.20.ffn_gate.weight",
+    "blk.19.ffn_up.weight": "blk.20.ffn_up.weight",
+    "blk.19.ffn_norm.weight": "blk.20.ffn_norm.weight",
+    "blk.19.attn_k.weight": "blk.20.attn_k.weight",
+    "blk.19.attn_output.weight": "blk.20.attn_output.weight",
+    "blk.19.attn_q.weight": "blk.20.attn_q.weight",
+    "blk.19.attn_v.weight": "blk.20.attn_v.weight",
+    "blk.20.attn_norm.weight": "blk.21.attn_norm.weight",
+    "blk.20.ffn_down.weight": "blk.21.ffn_down.weight",
+    "blk.20.ffn_gate.weight": "blk.21.ffn_gate.weight",
+    "blk.20.ffn_up.weight": "blk.21.ffn_up.weight",
+    "blk.20.ffn_norm.weight": "blk.21.ffn_norm.weight",
+    "blk.20.attn_k.weight": "blk.21.attn_k.weight",
+    "blk.20.attn_output.weight": "blk.21.attn_output.weight",
+    "blk.20.attn_q.weight": "blk.21.attn_q.weight",
+    "blk.20.attn_v.weight": "blk.21.attn_v.weight",
+    "blk.21.attn_norm.weight": "blk.22.attn_norm.weight",
+    "blk.21.ffn_down.weight": "blk.22.ffn_down.weight",
+    "blk.21.ffn_gate.weight": "blk.22.ffn_gate.weight",
+    "blk.21.ffn_up.weight": "blk.22.ffn_up.weight",
+    "blk.21.ffn_norm.weight": "blk.22.ffn_norm.weight",
+    "blk.21.attn_k.weight": "blk.22.attn_k.weight",
+    "blk.21.attn_output.weight": "blk.22.attn_output.weight",
+    "blk.21.attn_q.weight": "blk.22.attn_q.weight",
+    "blk.21.attn_v.weight": "blk.22.attn_v.weight",
+    "blk.22.attn_norm.weight": "blk.23.attn_norm.weight",
+    "blk.22.ffn_down.weight": "blk.23.ffn_down.weight",
+    "blk.22.ffn_gate.weight": "blk.23.ffn_gate.weight",
+    "blk.22.ffn_up.weight": "blk.23.ffn_up.weight",
+    "blk.22.ffn_norm.weight": "blk.23.ffn_norm.weight",
+    "blk.22.attn_k.weight": "blk.23.attn_k.weight",
+    "blk.22.attn_output.weight": "blk.23.attn_output.weight",
+    "blk.22.attn_q.weight": "blk.23.attn_q.weight",
+    "blk.22.attn_v.weight": "blk.23.attn_v.weight",
+    "blk.23.attn_norm.weight": "blk.24.attn_norm.weight",
+    "blk.23.ffn_down.weight": "blk.24.ffn_down.weight",
+    "blk.23.ffn_gate.weight": "blk.24.ffn_gate.weight",
+    "blk.23.ffn_up.weight": "blk.24.ffn_up.weight",
+    "blk.23.ffn_norm.weight": "blk.24.ffn_norm.weight",
+    "blk.23.attn_k.weight": "blk.24.attn_k.weight",
+    "blk.23.attn_output.weight": "blk.24.attn_output.weight",
+    "blk.23.attn_q.weight": "blk.24.attn_q.weight",
+    "blk.23.attn_v.weight": "blk.24.attn_v.weight",
+    "blk.24.attn_norm.weight": "blk.25.attn_norm.weight",
+    "blk.24.ffn_down.weight": "blk.25.ffn_down.weight",
+    "blk.24.ffn_gate.weight": "blk.25.ffn_gate.weight",
+    "blk.24.ffn_up.weight": "blk.25.ffn_up.weight",
+    "blk.24.ffn_norm.weight": "blk.25.ffn_norm.weight",
+    "blk.24.attn_k.weight": "blk.25.attn_k.weight",
+    "blk.24.attn_output.weight": "blk.25.attn_output.weight",
+    "blk.24.attn_q.weight": "blk.25.attn_q.weight",
+    "blk.24.attn_v.weight": "blk.25.attn_v.weight",
+    "blk.25.attn_norm.weight": "blk.26.attn_norm.weight",
+    "blk.25.ffn_down.weight": "blk.26.ffn_down.weight",
+    "blk.25.ffn_gate.weight": "blk.26.ffn_gate.weight",
+    "blk.25.ffn_up.weight": "blk.26.ffn_up.weight",
+    "blk.25.ffn_norm.weight": "blk.26.ffn_norm.weight",
+    "blk.25.attn_k.weight": "blk.26.attn_k.weight",
+    "blk.25.attn_output.weight": "blk.26.attn_output.weight",
+    "blk.25.attn_q.weight": "blk.26.attn_q.weight",
+    "blk.25.attn_v.weight": "blk.26.attn_v.weight",
+    "blk.26.attn_norm.weight": "blk.27.attn_norm.weight",
+    "blk.26.ffn_down.weight": "blk.27.ffn_down.weight",
+    "blk.26.ffn_gate.weight": "blk.27.ffn_gate.weight",
+    "blk.26.ffn_up.weight": "blk.27.ffn_up.weight",
+    "blk.26.ffn_norm.weight": "blk.27.ffn_norm.weight",
+    "blk.26.attn_k.weight": "blk.27.attn_k.weight",
+    "blk.26.attn_output.weight": "blk.27.attn_output.weight",
+    "blk.26.attn_q.weight": "blk.27.attn_q.weight",
+    "blk.26.attn_v.weight": "blk.27.attn_v.weight",
+    "blk.27.attn_norm.weight": "blk.28.attn_norm.weight",
+    "blk.27.ffn_down.weight": "blk.28.ffn_down.weight",
+    "blk.27.ffn_gate.weight": "blk.28.ffn_gate.weight",
+    "blk.27.ffn_up.weight": "blk.28.ffn_up.weight",
+    "blk.27.ffn_norm.weight": "blk.28.ffn_norm.weight",
+    "blk.27.attn_k.weight": "blk.28.attn_k.weight",
+    "blk.27.attn_output.weight": "blk.28.attn_output.weight",
+    "blk.27.attn_q.weight": "blk.28.attn_q.weight",
+    "blk.27.attn_v.weight": "blk.28.attn_v.weight",
+    "blk.28.attn_norm.weight": "blk.29.attn_norm.weight",
+    "blk.28.ffn_down.weight": "blk.29.ffn_down.weight",
+    "blk.28.ffn_gate.weight": "blk.29.ffn_gate.weight",
+    "blk.28.ffn_up.weight": "blk.29.ffn_up.weight",
+    "blk.28.ffn_norm.weight": "blk.29.ffn_norm.weight",
+    "blk.28.attn_k.weight": "blk.29.attn_k.weight",
+    "blk.28.attn_output.weight": "blk.29.attn_output.weight",
+    "blk.28.attn_q.weight": "blk.29.attn_q.weight",
+    "blk.28.attn_v.weight": "blk.29.attn_v.weight",
+    "blk.3.attn_norm.weight": "blk.3.attn_norm.weight",
+    "blk.3.ffn_down.weight": "blk.3.ffn_down.weight",
+    "blk.3.ffn_gate.weight": "blk.3.ffn_gate.weight",
+    "blk.3.ffn_up.weight": "blk.3.ffn_up.weight",
+    "blk.3.ffn_norm.weight": "blk.3.ffn_norm.weight",
+    "blk.3.attn_k.weight": "blk.3.attn_k.weight",
+    "blk.3.attn_output.weight": "blk.3.attn_output.weight",
+    "blk.3.attn_q.weight": "blk.3.attn_q.weight",
+    "blk.3.attn_v.weight": "blk.3.attn_v.weight",
+    "blk.4.attn_norm.weight": "blk.4.attn_norm.weight",
+    "blk.4.ffn_down.weight": "blk.4.ffn_down.weight",
+    "blk.4.ffn_gate.weight": "blk.4.ffn_gate.weight",
+    "blk.4.ffn_up.weight": "blk.4.ffn_up.weight",
+    "blk.4.ffn_norm.weight": "blk.4.ffn_norm.weight",
+    "blk.4.attn_k.weight": "blk.4.attn_k.weight",
+    "blk.4.attn_output.weight": "blk.4.attn_output.weight",
+    "blk.4.attn_q.weight": "blk.4.attn_q.weight",
+    "blk.4.attn_v.weight": "blk.4.attn_v.weight",
+    "blk.5.attn_norm.weight": "blk.5.attn_norm.weight",
+    "blk.5.ffn_down.weight": "blk.5.ffn_down.weight",
+    "blk.5.ffn_gate.weight": "blk.5.ffn_gate.weight",
+    "blk.5.ffn_up.weight": "blk.5.ffn_up.weight",
+    "blk.5.ffn_norm.weight": "blk.5.ffn_norm.weight",
+    "blk.5.attn_k.weight": "blk.5.attn_k.weight",
+    "blk.5.attn_output.weight": "blk.5.attn_output.weight",
+    "blk.5.attn_q.weight": "blk.5.attn_q.weight",
+    "blk.5.attn_v.weight": "blk.5.attn_v.weight",
+    "blk.6.attn_norm.weight": "blk.6.attn_norm.weight",
+    "blk.6.ffn_down.weight": "blk.6.ffn_down.weight",
+    "blk.6.ffn_gate.weight": "blk.6.ffn_gate.weight",
+    "blk.6.ffn_up.weight": "blk.6.ffn_up.weight",
+    "blk.6.ffn_norm.weight": "blk.6.ffn_norm.weight",
+    "blk.6.attn_k.weight": "blk.6.attn_k.weight",
+    "blk.6.attn_output.weight": "blk.6.attn_output.weight",
+    "blk.6.attn_q.weight": "blk.6.attn_q.weight",
+    "blk.6.attn_v.weight": "blk.6.attn_v.weight",
+    "blk.7.attn_norm.weight": "blk.7.attn_norm.weight",
+    "blk.7.ffn_down.weight": "blk.7.ffn_down.weight",
+    "blk.7.ffn_gate.weight": "blk.7.ffn_gate.weight",
+    "blk.7.ffn_up.weight": "blk.7.ffn_up.weight",
+    "blk.7.ffn_norm.weight": "blk.7.ffn_norm.weight",
+    "blk.7.attn_k.weight": "blk.7.attn_k.weight",
+    "blk.7.attn_output.weight": "blk.7.attn_output.weight",
+    "blk.7.attn_q.weight": "blk.7.attn_q.weight",
+    "blk.7.attn_v.weight": "blk.7.attn_v.weight",
+    "blk.8.attn_norm.weight": "blk.8.attn_norm.weight",
+    "blk.8.ffn_down.weight": "blk.8.ffn_down.weight",
+    "blk.8.ffn_gate.weight": "blk.8.ffn_gate.weight",
+    "blk.8.ffn_up.weight": "blk.8.ffn_up.weight",
+    "blk.8.ffn_norm.weight": "blk.8.ffn_norm.weight",
+    "blk.8.attn_k.weight": "blk.8.attn_k.weight",
+    "blk.8.attn_output.weight": "blk.8.attn_output.weight",
+    "blk.8.attn_q.weight": "blk.8.attn_q.weight",
+    "blk.8.attn_v.weight": "blk.8.attn_v.weight",
+    "blk.9.attn_norm.weight": "blk.9.attn_norm.weight",
+    "blk.9.ffn_down.weight": "blk.9.ffn_down.weight",
+    "blk.9.ffn_gate.weight": "blk.9.ffn_gate.weight",
+    "blk.9.ffn_up.weight": "blk.9.ffn_up.weight",
+    "blk.9.ffn_norm.weight": "blk.9.ffn_norm.weight",
+    "blk.9.attn_k.weight": "blk.9.attn_k.weight",
+    "blk.9.attn_output.weight": "blk.9.attn_output.weight",
+    "blk.9.attn_q.weight": "blk.9.attn_q.weight",
+    "blk.9.attn_v.weight": "blk.9.attn_v.weight",
+    "output_norm.weight": "output_norm.weight"
+  },
+  "removed_elements": 3540096,
+  "removed_tensor_bytes": 7082496,
+  "removed_tensor_inventory": [
+    {
+      "name": "blk.15.attn_norm.weight",
+      "shape": [
+        576
+      ],
+      "type": "F32",
+      "sha256": "6cac9c4dc3e6a03611186a57629caa8800c1f9c258107083042a23d58b212429"
+    },
+    {
+      "name": "blk.15.ffn_down.weight",
+      "shape": [
+        1536,
+        576
+      ],
+      "type": "F16",
+      "sha256": "0b886505f8de6ea8f2e0127be4aca997efffde0b8adf3dcc5b2782cdb1794951"
+    },
+    {
+      "name": "blk.15.ffn_gate.weight",
+      "shape": [
+        576,
+        1536
+      ],
+      "type": "F16",
+      "sha256": "a94c938847e6af7a6a208288bdcab51731a5e41bc46f6a83dc7a699573765019"
+    },
+    {
+      "name": "blk.15.ffn_up.weight",
+      "shape": [
+        576,
+        1536
+      ],
+      "type": "F16",
+      "sha256": "d86026ed3e6d1f6f3392dcd660449e9fc0024afa4732180a3720022c86358097"
+    },
+    {
+      "name": "blk.15.ffn_norm.weight",
+      "shape": [
+        576
+      ],
+      "type": "F32",
+      "sha256": "d411412698602a15892248dddc7750cfc055ad2cda4b2dd2ae302a5298767f3a"
+    },
+    {
+      "name": "blk.15.attn_k.weight",
+      "shape": [
+        576,
+        192
+      ],
+      "type": "F16",
+      "sha256": "4db4ae0bbff200676112f03b9b81d2221fbd22288f1be05d433fbee50553f104"
+    },
+    {
+      "name": "blk.15.attn_output.weight",
+      "shape": [
+        576,
+        576
+      ],
+      "type": "F16",
+      "sha256": "9b5a04c213cda8df6bbcf960307c0efb3c12edddcf8760dcb536426efaceaa46"
+    },
+    {
+      "name": "blk.15.attn_q.weight",
+      "shape": [
+        576,
+        576
+      ],
+      "type": "F16",
+      "sha256": "93b8c4fefe0209427fbd55bb41bf7eb50928290f96a40c64a53f122b24c98f73"
+    },
+    {
+      "name": "blk.15.attn_v.weight",
+      "shape": [
+        576,
+        192
+      ],
+      "type": "F16",
+      "sha256": "476682ba3c151762a54961cc6da209cb559fc3d041643afd4053ca28988d87d8"
+    }
+  ],
+  "write_seconds": 0.19861670799946296,
+  "status": "completed",
+  "byte_preserved_retained_tensors": 263,
+  "changed_metadata_fields": [
+    "GGUF.tensor_count",
+    "llama.block_count"
+  ],
+  "unchanged_metadata_fields": 34,
+  "output_sha256": "391046ca968852f26f72402386b5732f562fb37719e660d031c6f460629964c4",
+  "output_size_bytes": 263802944,
+  "elapsed_seconds": 5.262824082999941,
+  "peak_process_rss_bytes": 903086080,
+  "limitations": "Artifact verification only; pruned model not loaded or evaluated. Fixed block removal has no influence calibration; no behavior preservation or quality gain assumed. Phase/tensor snapshots are not continuous monitoring. RSS excludes some unified-memory allocations."
+}

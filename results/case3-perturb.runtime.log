@@ -1,0 +1,32 @@
+{
+  "source_sha256": "f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57",
+  "output_path": "models/SmolLM2-135M-Instruct-norm101.gguf",
+  "target": "blk.0.attn_norm.weight",
+  "operation": "multiply by numpy.float32(1.01)",
+  "gguf_version": "0.19.0",
+  "numpy_version": "2.5.4",
+  "shape": [
+    576
+  ],
+  "dtype": "F32",
+  "changed_elements": 576,
+  "before_min": -0.3046875,
+  "before_max": 0.314453125,
+  "after_min": -0.3077343702316284,
+  "after_max": 0.3175976574420929,
+  "maximum_absolute_delta": 0.0031445324420928955,
+  "write_seconds": 0.20809320800071873,
+  "target_before_sha256": "2469079d969a361823be8145fa36e15e4c1b933b5261d669357b3deead825cba",
+  "target_after_sha256": "1f841112c39dddf5fb3943db40d972a9ae1ff3036cedee6973041b19a2e21145",
+  "status": "completed",
+  "changed_tensors": [
+    "blk.0.attn_norm.weight"
+  ],
+  "unchanged_tensors": 271,
+  "metadata_fields_verified": 36,
+  "output_sha256": "336f76366de192df5dc66185ea0caf98b00a1b75ba03d9089aa4dd481358b49e",
+  "output_size_bytes": 270885952,
+  "elapsed_seconds": 4.92275787500148,
+  "peak_process_rss_bytes": 909721600,
+  "limitations": "Artifact verification only; edited model not loaded or evaluated. Phase/tensor snapshots are not continuous monitoring. RSS excludes some unified-memory allocations."
+}

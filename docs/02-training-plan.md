@@ -1,0 +1,173 @@
+# Case 2: fine-tune and re-test
+
+## Goal
+
+Find out whether supervised adaptation improves scene fidelity and the reference shot-breakdown style over case 1. The overnight task authorizes a tiny local LoRA workflow demonstration. A tiny text-model LoRA run has completed; it uses its own model baseline rather than claim adaptation of the 7B VL model.
+
+## Method
+
+Use the original floating-point Qwen checkpoint with a supported adapter training stack. Train on scene descriptions paired with target breakdowns, masking prompt tokens out of the supervised loss. Keep the vision component frozen for this text-only question. LoRA learns a small set of low-rank weight updates; QLoRA additionally uses a quantized training base. Neither makes all activation and operating-system memory disappear. GGUF is the inference artifact, not the normal starting format for this training path. [PEFT LoRA documentation](https://huggingface.co/docs/peft/v0.21.0/package_reference/lora)
+
+## Tools and versions
+
+| Tool | Version status | Role |
+| --- | --- | --- |
+| Existing baseline stack | Python 3.12.13, llama-cpp-python 0.3.36 | Controlled before/after inference |
+| PEFT | 0.21.0 documentation consulted; not installed | Candidate LoRA adapter training |
+| Transformers, PyTorch, bitsandbytes | Versions not selected or installed | Candidate cloud training stack; validate their compatibility together |
+| MLX-VLM / MLX | Versions not selected or installed | Candidate Apple Silicon adaptation route |
+| llama.cpp | Baseline commit recorded in case 1 | Convert/export compatible artifacts after training |
+
+MLX-VLM advertises VL inference and fine-tuning on Apple Silicon, but that does not establish that this model and training setup fit 8 GB. Confirm architecture, text-only loss, and export support before selecting it. [MLX-VLM project](https://github.com/Neywa-Labs/mlx-vlm)
+
+## Feasibility on the 8 GB Air
+
+Full 7B fine-tuning is not feasible here: 15.23 GB of BF16 language weights alone (from the baseline tensor inventory) exceeds physical RAM, before gradients, optimizer states, activations, and the vision stack. A 7B adapter run is not assumed to fit safely while other work is running. Suitable cloud hardware is the practical 7B route; an explicitly smaller model could support a separate local feasibility study. These are resource estimates, not measured training results.
+
+## Concrete plan
+
+1. Check semantic duplicates, licensing, and target consistency. Freeze disjoint train/validation/test scene groups before training. The current 10-row exploratory sample must not silently become a trained model's unbiased test set.
+2. Agree a human rubric: scene facts retained, invented events, continuity, four-shot structure, and useful camera instructions. Score the untrained model first.
+3. Select and pin a compatible training stack on the chosen hardware. Measure a one-batch memory budget before a training run. Preserve the base revision and adapter configuration.
+4. Tune only on the training/validation sets. Save adapter, seed, learning rate, loss curves, trainable parameter count, peak memory, and wall time.
+5. Convert a supported merged checkpoint to the same inference quant. Re-run the held-out inputs with identical prompt/context/sampling. Compare adapters before merge where possible to separate training effects from conversion effects.
+
+## Risks and open questions
+
+Only 150 pairs invites overfitting and style memorization. Random row splits can leak similar scenes. Whether frozen vision weights retain image quality needs a separate image benchmark. Adapter export and quantization can change results. Cloud budget, data permission, best smaller local model, and the exact versions remain unresolved before any experiment.
+
+## Findings
+
+### 2026-11-11: frozen split before training
+
+`src/freeze_split.py` reads the verified dataset and writes `results/case2-split.json` exclusively, refusing to overwrite it. The frozen split is 120 training, 15 validation, and 15 test rows. The SHA256 of the canonical index mapping is `3d4a1eff32d197aaab0c49a92171c31cdf0c7f557d1191afcce3752cf8f3ece0`; the artifact defines the exact hash encoding and includes dataset SHA256, indexes, group assignments, and selection seed 42. No framework or model was loaded.
+
+All 150 input descriptions were reviewed for shared scene beats. Conservative manual groups keep related ferry, bridge, school, costume, radio, cosmic-separation, wedding, and other scenes together. Connected groups, not individual rows, are assigned. An additional all-pairs normalized word-set Jaccard screen at 0.45 found zero qualifying pairs; normalized exact duplicates were also zero. Lexical uniqueness alone would therefore miss the manually identified relationships. References are never inspected by the grouping implementation. Shared characters and story worlds still cross splits; this is a within-domain adaptation check, not an independence guarantee.
+
+The ten scenes whose baseline outputs have already been inspected, and their connected groups, are forced into training. Test and validation each contain 15 other rows; no group crosses partitions. The explicit test indexes are [23, 34, 48, 55, 60, 81, 106, 107, 121, 123, 124, 125, 132, 141, 142]. Do not select hyperparameters or training examples based on these test results. Validation is for tuning only. Freeze this artifact before the model's own untrained held-out baseline and retain it unchanged through training/re-test.
+
+Candidate for the next bounded experiment: `HuggingFaceTB/SmolLM2-135M-Instruct`, a tiny text-only Llama-family model with an Apache-2.0 model card, using MLX-LM LoRA. The [official model card](https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct) and [MLX-LM LoRA documentation](https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/LORA.md) were checked before selection. This candidate is deliberately much smaller than 3B to leave training headroom; compatibility and memory remain unmeasured. No download or dependency installation occurred this iteration. Next: pin a revision and training versions, download once with hashes, then perform a guarded one-batch preflight and its own before/after held-out evaluation. Training, loss, trainable parameters, and memory/time findings remain pending.
+
+Validation: reproducible split reconstruction, exact coverage/disjointness, group containment, exploratory-row exclusion, hash consistency, exclusive-create refusal, Python/notebook syntax/schema, dependency consistency, and diff whitespace checks passed.
+
+## Sources consulted
+
+The PEFT 0.21.0 LoRA reference and MLX-VLM project linked above were consulted on 2026-11-11. The original [Qwen2.5-VL model card](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct) supplies the base model identity. Compatibility and feasibility must be measured when versions are selected.
+
+### 2026-11-11 17:56 UTC: tiny model acquired and inspected
+
+Downloaded `HuggingFaceTB/SmolLM2-135M-Instruct` once at revision `12fd25f77366fa6b3b4b768ec3050bf629380bac` into `models/SmolLM2-135M-Instruct`, using direct HTTPS file reads without a shared model cache. The nine selected files total 272,444,345 bytes: weights, configuration, tokenizer assets, and the upstream model card. No upstream training-state or evaluation artifacts were downloaded. Original 7B files and their manifest remain unchanged, so baseline resume provenance stays valid. `results/case2-model-provenance.json` records every file size/SHA256 and the complete safetensors header.
+
+| Observed item | Value |
+| --- | --- |
+| Weight file | `model.safetensors`, 269,060,552 bytes |
+| Weight SHA256, also matched against upstream LFS | `5af571cbf074e6d21a03528d2330792e532ca608f24ac70a143f6b369968ab8c` |
+| Stored tensors / elements / dtype | 272 / 134,515,008 / BF16 |
+| Architecture | Llama causal LM, 30 blocks, hidden 576, feed-forward 1,536 |
+| Attention / KV heads | 9 / 3, head dimension 64 |
+| Vocabulary / tied embeddings | 49,152 / true |
+| RMSNorm epsilon / RoPE theta / declared context | 0.00001 / 100,000 / 8,192 |
+| Download plus hash/header inspection | 17.611 seconds |
+| Acquisition process peak RSS | 57,802,752 bytes |
+
+Stored BF16 weights occupy 269,030,016 tensor bytes; an FP32 copy alone would occupy 538,060,032 bytes. These estimates exclude adapters, gradients, optimizer states, activations, caches, and framework allocations. They justify trying a guarded tiny-model preflight, not a claim that training fits. Acquisition RSS measures only the downloader/header reader, not inference or training, and does not cover all unified-memory allocations. No model tensors were instantiated and no held-out outputs or references were inspected this iteration.
+
+The pinned [upstream configuration](https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct/blob/12fd25f77366fa6b3b4b768ec3050bf629380bac/config.json) and [model card](https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct/blob/12fd25f77366fa6b3b4b768ec3050bf629380bac/README.md) identify a tiny text-only model, not a VL replacement. MLX-LM's [LoRA instructions](https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/LORA.md) list Llama support, but compatibility of these exact files remains untested. Next: select/pin local MLX-LM dependencies, load this local directory without another download, measure a short preflight with the existing memory policy, and collect its own untrained baseline before adaptation. Training, loss, adapters, and quality changes remain pending.
+
+Validation: all nine local file hashes and sizes rechecked, weight hash matched the upstream LFS digest, tensor byte spans/shapes and architecture inventory checked, frozen split reproduced unchanged, existing evidence verified against Git, notebook/Python syntax and dependency consistency checked. No inference, training, or server process was started.
+
+### 2026-11-11: guarded MLX LoRA preflight
+
+Installed MLX-LM 0.32.2 with its training extra into the existing `.venv`; MLX/MLX-Metal 0.32.4, Transformers 5.22.2 and all added dependencies are pinned in `requirements.txt`. No existing package version changed. The [official MLX-LM project](https://github.com/ml-explore/mlx-lm) and [LoRA guide](https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/LORA.md) were consulted before implementation; the installed loader and adapter code were inspected for exact API behavior. The unchanged local BF16 checkpoint loads directly without conversion, remote code, or network downloads.
+
+`src/case2_preflight.py` verifies all nine source file hashes and the frozen dataset hash, then uses only the first frozen training index (0). It freezes the base and adds rank-4, scale-8, zero-dropout adapters to query/value projections in the last two blocks: 15,360 trainable elements across eight arrays. It computes one batch-one forward/backward loss, with no optimizer update or adapter save. Seed is 42. This establishes gradient feasibility, not completed training or quality improvement.
+
+| Measurement | Final preflight |
+| --- | ---: |
+| Prompt / total tokens | 96 / 129 |
+| Model input / supervised answer targets | 128 / 33 |
+| Model load | 0.144 seconds |
+| Forward/backward | 0.062 seconds |
+| Total process work | 1.316 seconds |
+| Partial-answer cross entropy | 4.21875 |
+| Gradient L2 / finite | 0.335437 / all finite |
+| MLX peak allocated memory | 382,325,130 bytes |
+| Peak process RSS | 426,573,824 bytes |
+| Free before / minimum sampled / after release | 68% / 62% / 63% |
+| Highest sampled pressure | 1 (normal) |
+
+`results/case2-preflight.json` and its runtime log preserve the final run. Sampling occurs every 0.5 seconds plus stage boundaries; the existing normal-pressure/15% guard applies before loading and computation, and critical pressure or below 8% free requests a stop. A single short MLX graph cannot be interrupted between its internal kernels; the flag is checked after evaluation. Neither RSS nor MLX allocation alone measures all unified-memory use, and subsecond peaks can escape system sampling. Model references/cache were released and each process exited.
+
+Two earlier attempts are preserved. `case2-preflight-64*` loaded safely but refused to compute because its 64-token cap contained no answer after the 96-token prompt. `case2-preflight-128-offset*` computed finite gradients in 2.017 seconds but omitted the first answer target due to a shifted masking boundary (32 supervised targets, loss 3.96875). The final mask includes all 33 answer targets and excludes all prompt targets. Timing differences include uncontrolled first-use kernel/cache overhead and different masks; they are not evidence of a speed improvement. Only the first 33 answer tokens are tested, not a whole shot breakdown. No test or validation references entered this preflight.
+
+Validation: real local forward/backward execution, finite/nonzero gradients, source integrity, frozen split reproduction, Python compilation, notebook schema/syntax, dependency compatibility (131 packages), and whitespace checks passed. Held-out baseline, optimizer-state memory, actual LoRA training, adapters, and identical-settings re-test remain pending. Next: collect this tiny model's own untrained held-out outputs, then a short guarded training run; do not infer that longer sequences or the 7B model fit from this result.
+
+### 2026-11-11 18:02 UTC: untrained held-out baseline
+
+`src/case2_evaluate.py` completed the 15 frozen test indexes before any optimizer update. It verifies the original tiny-model files and reconstructs the frozen split, uses offline local loading, and builds prompts from the system instruction and scene description only. References enter metrics after generation. Raw input/reference/output strings, prompt/output token IDs, token counts, stop reasons and per-row wall/throughput measurements are in `results/case2-before.jsonl`, flushed and synced after every row. Attempt settings, versions, model/split/dataset hashes and memory readings are in `results/case2-before.metadata.json`; the runtime log and summary have the same stem. No source download or checkpoint was changed.
+
+Settings are frozen for the later re-test: original BF16 SmolLM2-135M-Instruct, MLX-LM 0.32.2, seed 42, temperature 0 (greedy), no logits processors, 128 new tokens, prompt prefill chunks of 128, and a 2,048-token prompt-plus-output limit with overflow refusal. Fresh generation calls use independent KV caches for each input. This is deliberately shorter than the 7B baseline, so cross-model quality scores are not controlled comparisons. The [official MLX-LM streaming API](https://github.com/ml-explore/mlx-lm#streaming) and installed generation/sampler code were inspected before implementation.
+
+| Measurement | Untrained tiny-model test |
+| --- | ---: |
+| Completed test scenes | 15 / 15 |
+| Capped outputs | 14 |
+| Mean input wall time | 0.842 seconds |
+| Load / total work | 0.142 / 14.141 seconds |
+| Mean output words | 86.8 |
+| Mean unigram F1 | 0.12496 |
+| MLX peak allocation | 327,914,752 bytes |
+| Peak process RSS | 425,213,952 bytes |
+| Free before / minimum / after release | 68% / 59% / 62% |
+| Highest sampled pressure | 1 (normal) |
+
+The 128-token cap severely limits a detailed breakdown. Index 23 stopped naturally after a single sentence; index 34 repeated apologetic dialogue rather than following the requested shot structure. These are limited descriptive observations, not a rubric score or a basis for choosing training hyperparameters. Do not tune using these test outputs. Unigram overlap is not semantic correctness. The held-out references have not entered training.
+
+The unchanged memory policy guards every input and samples every 0.5 seconds; streaming checks the critical-stop flag after each yielded token. RSS excludes some unified-memory allocations, and periodic readings can miss brief peaks. The model/cache were released and the process exited normally. Validation checked exact test coverage, input/reference identity, token budget, recomputed metrics, split/source hashes, preservation of prior tracked evidence, Python/notebook syntax, dependencies and whitespace. Actual optimizer training, adapter save and held-out after-results remain pending.
+
+### 2026-11-11 18:05 UTC: bounded optimizer training
+
+`src/case2_train.py` completed 20 batch-one optimizer updates on the first 20 sorted frozen training indexes: 0-7, 9, and 11-21. No rows were skipped. No validation/test references or outputs guided this fixed run. It retains the preflight configuration: original local BF16 SmolLM2-135M-Instruct, frozen base, query/value LoRA in blocks 28 and 29, rank 4, scale 8, dropout 0, seed 42, and 15,360 trainable elements. It uses 128 model-input tokens (129 shifted tokens including the last target), prompt-masked cross entropy, and only answer prefixes. Across the 20 examples, 966 answer tokens were supervised. This does not train complete shot breakdowns.
+
+The optimizer is MLX Adam at constant learning rate 0.0001, betas 0.9/0.999, epsilon 1e-8, no weight decay, clipping or accumulation, and the installed default `bias_correction=False`. That last setting matters when reproducing the run with another Adam implementation. The [official trainer source](https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/tuner/trainer.py) and installed MLX 0.32.4 optimizer source were inspected before recording the update/save protocol. Framework versions are unchanged from the preflight. No hyperparameter sweep or selection was performed.
+
+| Measurement | Observed |
+| --- | ---: |
+| Completed updates / finite-gradient checks | 20 / 20 |
+| Mean pre-update partial-answer loss | 4.78359 |
+| First / last loss, different scenes | 4.21875 / 5.0625 |
+| Load / training / total work | 0.140 / 1.338 / 2.646 seconds |
+| Adapter change from initialization, L2 | 1.04976 |
+| Peak MLX allocation / process RSS | 387,368,366 / 430,473,216 bytes |
+| Free before / minimum sampled / after release | 68% / 62% / 65% |
+| Highest sampled pressure | 1 (normal) |
+
+Losses are on different scenes, so the first/last values are not a learning curve showing improvement. `results/case2-train.json` preserves each index, exact training token IDs, supervised-token count, loss and step time, all source/split hashes, adapter shapes, memory samples and final artifact hashes. The runtime log is preserved separately. The final local `models/case2-lora/adapters.safetensors` is 62,287 bytes, SHA256 `81a792a5eb4ff1726169ca797554e1d5242e9ee690d89e4281f5493e7ca9faa2`; its 202-byte configuration and hash are recorded alongside it. These small final artifacts remain locally under the ignored models folder; original downloads are unchanged.
+
+The unchanged memory guard runs before import/load and every update; a 0.5-second watcher and after-update snapshots catch critical pressure or below 8% free. One graph cannot stop between internal kernels. RSS and MLX allocation omit some unified-memory use; short peaks can evade sampling. Model, gradient, optimizer and adapter array references/cache were released and the process exited. Independent verification reloaded the saved adapter, checked all eight names/shapes, 15,360 finite elements, exact source/adapter hashes, train-only membership and regenerated training token IDs/mask counts. Prior evidence, frozen split, Python/notebook syntax, dependency consistency and diff whitespace checks passed. No inference or server was left running.
+
+Next: load this exact saved adapter for the same 15 test scenes, with identical baseline prompts/token IDs and greedy generation settings. Do not retrain or select checkpoints using test outcomes. After-results and any quality change remain unmeasured; this is a tiny text-only training workflow, not adaptation of the 7B VL model.
+
+
+### 2026-11-11 18:07 UTC: identical-settings held-out re-test
+
+Case 2's bounded before/train/after workflow is complete. `.venv/bin/python src/case2_evaluate.py --after` verifies the saved adapter's sizes/hashes and training split/model provenance, then loads it through the installed MLX-LM adapter loader. Original source files remain immutable. The same evaluator retains its exclusive-create untrained mode; after-results are separate under `results/case2-after*`. No retraining or checkpoint selection followed test inspection.
+
+All 15 test scene inputs, references and prompt token IDs match the untrained baseline exactly. Seed, greedy sampler, 128-new-token cap, 2,048-token context limit, prefill size and framework versions are unchanged. Raw outputs/token IDs, per-row timings and metrics are durably recorded in `results/case2-after.jsonl`; metadata includes exact adapter hashes and memory readings. `results/case2-after-summary.json` records paired output changes and F1 deltas.
+
+| Measurement | Before | After |
+| --- | ---: | ---: |
+| Completed test scenes | 15 | 15 |
+| Capped outputs | 14 | 15 |
+| Mean words | 86.80 | 95.13 |
+| Mean unigram F1 | 0.12496 | 0.14008 |
+| Total detected SHOT headings | 0 | 2 |
+| Mean input wall time, seconds | 0.842 | 0.871 |
+| Load / total work, seconds | 0.142 / 14.141 | 0.160 / 14.589 |
+| MLX peak allocation, bytes | 327,914,752 | 327,976,204 |
+| Process peak RSS, bytes | 425,213,952 | 427,540,480 |
+| Minimum sampled free / highest pressure | 59% / normal | 59% / normal |
+
+Fourteen outputs changed; index 48 remained token-identical and repetitively listed the rooftop party. Eight paired F1 scores increased, six decreased and one stayed unchanged; mean delta was +0.01512. Higher lexical overlap is not proof of semantic improvement, and output lengths changed. Index 23 now invents a cafe sign and interior detail instead of stopping after a single sentence. Index 34 replaces repetitive apology dialogue with generic street prose, still repeating glasses and adding unrelated detail. Two headings across all 15 outputs do not demonstrate successful shot structure. All after-outputs were capped. No formal human rubric or statistical generalization is claimed.
+
+After-run pressure stayed normal, with 68% reported free before import, minimum 59%, and 62% after release. Guards and sampling are unchanged; RSS/MLX allocation do not capture all unified memory and brief peaks may escape sampling. The process exited normally with model/cache released. Validation checked exact held-out coverage and prompt/settings identity, recomputed every metric, checked source/adapter hashes and prior evidence preservation, and ran Python/notebook syntax/schema, dependency and whitespace checks. This tiny text-only experiment demonstrates safe adapter training/reloading/evaluation, not 7B VL adaptation or a reliable quality gain. Cases 3-6 remain unattempted; the next bounded step is a small GGUF rewrite control for case 3.

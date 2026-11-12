@@ -1,0 +1,17 @@
+{
+  "purpose": "No-change GGUFWriter control; no inference or perturbation",
+  "source_sha256": "f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57",
+  "output_path": "models/SmolLM2-135M-Instruct-control.gguf",
+  "gguf_version": "0.19.0",
+  "write_seconds": 0.19870716700097546,
+  "status": "completed",
+  "metadata_fields_verified": 36,
+  "tensors_verified": 272,
+  "output_sha256": "f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57",
+  "output_size_bytes": 270885952,
+  "byte_identical_file": true,
+  "metadata_and_tensor_bytes_identical": true,
+  "elapsed_seconds": 5.109840916000394,
+  "peak_process_rss_bytes": 909770752,
+  "limitations": "No inference or load equivalence tested. Phase/tensor memory snapshots, not continuous monitoring. RSS excludes some unified-memory allocations."
+}

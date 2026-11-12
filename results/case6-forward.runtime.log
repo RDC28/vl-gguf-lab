@@ -1,0 +1,50 @@
+{
+  "source_sha256": "f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57",
+  "reference_sha256": "8629b6903d04169c5016f411f0ed9499004faa896057c63a9d2d398ac41f7bd9",
+  "numpy_version": "2.5.4",
+  "implementation": "NumPy float32, full 30-block decoded F16 source; causal full-sequence attention; no KV cache",
+  "acceptance": {
+    "atol": 0.001,
+    "rtol": 0.001,
+    "rule": "Every saved logit must satisfy abs(custom-reference) <= atol + rtol*abs(reference); report max/RMS errors and argmax agreement separately."
+  },
+  "token_ids": [
+    504,
+    6715,
+    7488,
+    6351,
+    30
+  ],
+  "forward_seconds": 0.3058994579987484,
+  "max_absolute_error": 0.141510009765625,
+  "rms_error": 0.026233613627288054,
+  "violating_logits": 170368,
+  "total_logits": 245760,
+  "criterion_passed": false,
+  "per_position_max_error": [
+    0.141510009765625,
+    0.0693674087524414,
+    0.07426261901855469,
+    0.08207321166992188,
+    0.07545644044876099
+  ],
+  "argmax_ids": [
+    198,
+    314,
+    281,
+    28,
+    378
+  ],
+  "argmax_agreement": [
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "logits_sha256": "288282b2f70adbdde712ab009f282623ff0758760fdcdb3f9701b13ec04f15de",
+  "status": "comparison_completed",
+  "total_seconds": 1.7001478340007452,
+  "peak_process_rss_bytes": 603013120,
+  "limitations": "Five fixed positions only. No tokenizer reimplementation, generation, training or vision. F16 weights decoded exactly to F32; no packed quantization. Full-sequence attention differs from sequential reference evaluation. RSS excludes some unified-memory use; sampling can miss transients."
+}

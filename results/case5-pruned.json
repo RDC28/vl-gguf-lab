@@ -1,0 +1,97 @@
+{
+  "dataset_sha256": "073bd194bdb79e3ecfcfad51e09f23510ca697431475221b785c369619d7b8cf",
+  "dataset_index": 6,
+  "input": "Give Naisha and Zain a quiet tea stall shot where she talks too much because she is nervous.",
+  "system_prompt": "You are a film storyboard assistant. Turn the scene description into a detailed shot breakdown. Use numbered SHOT headings and describe the framing, camera movement, action, and sound for each shot.",
+  "settings": {
+    "n_ctx": 2048,
+    "n_gpu_layers": 0,
+    "n_batch": 128,
+    "n_threads": 4,
+    "n_threads_batch": 4,
+    "seed": 42,
+    "use_mmap": true
+  },
+  "decoding": {
+    "temperature": 0,
+    "top_p": 1,
+    "top_k": 1,
+    "repeat_penalty": 1,
+    "max_tokens": 128
+  },
+  "runs": [
+    {
+      "model": "SmolLM2-135M-Instruct-minus1.gguf",
+      "sha256": "391046ca968852f26f72402386b5732f562fb37719e660d031c6f460629964c4",
+      "memory_samples": [
+        {
+          "phase": "before_load",
+          "elapsed_seconds": 0.2330022909991385,
+          "pressure_level": 1,
+          "free_percent": 70
+        },
+        {
+          "phase": "before_input",
+          "elapsed_seconds": 0.3187893750000512,
+          "pressure_level": 1,
+          "free_percent": 70
+        },
+        {
+          "phase": "periodic",
+          "elapsed_seconds": 0.7597367079997639,
+          "pressure_level": 1,
+          "free_percent": 70
+        },
+        {
+          "phase": "after_input",
+          "elapsed_seconds": 1.128882540999257,
+          "pressure_level": 1,
+          "free_percent": 70
+        },
+        {
+          "phase": "after_close",
+          "elapsed_seconds": 1.1420856249987992,
+          "pressure_level": 1,
+          "free_percent": 70
+        }
+      ],
+      "load_seconds": 0.0779044579994661,
+      "chat_format": "chat_template.default",
+      "embedded_chat_template": "{% for message in messages %}{% if loop.first and messages[0]['role'] != 'system' %}{{ '<|im_start|>system\nYou are a helpful AI assistant named SmolLM, trained by Hugging Face<|im_end|>\n' }}{% endif %}{{'<|im_start|>' + message['role'] + '\n' + message['content'] + '<|im_end|>' + '\n'}}{% endfor %}{% if add_generation_prompt %}{{ '<|im_start|>assistant\n' }}{% endif %}",
+      "wall_seconds": 0.8012881249997008,
+      "output": "(Naisha and Zain, with a quiet tea stall, are in the tea stall, and they are both in the tea stall, and they are both in the tea stall, and they are both in the tea stall, and they are both in the tea stall, and they are both in the tea stall, and they are both in the tea stall, and they are both in the tea stall, and they are both in the tea stall, and they are both in the tea stall, and they are both in the tea stall, and they are both in the tea stall, and they are both in the tea stall, and",
+      "finish_reason": "length",
+      "prompt_eval_tokens": 74,
+      "completion_eval_tokens": 127,
+      "prompt_eval_seconds": 0.062664,
+      "generation_eval_seconds": 0.7196130000000001,
+      "peak_process_rss_bytes": 453672960
+    }
+  ],
+  "control_evidence_sha256": "23ad207990707efeb82cb073c98569cebd0eb1bf4922b9aad67494eecac7b18e",
+  "edit_evidence_sha256": "0fb87066e60118e3d6aaa9d2be8e18ca2c6f563c9a345a43cdb5576c3eceb671",
+  "llama_cpp_python": "0.3.36",
+  "system_info": "MTL : EMBED_LIBRARY = 1 | CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | ACCELERATE = 1 | REPACK = 1 | ",
+  "outputs_identical": false,
+  "original_metrics": {
+    "output_words": 66,
+    "reference_words": 448,
+    "output_shot_headings": 0,
+    "reference_shot_headings": 4,
+    "unigram_precision": 0.3333333333333333,
+    "unigram_recall": 0.049107142857142856,
+    "unigram_f1": 0.08560311284046691
+  },
+  "edited_metrics": {
+    "output_words": 110,
+    "reference_words": 448,
+    "output_shot_headings": 0,
+    "reference_shot_headings": 4,
+    "unigram_precision": 0.32727272727272727,
+    "unigram_recall": 0.08035714285714286,
+    "unigram_f1": 0.12903225806451615
+  },
+  "status": "completed",
+  "total_seconds": 1.3965379579985893,
+  "limitations": "One scene, 128-token cap, CPU only. No logit parity or quality inference. RSS is cumulative process high-water mark and excludes some unified-memory allocations."
+}

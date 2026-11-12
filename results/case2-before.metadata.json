@@ -1,0 +1,403 @@
+{
+  "phase": "untrained",
+  "seed": 42,
+  "temperature": 0,
+  "max_tokens": 128,
+  "context_limit": 2048,
+  "system_prompt": "You are a film storyboard assistant. Turn the scene description into a detailed shot breakdown. Use numbered SHOT headings and describe the framing, camera movement, action, and sound for each shot.",
+  "completed_indexes": [
+    23,
+    34,
+    48,
+    55,
+    60,
+    81,
+    106,
+    107,
+    121,
+    123,
+    124,
+    125,
+    132,
+    141,
+    142
+  ],
+  "memory_samples": [
+    {
+      "elapsed_seconds": 0.006476750000729226,
+      "phase": "before_import",
+      "pressure_level": 1,
+      "free_percent": 68
+    },
+    {
+      "elapsed_seconds": 0.5245766250009183,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 68
+    },
+    {
+      "elapsed_seconds": 1.0576005420007277,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 68
+    },
+    {
+      "elapsed_seconds": 1.0626385420000588,
+      "phase": "before_load",
+      "pressure_level": 1,
+      "free_percent": 68
+    },
+    {
+      "elapsed_seconds": 1.2128027500002645,
+      "phase": "before_input_23",
+      "pressure_level": 1,
+      "free_percent": 68
+    },
+    {
+      "elapsed_seconds": 1.5765160419996391,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 68
+    },
+    {
+      "elapsed_seconds": 2.004127125001105,
+      "phase": "after_input_23",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 2.014018208001289,
+      "phase": "before_input_34",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 2.0981032500003494,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 2.6200717500014434,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 2.9295309580011235,
+      "phase": "after_input_34",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 2.9382140420002543,
+      "phase": "before_input_48",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 3.14113775000078,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 3.664318541999819,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 3.8374970000004396,
+      "phase": "after_input_48",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 3.845429625000179,
+      "phase": "before_input_55",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 4.185366249999788,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 4.691901666999911,
+      "phase": "after_input_55",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 4.7012843749998865,
+      "phase": "before_input_60",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 4.703582707999885,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 5.223213917000976,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 5.546291333001136,
+      "phase": "after_input_60",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 5.554179124999791,
+      "phase": "before_input_81",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 5.7391886670011445,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 6.2609606670012,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 6.406751417000123,
+      "phase": "after_input_81",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 6.41427591700085,
+      "phase": "before_input_106",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 6.775657583000793,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 7.262359292000838,
+      "phase": "after_input_106",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 7.270316792000813,
+      "phase": "before_input_107",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 7.2978277080001135,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 59
+    },
+    {
+      "elapsed_seconds": 7.819701874999737,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 8.11799400000018,
+      "phase": "after_input_107",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 8.12569112500023,
+      "phase": "before_input_121",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 8.334748041999774,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 8.857263083000362,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 8.960815874999753,
+      "phase": "after_input_121",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 8.969196875001217,
+      "phase": "before_input_123",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 9.378592417000618,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 9.819213583001329,
+      "phase": "after_input_123",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 9.826874333000887,
+      "phase": "before_input_124",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 9.899432457999865,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 10.414925125000082,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 10.676758375000645,
+      "phase": "after_input_124",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 10.684324125000785,
+      "phase": "before_input_125",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 10.934549917001277,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 11.456801042000734,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 11.533108125000581,
+      "phase": "after_input_125",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 11.540656000001036,
+      "phase": "before_input_132",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 11.978837917000419,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 12.39468937499987,
+      "phase": "after_input_132",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 12.40546466700107,
+      "phase": "before_input_141",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 12.492513458000758,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 13.00853350000034,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 13.255309625001246,
+      "phase": "after_input_141",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 13.263110083000356,
+      "phase": "before_input_142",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 13.529920000000857,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 14.051151499999833,
+      "phase": "periodic",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 14.117678542001158,
+      "phase": "after_input_142",
+      "pressure_level": 1,
+      "free_percent": 60
+    },
+    {
+      "elapsed_seconds": 14.141068708000603,
+      "phase": "after_release",
+      "pressure_level": 1,
+      "free_percent": 62
+    }
+  ],
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.22.2",
+    "tokenizers": "0.23.3"
+  },
+  "model_revision": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
+  "model_weight_sha256": "5af571cbf074e6d21a03528d2330792e532ca608f24ac70a143f6b369968ab8c",
+  "split_sha256": "3d4a1eff32d197aaab0c49a92171c31cdf0c7f557d1191afcce3752cf8f3ece0",
+  "dataset_sha256": "073bd194bdb79e3ecfcfad51e09f23510ca697431475221b785c369619d7b8cf",
+  "load_seconds": 0.14165904099900217,
+  "mlx_peak_memory_bytes": 327914752,
+  "status": "completed",
+  "total_seconds": 14.141076500000054,
+  "peak_process_rss_bytes": 425213952
+}

@@ -1,0 +1,90 @@
+{
+  "rows": 15,
+  "capped_outputs": 15,
+  "mean_elapsed_seconds": 0.8706352888669547,
+  "mean_output_words": 95.13333333333334,
+  "mean_unigram_f1": 0.14007799302550258,
+  "total_output_shot_headings": 2,
+  "minimum_free_percent": 59,
+  "maximum_pressure_level": 1,
+  "changed_outputs": 14,
+  "mean_unigram_f1_delta": 0.015118653184833743,
+  "pairs": [
+    {
+      "dataset_index": 23,
+      "output_changed": true,
+      "unigram_f1_delta": 0.12621722846441946
+    },
+    {
+      "dataset_index": 34,
+      "output_changed": true,
+      "unigram_f1_delta": 0.18937600153069767
+    },
+    {
+      "dataset_index": 48,
+      "output_changed": false,
+      "unigram_f1_delta": 0.0
+    },
+    {
+      "dataset_index": 55,
+      "output_changed": true,
+      "unigram_f1_delta": -0.003710575139146577
+    },
+    {
+      "dataset_index": 60,
+      "output_changed": true,
+      "unigram_f1_delta": 0.03886321827425872
+    },
+    {
+      "dataset_index": 81,
+      "output_changed": true,
+      "unigram_f1_delta": 0.01085495338121012
+    },
+    {
+      "dataset_index": 106,
+      "output_changed": true,
+      "unigram_f1_delta": 0.08411040074847968
+    },
+    {
+      "dataset_index": 107,
+      "output_changed": true,
+      "unigram_f1_delta": -0.07199775138781532
+    },
+    {
+      "dataset_index": 121,
+      "output_changed": true,
+      "unigram_f1_delta": -0.008418024565188559
+    },
+    {
+      "dataset_index": 123,
+      "output_changed": true,
+      "unigram_f1_delta": -0.03428571428571425
+    },
+    {
+      "dataset_index": 124,
+      "output_changed": true,
+      "unigram_f1_delta": 0.0016162127217022315
+    },
+    {
+      "dataset_index": 125,
+      "output_changed": true,
+      "unigram_f1_delta": -0.007853907336733579
+    },
+    {
+      "dataset_index": 132,
+      "output_changed": true,
+      "unigram_f1_delta": 0.029203427884767402
+    },
+    {
+      "dataset_index": 141,
+      "output_changed": true,
+      "unigram_f1_delta": -0.13414348805241147
+    },
+    {
+      "dataset_index": 142,
+      "output_changed": true,
+      "unigram_f1_delta": 0.006947815533980606
+    }
+  ],
+  "limitations": "One fixed tiny-text-model adapter; 128-token cap; no tuning on test outcomes; lexical overlap does not establish semantic quality."
+}

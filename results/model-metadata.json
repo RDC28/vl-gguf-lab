@@ -1,0 +1,22 @@
+{
+  "metadata": {
+    "general.architecture": "qwen2vl",
+    "general.file_type": 12,
+    "general.quantization_version": 2,
+    "qwen2vl.block_count": 28,
+    "qwen2vl.context_length": 128000,
+    "qwen2vl.embedding_length": 3584,
+    "qwen2vl.feed_forward_length": 18944,
+    "qwen2vl.attention.head_count": 28,
+    "qwen2vl.attention.head_count_kv": 4
+  },
+  "tensor_count": 339,
+  "tensor_types": {
+    "Q6_K": 1,
+    "F32": 141,
+    "Q3_K": 113,
+    "Q4_K": 81,
+    "Q5_K": 3
+  },
+  "tensor_elements": 7615616512
+}

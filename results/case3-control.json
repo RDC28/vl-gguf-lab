@@ -1,0 +1,136 @@
+{
+  "dataset_sha256": "073bd194bdb79e3ecfcfad51e09f23510ca697431475221b785c369619d7b8cf",
+  "dataset_index": 6,
+  "input": "Give Naisha and Zain a quiet tea stall shot where she talks too much because she is nervous.",
+  "system_prompt": "You are a film storyboard assistant. Turn the scene description into a detailed shot breakdown. Use numbered SHOT headings and describe the framing, camera movement, action, and sound for each shot.",
+  "settings": {
+    "n_ctx": 2048,
+    "n_gpu_layers": 0,
+    "n_batch": 128,
+    "n_threads": 4,
+    "n_threads_batch": 4,
+    "seed": 42,
+    "use_mmap": true
+  },
+  "decoding": {
+    "temperature": 0,
+    "top_p": 1,
+    "top_k": 1,
+    "repeat_penalty": 1,
+    "max_tokens": 128
+  },
+  "runs": [
+    {
+      "model": "SmolLM2-135M-Instruct-f16.gguf",
+      "sha256": "f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57",
+      "memory_samples": [
+        {
+          "phase": "before_load",
+          "elapsed_seconds": 0.32932133299982524,
+          "pressure_level": 1,
+          "free_percent": 69
+        },
+        {
+          "phase": "before_input",
+          "elapsed_seconds": 0.4240147079999588,
+          "pressure_level": 1,
+          "free_percent": 69
+        },
+        {
+          "phase": "periodic",
+          "elapsed_seconds": 0.8523419169996487,
+          "pressure_level": 1,
+          "free_percent": 69
+        },
+        {
+          "phase": "periodic",
+          "elapsed_seconds": 1.373160207998808,
+          "pressure_level": 1,
+          "free_percent": 69
+        },
+        {
+          "phase": "after_input",
+          "elapsed_seconds": 1.3748274999998102,
+          "pressure_level": 1,
+          "free_percent": 69
+        },
+        {
+          "phase": "after_close",
+          "elapsed_seconds": 1.3871900829999504,
+          "pressure_level": 1,
+          "free_percent": 69
+        }
+      ],
+      "load_seconds": 0.08588958300060767,
+      "chat_format": "chat_template.default",
+      "embedded_chat_template": "{% for message in messages %}{% if loop.first and messages[0]['role'] != 'system' %}{{ '<|im_start|>system\nYou are a helpful AI assistant named SmolLM, trained by Hugging Face<|im_end|>\n' }}{% endif %}{{'<|im_start|>' + message['role'] + '\n' + message['content'] + '<|im_end|>' + '\n'}}{% endfor %}{% if add_generation_prompt %}{{ '<|im_start|>assistant\n' }}{% endif %}",
+      "wall_seconds": 0.9428525000002992,
+      "output": "Here's a detailed shot breakdown of the scene:\n\n**Scene 1: Naisha and Zain's Tea Stall**\n\n*Scene 1: Naisha and Zain's Tea Stall\n\n*Scene 1: Naisha and Zain's Tea Stall\n\n*Scene 1: Naisha and Zain's Tea Stall\n\n*Scene 1: Naisha and Zain's Tea Stall\n\n*Scene 1: Naisha and Zain's Tea Stall\n\n*Scene 1: Naisha and Zain's Tea Stall\n\n*Scene ",
+      "finish_reason": "length",
+      "prompt_eval_tokens": 74,
+      "completion_eval_tokens": 127,
+      "prompt_eval_seconds": 0.08858400000000001,
+      "generation_eval_seconds": 0.83345,
+      "peak_process_rss_bytes": 460947456
+    },
+    {
+      "model": "SmolLM2-135M-Instruct-control.gguf",
+      "sha256": "f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57",
+      "memory_samples": [
+        {
+          "phase": "before_load",
+          "elapsed_seconds": 1.6613717499985796,
+          "pressure_level": 1,
+          "free_percent": 69
+        },
+        {
+          "phase": "before_input",
+          "elapsed_seconds": 1.751637416999074,
+          "pressure_level": 1,
+          "free_percent": 69
+        },
+        {
+          "phase": "periodic",
+          "elapsed_seconds": 2.184697374999814,
+          "pressure_level": 1,
+          "free_percent": 69
+        },
+        {
+          "phase": "periodic",
+          "elapsed_seconds": 2.7068661249995785,
+          "pressure_level": 1,
+          "free_percent": 69
+        },
+        {
+          "phase": "after_input",
+          "elapsed_seconds": 2.724754082999425,
+          "pressure_level": 1,
+          "free_percent": 69
+        },
+        {
+          "phase": "after_close",
+          "elapsed_seconds": 2.7369613329992717,
+          "pressure_level": 1,
+          "free_percent": 69
+        }
+      ],
+      "load_seconds": 0.08109383299961337,
+      "chat_format": "chat_template.default",
+      "embedded_chat_template": "{% for message in messages %}{% if loop.first and messages[0]['role'] != 'system' %}{{ '<|im_start|>system\nYou are a helpful AI assistant named SmolLM, trained by Hugging Face<|im_end|>\n' }}{% endif %}{{'<|im_start|>' + message['role'] + '\n' + message['content'] + '<|im_end|>' + '\n'}}{% endfor %}{% if add_generation_prompt %}{{ '<|im_start|>assistant\n' }}{% endif %}",
+      "wall_seconds": 0.9648352910007816,
+      "output": "Here's a detailed shot breakdown of the scene:\n\n**Scene 1: Naisha and Zain's Tea Stall**\n\n*Scene 1: Naisha and Zain's Tea Stall\n\n*Scene 1: Naisha and Zain's Tea Stall\n\n*Scene 1: Naisha and Zain's Tea Stall\n\n*Scene 1: Naisha and Zain's Tea Stall\n\n*Scene 1: Naisha and Zain's Tea Stall\n\n*Scene 1: Naisha and Zain's Tea Stall\n\n*Scene ",
+      "finish_reason": "length",
+      "prompt_eval_tokens": 74,
+      "completion_eval_tokens": 127,
+      "prompt_eval_seconds": 0.085717,
+      "generation_eval_seconds": 0.85919,
+      "peak_process_rss_bytes": 463208448
+    }
+  ],
+  "llama_cpp_python": "0.3.36",
+  "system_info": "MTL : EMBED_LIBRARY = 1 | CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | ACCELERATE = 1 | REPACK = 1 | ",
+  "outputs_identical": true,
+  "status": "completed",
+  "total_seconds": 2.8696439169998484,
+  "limitations": "One scene, 128-token cap, CPU only. No logit parity or quality inference. RSS is cumulative process high-water mark and excludes some unified-memory allocations."
+}

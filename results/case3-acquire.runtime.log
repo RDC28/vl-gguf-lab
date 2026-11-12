@@ -1,0 +1,31 @@
+{
+  "repo": "bartowski/SmolLM2-135M-Instruct-GGUF",
+  "revision": "09816acd5d99df7be770d85ea30822623dab342c",
+  "name": "SmolLM2-135M-Instruct-f16.gguf",
+  "size_bytes": 270885952,
+  "sha256": "f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57",
+  "gguf_version": "0.19.0",
+  "tensor_types": {
+    "F16": 211,
+    "F32": 61
+  },
+  "stored_elements": 134515008,
+  "proposed_edit": {
+    "tensor": "blk.0.attn_norm.weight",
+    "operation": "multiply by 1.01 in float32",
+    "minimum": -0.3046875,
+    "maximum": 0.314453125,
+    "control": "No-change GGUFWriter rewrite first; no edits performed yet"
+  },
+  "memory_before": {
+    "pressure_level": 1,
+    "free_percent": 69
+  },
+  "memory_after": {
+    "pressure_level": 1,
+    "free_percent": 68
+  },
+  "elapsed_seconds": 14.787930708000204,
+  "peak_process_rss_bytes": 494092288,
+  "limitations": "Acquisition and read-only mmap inventory only. No inference, rewrite or edit. RSS excludes some unified-memory allocations. GGUF conversion is distinct from case 2 BF16 source; no weight equivalence assumed."
+}

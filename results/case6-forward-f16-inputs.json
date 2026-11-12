@@ -1,0 +1,271 @@
+{
+  "source_sha256": "f535f83ec568d040f88ddc04a199fa6da90923bbb41d4dcaed02caa924d6ef57",
+  "reference_sha256": "8629b6903d04169c5016f411f0ed9499004faa896057c63a9d2d398ac41f7bd9",
+  "numpy_version": "2.5.4",
+  "f16_linear_inputs": true,
+  "implementation_sha256": "f20e47b9b89cf231ebd7e60c9e813ba6d762596131cd10df80aa68cf4e98e85b",
+  "cpu_source_sha256": "94e4c599aa8e6a0e047b1e4a40830cd5b54a5e0bc773acaccd3be2d4702caf39",
+  "implementation": "NumPy float32, full 30-block decoded F16 source; causal full-sequence attention; no KV cache",
+  "memory_samples": [
+    {
+      "phase": "before_load",
+      "elapsed_seconds": 0.007896291999713867,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "periodic",
+      "elapsed_seconds": 0.7173264579996612,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_input",
+      "elapsed_seconds": 1.1844520419999753,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:0",
+      "elapsed_seconds": 1.2047596249994967,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:1",
+      "elapsed_seconds": 1.2148135829993407,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:2",
+      "elapsed_seconds": 1.2245782499994675,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "periodic",
+      "elapsed_seconds": 1.2311969580005098,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:3",
+      "elapsed_seconds": 1.2362786670000787,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:4",
+      "elapsed_seconds": 1.2467765000001236,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:5",
+      "elapsed_seconds": 1.2565760420002334,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:6",
+      "elapsed_seconds": 1.266242333000264,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:7",
+      "elapsed_seconds": 1.275302374999228,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:8",
+      "elapsed_seconds": 1.2843329169991193,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:9",
+      "elapsed_seconds": 1.2932321669995872,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:10",
+      "elapsed_seconds": 1.3022314999998343,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:11",
+      "elapsed_seconds": 1.3110914169992611,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:12",
+      "elapsed_seconds": 1.3200089170004503,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:13",
+      "elapsed_seconds": 1.3289322079999693,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:14",
+      "elapsed_seconds": 1.3377075419994071,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:15",
+      "elapsed_seconds": 1.3465612079999119,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:16",
+      "elapsed_seconds": 1.3554827499992825,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:17",
+      "elapsed_seconds": 1.3644439170002443,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:18",
+      "elapsed_seconds": 1.3734967919990595,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:19",
+      "elapsed_seconds": 1.3823845000006258,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:20",
+      "elapsed_seconds": 1.3912844579990633,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:21",
+      "elapsed_seconds": 1.4002556670002377,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:22",
+      "elapsed_seconds": 1.409254874999533,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:23",
+      "elapsed_seconds": 1.4182171669999661,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:24",
+      "elapsed_seconds": 1.4271463330005645,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:25",
+      "elapsed_seconds": 1.4361440829998173,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:26",
+      "elapsed_seconds": 1.445087500000227,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:27",
+      "elapsed_seconds": 1.4545676670004468,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:28",
+      "elapsed_seconds": 1.4636064999995142,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "before_block:29",
+      "elapsed_seconds": 1.4724609580007382,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "after_forward",
+      "elapsed_seconds": 1.5041528750007274,
+      "pressure_level": 1,
+      "free_percent": 70
+    },
+    {
+      "phase": "after_release",
+      "elapsed_seconds": 1.7062053329991613,
+      "pressure_level": 1,
+      "free_percent": 70
+    }
+  ],
+  "acceptance": {
+    "atol": 0.001,
+    "rtol": 0.001,
+    "rule": "Every saved logit must satisfy abs(custom-reference) <= atol + rtol*abs(reference); report max/RMS errors and argmax agreement separately."
+  },
+  "token_ids": [
+    504,
+    6715,
+    7488,
+    6351,
+    30
+  ],
+  "forward_seconds": 0.31203787499907776,
+  "max_absolute_error": 0.15121793746948242,
+  "rms_error": 0.030689660601080422,
+  "violating_logits": 188251,
+  "total_logits": 245760,
+  "criterion_passed": false,
+  "per_position_max_error": [
+    0.15121793746948242,
+    0.07056140899658203,
+    0.07709169387817383,
+    0.09226751327514648,
+    0.07399070262908936
+  ],
+  "argmax_ids": [
+    198,
+    314,
+    281,
+    28,
+    378
+  ],
+  "argmax_agreement": [
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "logits_sha256": "2ba4aae4f781bae683dbce8eb30a3600f71b29f21e3a170d4ab2e31adfbbf997",
+  "status": "comparison_completed",
+  "total_seconds": 1.7062145420004526,
+  "peak_process_rss_bytes": 716668928,
+  "limitations": "Five fixed positions only. No tokenizer reimplementation, generation, training or vision. F16 weights decoded exactly to F32; no packed quantization. Full-sequence attention differs from sequential reference evaluation. RSS excludes some unified-memory use; sampling can miss transients."
+}
